@@ -1,21 +1,29 @@
+import Link from 'next/link';
 import './globals.css';
-import { Inter } from 'next/font/google';
-
-const inter = Inter({ subsets: ['latin'] });
-
-export const metadata = {
-  title: 'Fitness Pass',
-  description: 'Created by Next.js',
-};
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body>
+        <main>
+          <nav>
+            <Link href="/">
+              Home
+            </Link>
+            <Link href="/studio">
+              Studios
+            </Link>
+            <Link href="/user">
+              Users
+            </Link>
+          </nav>
+          {children}
+        </main>
+      </body>
     </html>
   );
 }
