@@ -11,13 +11,13 @@ export default function RootLayout({
       <body>
         <main>
           <nav>
-            <Link href="/">
+            <Link href="/" className="p-4 bg-slate-500/20 hover:bg-slate-200 duration-500 transition-all">
               Home
             </Link>
-            <Link href="/studio">
+            <Link href="/studio" className="p-4 bg-slate-500/20 hover:bg-slate-200 duration-500 transition-all">
               Studios
             </Link>
-            <Link href="/user">
+            <Link href="/user" className="p-4 bg-slate-500/20 hover:bg-slate-200 duration-500 transition-all">
               Users
             </Link>
           </nav>
