@@ -48,4 +48,4 @@ jobs:
           host: ${{ secrets.AWS_HOST }}
           username: ${{ secrets.AWS_USERNAME }}
           key: ${{ secrets.AWS_SSH_KEY }}
-          script: "cd ubuntu/FitnessPass && git pull && npm ci && npm run build"
+          script: "cd /home/ubuntu/FitnessPass && git pull && npm ci && npm run build"
