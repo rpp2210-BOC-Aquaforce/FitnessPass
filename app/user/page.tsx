@@ -1,7 +1,9 @@
-export default function Studios() {
-  return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      User Page
-    </main>
-  );
+import supabase from '../../lib/supabase';
+
+export default async function Posts() {
+  const { data: test, error } = await supabase
+    .from('test')
+    .select('textrow');
+
+  return <pre>{JSON.stringify({ data: test, error }, null, 2)}</pre>;
 }
