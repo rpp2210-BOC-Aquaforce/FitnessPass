@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, ChangeEvent, FormEvent } from 'react';
+import supabase from '../../../lib/supabase';
 
 type FormData = {
   studioName: string;
@@ -33,9 +34,21 @@ function StudioLocationForm() {
     }));
   };
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Insert to Supabase
+    const { data: newStudio, error } = await supabase
+      .from('locations')
+      .insert([
+        {
+          name: formData.studioName,
+          location: formData.location,
+          description: formData.description,
+        },
+      ]);
+      // 400 errors from posting
+
+      // need to handle file uploads
+      // need to have access to specific Studio ID
   };
 
   return (
