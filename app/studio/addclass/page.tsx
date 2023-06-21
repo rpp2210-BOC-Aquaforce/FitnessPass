@@ -1,12 +1,56 @@
 'use client';
 
+import supabase from '../../../lib/supabase';
+
+// To-Do:
+// Refactor tags section to be more user-friendly
+// Refactor location to pull from existing studio locations
+
 export default function AddClass() {
-  const handleSubmit = (e: FormEvent<HTMLInputElement>): void => {
+  const fetchSample = async () => {
+    const { data: test, error } = await supabase
+      .from('classes')
+      .select()
+    if (error) {
+      console.error(error);
+    } else {
+      console.log('Data? ', JSON.stringify({ data: test, error }, null, 4));
+    }
+  };
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
     const formProps = Object.fromEntries(formData);
+    // console.log('Form data: ', formData);
     console.log('form props: ', formProps);
+    fetchSample();
+    const classData = {
+      location_id: 1,
+      name: formProps.class_name,
+      description: formProps.class_description,
+      date: formProps.class_date,
+      time: formProps.class_start,
+      duration: formProps.class_duration,
+      tags: JSON.stringify(formProps.class_tags),
+      instructor: formProps.instructor,
+      total_rating: 0,
+      num_ratings: 0,
+    };
+    console.log('Class Data: ', classData);
+    const { data, error } = await supabase.from('classes').insert(classData);
+    if (error) {
+      console.log('Data: ', data);
+      console.error(error);
+    } else {
+      console.log('data: ', data);
+      fetchSample();
+    }
     // POST to Supabase classes table
+  //   const { data: test, error } = await supabase
+  //   .from('test')
+  //   .select('textrow');
+
+  // return <pre>{JSON.stringify({ data: test, error }, null, 2)}</pre>;
   };
   return (
     <div className="flex flex-col content-start justify-center items-center py-4 gap-y-4">
