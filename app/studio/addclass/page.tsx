@@ -9,15 +9,16 @@ export default function AddClass() {
     // POST to Supabase classes table
   };
   return (
-    <div>
-      <h1>Add Class</h1>
-      <form onSubmit={handleSubmit} className="flex flex-col">
+    <div className="flex flex-col content-start justify-center items-center py-4 gap-y-4">
+      <h1 className="text-xl">Add Class</h1>
+      <form onSubmit={handleSubmit} className="flex flex-col gap-y-2">
         <label htmlFor="location">
           Location:
           <input
             id="location"
             type="text"
             name="location"
+            placeholder="Location"
             required
           />
         </label>
@@ -27,6 +28,7 @@ export default function AddClass() {
             id="class_name"
             type="text"
             name="class_name"
+            placeholder="Class Name"
             required
           />
         </label>
@@ -36,6 +38,7 @@ export default function AddClass() {
             id="class_description"
             spellCheck="true"
             name="class_description"
+            placeholder="Class Description"
             required
           />
         </label>
@@ -45,6 +48,7 @@ export default function AddClass() {
             id="instructor"
             type="text"
             name="instructor"
+            placeholder="Instructor"
             required
           />
         </label>
