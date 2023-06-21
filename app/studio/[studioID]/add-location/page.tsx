@@ -45,9 +45,17 @@ function StudioLocationForm() {
           description: formData.description,
         },
       ]);
-      // 400 errors from posting
 
-    // need to handle file uploads
+    const { photo } = formData;
+
+    const { data, uploadError } = await supabase.storage.from('fitnesspass').upload('12345', photo);
+    if (error) {
+      console.error(uploadError);
+    } else {
+      console.log('success');
+    }
+
+    //issues with policy access when uploading photo to bucket
     // need to have access to specific Studio ID
   };
 
