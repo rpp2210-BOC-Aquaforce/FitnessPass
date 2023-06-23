@@ -11,21 +11,21 @@ export default function StudioPage() {
         <h1 className="mainHeader">Studio Profile</h1>
         <Image src="/images/studioPlaceholder.png" alt="gym placeholder" width={400} height={300} />
         <h5 className={styles.infoHeader}>Studio Name</h5>
-        <p>Name Here</p>
+        <p>(Name Here)</p>
         <h5 className={styles.infoHeader}>Preferred Email</h5>
-        <p>Email Here</p>
+        <p>(Email Here)</p>
         <h5 className={styles.infoHeader}>Phone Number</h5>
-        <p>Phone Here</p>
+        <p>(Phone Here)</p>
+        <h5 className={styles.infoHeader}>Address:</h5>
+        <p>(Address Here)</p>
       </p>
 
       <AddLocation />
-      <h5 className={styles.infoHeader}>Address</h5>
-      <p>Address Here</p>
-      <Link href="/studio/addclass"> Add A Class</Link>
-      <Link href="/"> Add A Location</Link>
+      <Link href="/studio/:[studioID]/addclass"> Add A Class (need to link)</Link>
+      <Link href="/"> View Metrics</Link>
+
       <Link href="/"> View All Classes</Link>
       <Link href="/"> View All Locations</Link>
-      <Link href="/"> View Metrics</Link>
 
     </main>
   );
