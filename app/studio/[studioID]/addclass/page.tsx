@@ -42,9 +42,9 @@ export default function AddClass() {
       .select('location_id, name')
       .eq('studio_id', '1');
     if (error) {
-      console.error(error);
+      // console.error(error);
     } else {
-      console.log('Fetch Data: ', data);
+      // console.log('Fetch Data: ', data);
     }
   };
 
@@ -78,7 +78,7 @@ export default function AddClass() {
       // console.error(error);
       alert('Error adding class, please try again later!');
     } else {
-      console.log('Class successfully added!');
+      // console.log('Class successfully added!');
       router.push('/studio/1234');
     }
   };
