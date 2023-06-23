@@ -3,6 +3,6 @@
 import { createClient } from '@supabase/supabase-js';
 
 export default createClient(
-  process.env.DB_URL!,
-  process.env.DB_API_KEY!,
+  process.env.NEXT_PUBLIC_DB_URL!,
+  process.env.NEXT_PUBLIC_DB_API_KEY!,
 );
