@@ -15,7 +15,6 @@ type FormData = {
 };
 
 function StudioLocationForm() {
-
   const [formData, setFormData] = useState<FormData>({
     studioName: '',
     street: '',

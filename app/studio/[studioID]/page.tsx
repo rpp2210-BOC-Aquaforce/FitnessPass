@@ -1,4 +1,4 @@
-import AddLocation from "../../../components/AddLocation";
+import AddLocation from '../../../components/AddLocation';
 
 export default async function StudioPage() {
   return (
