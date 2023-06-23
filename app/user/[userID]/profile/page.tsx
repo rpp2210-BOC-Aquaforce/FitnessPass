@@ -27,20 +27,18 @@ export default async function UserProfile() {
   // const [user, setUser] = useState<User | null>(null);
   async function getUserInfo() {
     try {
-      const { data, error } = await supabase
+      const { data: users, error } = await supabase
         .from('users')
         .select('*')
         .limit(1);
-
-      setUser(data);
-
+      setUser(users);
       if (error) {
         console.error('Supabase Error: ', error);
       } else {
-        console.log('here', data);
-        setUser(data);
+        console.log('here', users);
+        setUser(users);
         console.log('user', user);
-        return data;
+        return users;
       }
     } catch (err) {
       console.error('Unexpected error: ', err);
