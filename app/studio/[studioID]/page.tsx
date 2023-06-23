@@ -21,11 +21,11 @@ export default function StudioPage() {
       </p>
 
       <AddLocation />
-      <Link href="/studio/1234/addclass"> Add A Class (linked to '/addclass')</Link>
+      <Link href="/studio/1234/addclass"> Add A Class</Link>
       <Link href="/studio/1234/metrics"> View Metrics (linked to '/studio/1234/metrics')</Link>
 
-      <Link href="/studio/1234/view-locations"> View All Classes</Link>
-      <Link href="/"> View All Locations</Link>
+      <Link href="/studio/1234/view-classes"> View All Classes</Link>
+      <Link href="/studio/1234/view-locations"> View All Locations</Link>
 
     </main>
   );

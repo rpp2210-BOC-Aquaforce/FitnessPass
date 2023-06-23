@@ -1,5 +1,6 @@
 // eslint-disable-next-line import/extensions
 import Location from './location';
+import styles from './page.module.css';
 
 export default function StudioLocations() {
   const locationsArr = [];
@@ -9,12 +10,12 @@ export default function StudioLocations() {
   //     key={location.id}/>));
 
   return (
-    <div>
-      <h1>All Studio Locations</h1>
-      {/* {allLocationComponents} */}
-      {/* <Location />
-      <Location />
-      <Location /> */}
+    <div className={styles.locationList}>
+      <h1 className={styles.header}>All Locations</h1>
+      <div>Here's a location</div>
+      <div>Look, another one</div>
+      <div>Yep, one more</div>
+      <div>Nope, this is just text.</div>
     </div>
   );
 }
