@@ -48,7 +48,7 @@ export default function AddClass() {
   //   }
   // };
 
-  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     e.preventDefault();
     const { name, value } = e.target;
     setFormData((prevData) => ({
