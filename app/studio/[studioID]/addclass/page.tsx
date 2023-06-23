@@ -5,8 +5,8 @@ import React, { useState, ChangeEvent, FormEvent } from 'react';
 import supabase from '../../../../lib/supabase';
 
 // To-Do:
-// Refactor tags section to be more user-friendly
 // Refactor location to pull from existing studio locations
+// Refactor tags section to be more user-friendly
 // Handle UTC timezome consistency for class start time
 // Route based on studio id, not hard-coded studio id
 
@@ -35,6 +35,19 @@ export default function AddClass() {
     instructor: '',
   });
 
+  // To be refactored to fetch studio locations on form load
+  const fetchStudioLocations = async () => {
+    const { data, error } = await supabase
+      .from('locations')
+      .select('location_id, name')
+      .eq('studio_id', '1');
+    if (error) {
+      console.error(error);
+    } else {
+      console.log('Fetch Data: ', data);
+    }
+  };
+
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     const { name, value } = e.target;
@@ -43,18 +56,6 @@ export default function AddClass() {
       [name]: value,
     }));
   };
-
-  // Below to be modified to fetch locations for studio
-  // const fetchSample = async () => {
-  //   const { data: test, error } = await supabase
-  //     .from('classes')
-  //     .select()
-  //   if (error) {
-  //     console.error(error);
-  //   } else {
-  //     console.log('Data? ', JSON.stringify({ data: test, error }, null, 4));
-  //   }
-  // };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
