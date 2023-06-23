@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import supabase from '../../../../lib/supabase';
 
-export default async function UserProfile() {
+export default function UserProfile() {
   interface User {
    age: number,
    city: string,
@@ -23,31 +23,51 @@ export default async function UserProfile() {
    zip: string
 }
 
-  const [user, setUser] = useState<Array<User> | null>([]);
-  // const [user, setUser] = useState<User | null>(null);
+  const defaultUser = {
+    user_id: 0,
+    first_name: 'Loading...',
+    last_name: 'Loading...',
+    email: 'Loading...',
+    phone: 'Loading...',
+    age: 0,
+    street: 'Loading...',
+    city: 'Loading...',
+    state: 'Loading...',
+    zip: 'Loading...',
+    password: 'Loading...',
+    ec_name: 'Loading...',
+    ec_phone: 'Loading...',
+    photo: 'Loading...',
+    created_at: 'Loading...',
+  };
+
+  const [user, setUser] = useState<User>(defaultUser);
+
   async function getUserInfo() {
     try {
       const { data: users, error } = await supabase
         .from('users')
         .select('*')
         .limit(1);
-      setUser(users);
       if (error) {
         console.error('Supabase Error: ', error);
       } else {
-        console.log('here', users);
-        setUser(users);
-        console.log('user', user);
+        setUser(users[0]);
         return users;
       }
     } catch (err) {
       console.error('Unexpected error: ', err);
     }
+    return null;
   }
 
   useEffect(() => {
     getUserInfo();
   }, []);
+
+  useEffect(() => {
+    console.log('user', user);
+  }, [user]);
 
   return (
     <div className="text-2xl">
@@ -58,6 +78,8 @@ export default async function UserProfile() {
         </div>
         <div className="relative sm:inset-10  max-w-xs mb-12">
           First Name:
+          {' '}
+          {user.first_name}
           <br />
           Last Name:
           <br />
