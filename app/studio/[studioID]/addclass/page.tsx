@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import React, { useState, ChangeEvent, FormEvent } from 'react';
+import React, { useState, useEffect, ChangeEvent, FormEvent } from 'react';
 import supabase from '../../../../lib/supabase';
 
 // To-Do:
@@ -11,6 +11,7 @@ import supabase from '../../../../lib/supabase';
 // Route based on studio id, not hard-coded studio id
 
 type FormData = {
+  location_id: number;
   location: string;
   class_name: string;
   class_description: string;
@@ -24,8 +25,10 @@ type FormData = {
 export default function AddClass() {
   const router = useRouter();
 
+  const [studioLocations, setStudioLocations] = useState([{ location_id: 0, name: '' }]);
   const [formData, setFormData] = useState<FormData>({
-    location: '1',
+    location_id: 0,
+    location: '',
     class_name: '',
     class_description: '',
     class_date: '',
@@ -36,25 +39,42 @@ export default function AddClass() {
   });
 
   // To be refactored to fetch studio locations on form load
-  // const fetchStudioLocations = async () => {
-  //   const { data, error } = await supabase
-  //     .from('locations')
-  //     .select('location_id, name')
-  //     .eq('studio_id', '1');
-  //   if (error) {
-  //     // console.error(error);
-  //   } else {
-  //     // console.log('Fetch Data: ', data);
-  //   }
-  // };
+  const fetchStudioLocations = async () => {
+    const { data, error } = await supabase
+      .from('locations')
+      .select('location_id, name')
+      .eq('studio_id', '1');
+    if (error) {
+      console.error(error);
+    } else {
+      console.log('Fetch Data: ', data);
+      setStudioLocations(data);
+    }
+    console.log('Studio Locations: ', studioLocations);
+  };
 
-  const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  useEffect(() => {
+    fetchStudioLocations();
+  }, []);
+
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement |
+    HTMLSelectElement>) => {
     e.preventDefault();
     const { name, value } = e.target;
+    if (name === 'location') {
+      const target = e.target as HTMLSelectElement;
+      const index = target.selectedIndex;
+      const { id } = target.children[index];
+      setFormData((prevData) => ({
+        ...prevData,
+        location_id: Number(id),
+      }));
+    }
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
     }));
+    console.log('Form Data: ', formData);
   };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -87,7 +107,18 @@ export default function AddClass() {
     <div className="flex flex-col content-start justify-center items-center py-4 gap-y-4">
       <h1 className="text-xl">Add Class</h1>
       <form onSubmit={handleSubmit} className="flex flex-col gap-y-2">
-        <label htmlFor="location">
+        <select
+          id="location"
+          name="location"
+          value={formData.location}
+          onChange={handleInputChange}
+        >
+          <option value="" disabled>Location</option>
+          {studioLocations.map((loc) =>
+            <option key={loc.location_id} id={loc.location_id}>{loc.name}</option>
+          )}
+        </select>
+        {/* <label htmlFor="location">
           Location:
           <input
             id="location"
@@ -98,7 +129,7 @@ export default function AddClass() {
             onChange={handleInputChange}
             required
           />
-        </label>
+        </label> */}
         <label htmlFor="class_name">
           Class Name:
           <input
@@ -166,6 +197,7 @@ export default function AddClass() {
             min="5"
             max="720"
             step="5"
+            placeholder="Duration (Mins)"
             value={formData.class_duration}
             onChange={handleInputChange}
             required
