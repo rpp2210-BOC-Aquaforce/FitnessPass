@@ -7,8 +7,6 @@ import supabase from '../../../../lib/supabase';
 // To-Do:
 // Refactor tags section to be more user-friendly
 // Refactor location to pull from existing studio locations
-// Provide option to x out of tab
-// Route back to studio profile on submit
 // Handle UTC timezome consistency for class start time
 // Route based on studio id, not hard-coded studio id
 
@@ -185,6 +183,7 @@ export default function AddClass() {
         </label>
         <button type="submit">Add Class</button>
       </form>
+      <button type="submit" onClick={() => router.push('/studio/1234')}>Cancel</button>
     </div>
   );
 }
