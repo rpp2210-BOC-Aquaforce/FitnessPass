@@ -1,5 +1,4 @@
 import { Ping } from '../components/index';
-import { Test } from '../components/test';
 
 type Todo = {
   userId: number,

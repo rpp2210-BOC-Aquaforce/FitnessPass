@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import supabase from '../../../../lib/supabase';
 
-export default async function UserProfile() {
+export default function UserProfile() {
   interface User {
    age: number,
    city: string,
@@ -23,8 +23,24 @@ export default async function UserProfile() {
    zip: string
 }
 
-  const [user, setUser] = useState<Array<User> | null>([]);
-  // const [user, setUser] = useState<User | null>(null);
+  // const [user, setUser] = useState<User>({
+  //   age: 0,
+  //   city: '',
+  //   created_at: '',
+  //   ec_name: '',
+  //   ec_phone: '',
+  //   email: '',
+  //   first_name: '',
+  //   last_name: '',
+  //   password: '',
+  //   phone: '',
+  //   photo: '',
+  //   state: '',
+  //   street: '',
+  //   user_id: 1,
+  //   zip: '',
+  // });
+  const [user, setUser] = useState<User | null>(null);
   async function getUserInfo() {
     try {
       const { data: users, error } = await supabase
@@ -38,7 +54,6 @@ export default async function UserProfile() {
         console.log('here', users);
         setUser(users);
         console.log('user', user);
-        return users;
       }
     } catch (err) {
       console.error('Unexpected error: ', err);
@@ -58,6 +73,7 @@ export default async function UserProfile() {
         </div>
         <div className="relative sm:inset-10  max-w-xs mb-12">
           First Name:
+          {user.first_name}
           <br />
           Last Name:
           <br />

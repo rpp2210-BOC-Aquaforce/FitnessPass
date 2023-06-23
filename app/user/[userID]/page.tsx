@@ -1,6 +1,3 @@
-import Favorites from '../../favorites/page';
-import UserProfile from '../../profile/page';
-import Ratings from '../../ratings/page';
 import Link from 'next/link';
 
 export default async function UserPage() {
