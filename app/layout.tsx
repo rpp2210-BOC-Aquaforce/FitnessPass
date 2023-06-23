@@ -14,7 +14,8 @@ export default function RootLayout({
             <Link href="/" className="p-4 bg-slate-500/20 hover:bg-slate-200 duration-500 transition-all">
               Home
             </Link>
-            <Link href="/studio" className="p-4 bg-slate-500/20 hover:bg-slate-200 duration-500 transition-all">
+            {/* Route Needs to Be Dynamic */}
+            <Link href="/studio/1234" className="p-4 bg-slate-500/20 hover:bg-slate-200 duration-500 transition-all">
               Studios
             </Link>
             <Link href="/user" className="p-4 bg-slate-500/20 hover:bg-slate-200 duration-500 transition-all">
