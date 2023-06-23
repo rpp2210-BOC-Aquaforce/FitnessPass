@@ -36,17 +36,17 @@ export default function AddClass() {
   });
 
   // To be refactored to fetch studio locations on form load
-  const fetchStudioLocations = async () => {
-    const { data, error } = await supabase
-      .from('locations')
-      .select('location_id, name')
-      .eq('studio_id', '1');
-    if (error) {
-      // console.error(error);
-    } else {
-      // console.log('Fetch Data: ', data);
-    }
-  };
+  // const fetchStudioLocations = async () => {
+  //   const { data, error } = await supabase
+  //     .from('locations')
+  //     .select('location_id, name')
+  //     .eq('studio_id', '1');
+  //   if (error) {
+  //     // console.error(error);
+  //   } else {
+  //     // console.log('Fetch Data: ', data);
+  //   }
+  // };
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
@@ -59,7 +59,7 @@ export default function AddClass() {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const { data, error } = await supabase
+    const { error } = await supabase
       .from('classes')
       .insert([{
         location_id: 1,
