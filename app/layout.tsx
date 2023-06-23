@@ -11,14 +11,14 @@ export default function RootLayout({
       <body>
         <main>
           <nav>
-            <Link href="/" className="p-4 bg-slate-500/20 hover:bg-slate-200 duration-500 transition-all">
+            <Link href="/" className="p-4 bg-mint-orange hover:bg-solid-orange duration-500 transition-all">
               Home
             </Link>
             {/* Route Needs to Be Dynamic */}
-            <Link href="/studio/1234" className="p-4 bg-slate-500/20 hover:bg-slate-200 duration-500 transition-all">
+            <Link href="/studio/1234" className="p-4 bg-mint-orange hover:bg-solid-orange duration-500 transition-all">
               Studios
             </Link>
-            <Link href="/user" className="p-4 bg-slate-500/20 hover:bg-slate-200 duration-500 transition-all">
+            <Link href="/user" className="p-4 bg-mint-orange hover:bg-solid-orange duration-500 transition-all">
               Users
             </Link>
           </nav>
