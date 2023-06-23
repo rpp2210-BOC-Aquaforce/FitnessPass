@@ -1,11 +1,9 @@
-// eslint-disable-next-line import/extensions
-import Class from './class';
+'use client';
+
+// import Class from './class';
 import styles from './page.module.css';
 
 export default function StudioClasses() {
-  const classesArr = [];
-
-
   return (
     <div className={styles.locationList}>
       <h1 className={styles.header}>All Classes</h1>

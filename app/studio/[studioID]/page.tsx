@@ -22,7 +22,7 @@ export default function StudioPage() {
 
       <AddLocation />
       <Link href="/studio/1234/addclass"> Add A Class</Link>
-      <Link href="/studio/1234/metrics"> View Metrics (linked to '/studio/1234/metrics')</Link>
+      <Link href="/studio/1234/metrics"> View Metrics (linked to /studio/1234/metrics)</Link>
 
       <Link href="/studio/1234/view-classes"> View All Classes</Link>
       <Link href="/studio/1234/view-locations"> View All Locations</Link>
