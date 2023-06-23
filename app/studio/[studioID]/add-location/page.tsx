@@ -3,18 +3,26 @@
 import React, { useState, ChangeEvent, FormEvent } from 'react';
 import supabase from '../../../../lib/supabase';
 
+// NEEDS DYNAMIC STUDIO ID
 type FormData = {
   studioName: string;
-  location: string;
-  description: string;
+  street: string;
+  city: string;
+  state: string;
+  zip: string;
+  phone: string;
   photo: File | null;
 };
 
 function StudioLocationForm() {
+
   const [formData, setFormData] = useState<FormData>({
     studioName: '',
-    location: '',
-    description: '',
+    street: '',
+    city: '',
+    state: '',
+    zip: '',
+    phone: '',
     photo: null,
   });
 
@@ -36,26 +44,36 @@ function StudioLocationForm() {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const { data: newStudio, error } = await supabase
-      .from('locations')
-      .insert([
-        {
-          name: formData.studioName,
-          location: formData.location,
-          description: formData.description,
-        },
-      ]);
 
-    const { photo } = formData;
-
-    const { data, uploadError } = await supabase.storage.from('fitnesspass').upload('12345', photo);
-    if (error) {
-      console.error(uploadError);
-    } else {
-      console.log('success');
+    try {
+    // need to change to dynamic ID - cannot insert if studio_id is not in table
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { data: newStudio, error } = await supabase
+        .from('locations')
+        .insert([
+          {
+            studio_id: 1,
+            name: formData.studioName,
+            street: formData.street,
+            city: formData.city,
+            state: formData.state,
+            zip: formData.zip,
+            phone: formData.phone,
+            photo_url: null,
+          },
+        ]);
+      if (error) {
+        console.error('Supabase Error: ', error);
+      } else {
+        // Temporary Submit Routing for MVP
+        window.location.href = '/studio/1234/';
+      }
+    } catch (err) {
+      console.error('Unexpected error: ', err);
     }
 
-    //issues with policy access when uploading photo to bucket
+    // Photo Insert is stretch goal
+    // issues with policy access when uploading photo to bucket
     // need to have access to specific Studio ID
   };
 
@@ -71,23 +89,53 @@ function StudioLocationForm() {
           onChange={handleInputChange}
         />
       </label>
-      <label htmlFor="location" className="block mb-2">
-        Location:
+      <label htmlFor="street" className="block mb-2">
+        Street:
         <input
-          id="location"
+          id="street"
           type="text"
-          name="location"
-          value={formData.location}
+          name="street"
+          value={formData.street}
           onChange={handleInputChange}
         />
       </label>
-      <label htmlFor="description" className="block mb-2">
-        Description:
+      <label htmlFor="city" className="block mb-2">
+        City:
         <input
-          id="description"
+          id="city"
           type="text"
-          name="description"
-          value={formData.description}
+          name="city"
+          value={formData.city}
+          onChange={handleInputChange}
+        />
+      </label>
+      <label htmlFor="state" className="block mb-2">
+        State:
+        <input
+          id="state"
+          type="text"
+          name="state"
+          value={formData.state}
+          onChange={handleInputChange}
+        />
+      </label>
+      <label htmlFor="zip" className="block mb-2">
+        Zip Code:
+        <input
+          id="zip"
+          type="text"
+          name="zip"
+          value={formData.zip}
+          onChange={handleInputChange}
+        />
+      </label>
+      <label htmlFor="phone" className="block mb-2">
+        Phone Number:
+        <input
+          id="phone"
+          type="text"
+          name="phone"
+          value={formData.phone}
           onChange={handleInputChange}
         />
       </label>
