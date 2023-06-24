@@ -5,30 +5,41 @@
 
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { signOut, useSession, signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import classes from './auth-form.module.css';
 
 function AuthForm() {
   const [isLogin, setIsLogin] = useState(true);
-  const [signInMessage, setSignInMessage] = useState(false);
+  const [isStudio, setIsStudio] = useState(true);
+  const [signInMessage, setSignInMessage] = useState<string>('');
+  const [loadingMessage, setLoadingMessage] = useState('');
   const { data: session, status } = useSession();
   const router = useRouter();
 
-  // if (status === 'authenticated') {
-  //   router.push('/');
-  // }
+  // useEffect(() => {
+  //   if (status === 'loading') {
+  //     setLoadingMessage('please wait...');
+  //   }
+  // }, [status, session]);
 
   const emailInputRef = useRef<HTMLInputElement>(null);
   const passwordInputRef = useRef<HTMLInputElement>(null);
-
+  const firstNameInputRef = useRef<HTMLInputElement>(null);
+  const lastNameInputRef = useRef<HTMLInputElement>(null);
+  const phoneInputRef = useRef<HTMLInputElement>(null);
   // const entererdEmail = emailInputRef.current.value;
   // const entererdPassword = passwordInputRef.current.value;
 
   function switchAuthModeHandler() {
     setIsLogin((prevState) => !prevState);
+  }
+
+  function studioSwitchAuthModeHandler() {
+    setIsStudio((prevState) => !prevState);
   }
 
   // eslint-disable-next-line consistent-return
@@ -53,6 +64,8 @@ function AuthForm() {
 
   async function formSubmitHandler(event: { preventDefault: () => void; }) {
     event.preventDefault();
+    setSignInMessage('');
+    setLoadingMessage('Please wait while we handle your request...');
 
     const enteredEmail = emailInputRef.current?.value;
     const enteredPassword = passwordInputRef.current?.value;
@@ -63,14 +76,20 @@ function AuthForm() {
         email: enteredEmail,
         password: enteredPassword,
       });
+      setLoadingMessage('');
       // the second argument as a whole is received in [...nextauth].js
       // is the 'credentials' arg for authorize function
+      if (result && result.error) {
+        setSignInMessage(result.error);
+      }
+
       if (result && !result.error) {
         router.replace('/');
       }
     } else {
       try {
         const result = await createUser(enteredEmail, enteredPassword);
+        setLoadingMessage('');
       } catch (error) {
         console.log(error);
       }
@@ -79,15 +98,16 @@ function AuthForm() {
 
   return (
     <section className={classes.auth}>
-      <h1>{isLogin ? 'Member Login' : 'Sign Up'}</h1>
+      { !isStudio && <h1>{isLogin ? 'Member Login' : 'Member Sign Up'}</h1>}
+      { isStudio && <h1>{isLogin ? 'Studio Login' : 'Studio Sign Up'}</h1>}
       <form onSubmit={formSubmitHandler}>
         <div className={classes.control}>
           <label htmlFor="email">Your Email</label>
-          <input type="email" id="email" required ref={emailInputRef} />
+          <input type="email" id="email" required ref={emailInputRef} placeholder="Enter your email" />
         </div>
         <div className={classes.control}>
           <label htmlFor="password">Your Password</label>
-          <input type="password" id="password" required ref={passwordInputRef} />
+          <input type="password" id="password" required ref={passwordInputRef} placeholder="Enter your password (at least 7 characters)" />
         </div>
         <div className={classes.actions}>
           <button type="submit">{isLogin ? 'Login' : 'Create Account'}</button>
@@ -98,9 +118,29 @@ function AuthForm() {
           >
             {isLogin ? 'Create new account' : 'Login with existing account'}
           </button>
-          <p>Or sign up with</p>
-          <button type="button" onClick={() => signIn('google')}> Google </button>
-          {signInMessage && <p>{signInMessage}</p>}
+          <button
+            type="button"
+            className={classes.toggle}
+            onClick={studioSwitchAuthModeHandler}
+          >
+            {isStudio ? 'Switch to Member Login' : 'Switch to Studio Login'}
+          </button>
+          <div>
+            <button type="button" onClick={() => signIn('google')}>
+              <span>
+                Log in with Google
+              </span>
+            </button>
+          </div>
+          <div className={classes.message}>
+            {signInMessage && <p>{signInMessage}</p>}
+          </div>
+          <div className={classes.message}>
+            {loadingMessage !== '' ? <p>{loadingMessage}</p> : '' }
+          </div>
+          <Link href="/" className={classes.guest}>
+            Continue as Guest
+          </Link>
         </div>
       </form>
     </section>

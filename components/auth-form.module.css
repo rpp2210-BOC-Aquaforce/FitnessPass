@@ -14,7 +14,8 @@
   color: #FF9F1C;
   padding-bottom: 5rem;
   font-weight: bold;
-  size: 20rem;
+  size: 10rem;
+  font-size: 2rem;
 }
 
 .control {
@@ -57,11 +58,12 @@
 }
 
 .actions button:hover {
-  border-color: #FFFFFF#873abb;
+  border-color: #db0a0a;
 }
 
 .actions .toggle {
   margin-top: 1rem;
+  margin-bottom: 1rem;
   background-color: transparent;
   color: #2EC4B6;
   border: none;
@@ -72,3 +74,22 @@
   background-color: transparent;
   color: #2EC4B6;
 }
+
+.actions .message {
+  margin-top: 1rem;
+  background-color: transparent;
+  color: #da1818;
+  border: none;
+  padding: 0.15rem 1.5rem;
+}
+
+.actions .guest {
+  position: flex;
+  /* bottom: 20px;
+  right: 20px; */
+  font-size: 14px;
+  color: #FF9F1C;
+  text-decoration: none;
+}
+
+
