@@ -19,6 +19,7 @@ function AuthForm() {
   const [loadingMessage, setLoadingMessage] = useState('');
   const { data: session, status } = useSession();
   const router = useRouter();
+  const callbackUrl = `${process.env.NEXT_PUBLIC_URL}`;
 
   // useEffect(() => {
   //   if (status === 'loading') {
@@ -75,6 +76,7 @@ function AuthForm() {
         redirect: false,
         email: enteredEmail,
         password: enteredPassword,
+        callbackUrl,
       });
       setLoadingMessage('');
       // the second argument as a whole is received in [...nextauth].js
@@ -126,7 +128,7 @@ function AuthForm() {
             {isStudio ? 'Switch to Member Login' : 'Switch to Studio Login'}
           </button>
           <div>
-            <button type="button" onClick={() => signIn('google')}>
+            <button type="button" onClick={() => signIn('google', { callbackUrl })}>
               <span>
                 Log in with Google
               </span>

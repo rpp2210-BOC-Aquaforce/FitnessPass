@@ -10,14 +10,16 @@ export default function Nav() {
   const router = useRouter();
 
   useEffect(() => {
+    console.log(session);
     if (!session) {
-      router.replace('/');
+      router.replace('/login');
     }
   }, [session, router]);
 
-  const handleLogout = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleLogout = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    signOut();
+    await signOut();
+    router.push('/login');
   };
 
   const renderLink = (href: string, text: string) => (
@@ -29,8 +31,7 @@ export default function Nav() {
   return (
     <>
       <nav className="flex flex-wrap">
-        {renderLink('/', 'Home')}
-        {!session && renderLink('/auth', 'Log In')}
+        {!session && renderLink('/login', 'Log In')}
         {session && (
         <>
           {renderLink('/studio/1234', 'Studios')}
