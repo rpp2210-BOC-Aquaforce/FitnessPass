@@ -1,16 +1,22 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import React, { useState, ChangeEvent, FormEvent } from 'react';
+import React, {
+  useState,
+  useEffect,
+  ChangeEvent,
+  FormEvent,
+} from 'react';
 import supabase from '../../../../lib/supabase';
 
 // To-Do:
-// Refactor location to pull from existing studio locations
 // Refactor tags section to be more user-friendly
 // Handle UTC timezome consistency for class start time
 // Route based on studio id, not hard-coded studio id
+// Move all server code outside of this function
 
 type FormData = {
+  loc_id: string;
   location: string;
   class_name: string;
   class_description: string;
@@ -24,8 +30,10 @@ type FormData = {
 export default function AddClass() {
   const router = useRouter();
 
+  const [studioLocs, setStudioLocs] = useState([{ location_id: '', name: '' }]);
   const [formData, setFormData] = useState<FormData>({
-    location: '1',
+    loc_id: '',
+    location: '',
     class_name: '',
     class_description: '',
     class_date: '',
@@ -36,25 +44,42 @@ export default function AddClass() {
   });
 
   // To be refactored to fetch studio locations on form load
-  // const fetchStudioLocations = async () => {
-  //   const { data, error } = await supabase
-  //     .from('locations')
-  //     .select('location_id, name')
-  //     .eq('studio_id', '1');
-  //   if (error) {
-  //     // console.error(error);
-  //   } else {
-  //     // console.log('Fetch Data: ', data);
-  //   }
-  // };
+  const fetchStudioLocations = async () => {
+    const { data, error } = await supabase
+      .from('locations')
+      .select('location_id, name')
+      .eq('studio_id', '1');
+    if (error) {
+      console.error(error);
+    } else {
+      console.log('Fetch Data: ', data);
+      setStudioLocs(data);
+    }
+    console.log('Studio Locations: ', studioLocs);
+  };
 
-  const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  useEffect(() => {
+    fetchStudioLocations();
+  }, []);
+
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement |
+    HTMLSelectElement>) => {
     e.preventDefault();
     const { name, value } = e.target;
+    if (name === 'location') {
+      const target = e.target as HTMLSelectElement;
+      const index = target.selectedIndex;
+      const { id } = target.children[index];
+      setFormData((prevData) => ({
+        ...prevData,
+        loc_id: id,
+      }));
+    }
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
     }));
+    console.log('Form Data: ', formData);
   };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -62,7 +87,7 @@ export default function AddClass() {
     const { error } = await supabase
       .from('classes')
       .insert([{
-        location_id: 1,
+        location_id: Number(formData.loc_id),
         name: formData.class_name,
         description: formData.class_description,
         date: formData.class_date,
@@ -75,7 +100,7 @@ export default function AddClass() {
       }]);
 
     if (error) {
-      // console.error(error);
+      console.error(error);
       alert('Error adding class, please try again later!');
     } else {
       // console.log('Class successfully added!');
@@ -87,18 +112,20 @@ export default function AddClass() {
     <div className="flex flex-col content-start justify-center items-center py-4 gap-y-4">
       <h1 className="text-xl">Add Class</h1>
       <form onSubmit={handleSubmit} className="flex flex-col gap-y-2">
-        <label htmlFor="location">
-          Location:
-          <input
-            id="location"
-            type="text"
-            name="location"
-            placeholder="Location"
-            value={formData.location}
-            onChange={handleInputChange}
-            required
-          />
-        </label>
+        <select
+          id="location"
+          name="location"
+          value={formData.location}
+          onChange={handleInputChange}
+        >
+          <option value="" disabled>Location</option>
+          {studioLocs.map((loc) => {
+            const locId = loc.location_id;
+            return (
+              <option key={locId} id={locId}>{loc.name}</option>
+            );
+          })}
+        </select>
         <label htmlFor="class_name">
           Class Name:
           <input
@@ -166,6 +193,7 @@ export default function AddClass() {
             min="5"
             max="720"
             step="5"
+            placeholder="Duration (Mins)"
             value={formData.class_duration}
             onChange={handleInputChange}
             required
