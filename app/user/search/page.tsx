@@ -157,8 +157,8 @@ export default function Search() {
         {showCalendar ? <div><Calendar calendarType="US" minDate={new Date()} value={date} onChange={handleDate} /></div> : ''}
       </div>
       <div>
-        {searched && !map ? <List classes={Classes} setMap={setMap} />
-          : searched && map ? <Map center={myLocation} classes={Classes} setMap={setMap} />
+        {searched && map ? <Map center={myLocation} classes={Classes} setMap={setMap} />
+          : searched && !map ? <List classes={Classes} setMap={setMap} />
             : ''}
       </div>
     </div>
