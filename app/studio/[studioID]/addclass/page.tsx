@@ -43,7 +43,7 @@ export default function AddClass() {
     instructor: '',
   });
 
-  // To be refactored to fetch studio locations on form load
+  // To be refactored to fetch studio locations on form load (need studio id from auth)
   const fetchStudioLocations = async () => {
     const { data, error } = await supabase
       .from('locations')
@@ -52,12 +52,13 @@ export default function AddClass() {
     if (error) {
       console.error(error);
     } else {
-      console.log('Fetch Data: ', data);
+      // console.log('Fetch Data: ', data);
       setStudioLocs(data);
     }
     console.log('Studio Locations: ', studioLocs);
   };
 
+  // [] to be refactored to include change of studio id (need studio id from auth)
   useEffect(() => {
     fetchStudioLocations();
   }, []);
@@ -221,6 +222,7 @@ export default function AddClass() {
             id="class_tags"
             type="text"
             name="class_tags"
+            placeholder="Tags"
             value={formData.class_tags}
             onChange={handleInputChange}
             className="shadow appearance-none border rounded-sm border-teal-300 w-full py-2 px-3 text-gray-800 leading-tight focus:outline-none focus:shadow-outline"
