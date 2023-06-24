@@ -44,6 +44,7 @@ export default function AddClass() {
   });
 
   // To be refactored to fetch studio locations on form load (need studio id from auth)
+  // To be refactored -- if no studio locations, give curtosey message to add studio location
   const fetchStudioLocations = async () => {
     const { data, error } = await supabase
       .from('locations')
@@ -55,7 +56,7 @@ export default function AddClass() {
       // console.log('Fetch Data: ', data);
       setStudioLocs(data);
     }
-    console.log('Studio Locations: ', studioLocs);
+    // console.log('Studio Locations: ', studioLocs);
   };
 
   // [] to be refactored to include change of studio id (need studio id from auth)
@@ -80,7 +81,7 @@ export default function AddClass() {
       ...prevData,
       [name]: value,
     }));
-    console.log('Form Data: ', formData);
+    // console.log('Form Data: ', formData);
   };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -101,7 +102,7 @@ export default function AddClass() {
       }]);
 
     if (error) {
-      console.error(error);
+      // console.error(error);
       alert('Error adding class, please try again later!');
     } else {
       // console.log('Class successfully added!');
