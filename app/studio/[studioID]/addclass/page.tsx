@@ -49,7 +49,7 @@ export default function AddClass() {
     const { data, error } = await supabase
       .from('locations')
       .select('location_id, name')
-      .eq('studio_id', '1');
+      .eq('studio_id', '2');
     if (error) {
       console.error(error);
     } else {
