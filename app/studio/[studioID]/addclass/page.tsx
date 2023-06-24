@@ -1,17 +1,22 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import React, { useState, useEffect, ChangeEvent, FormEvent } from 'react';
+import React, {
+  useState,
+  useEffect,
+  ChangeEvent,
+  FormEvent,
+} from 'react';
 import supabase from '../../../../lib/supabase';
 
 // To-Do:
-// Refactor location to pull from existing studio locations
 // Refactor tags section to be more user-friendly
 // Handle UTC timezome consistency for class start time
 // Route based on studio id, not hard-coded studio id
+// Move all server code outside of this function
 
 type FormData = {
-  location_id: number;
+  loc_id: string;
   location: string;
   class_name: string;
   class_description: string;
@@ -25,9 +30,9 @@ type FormData = {
 export default function AddClass() {
   const router = useRouter();
 
-  const [studioLocations, setStudioLocations] = useState([{ location_id: 0, name: '' }]);
+  const [studioLocs, setStudioLocs] = useState([{ location_id: '', name: '' }]);
   const [formData, setFormData] = useState<FormData>({
-    location_id: 0,
+    loc_id: '',
     location: '',
     class_name: '',
     class_description: '',
@@ -48,9 +53,9 @@ export default function AddClass() {
       console.error(error);
     } else {
       console.log('Fetch Data: ', data);
-      setStudioLocations(data);
+      setStudioLocs(data);
     }
-    console.log('Studio Locations: ', studioLocations);
+    console.log('Studio Locations: ', studioLocs);
   };
 
   useEffect(() => {
@@ -67,7 +72,7 @@ export default function AddClass() {
       const { id } = target.children[index];
       setFormData((prevData) => ({
         ...prevData,
-        location_id: Number(id),
+        loc_id: id,
       }));
     }
     setFormData((prevData) => ({
@@ -82,7 +87,7 @@ export default function AddClass() {
     const { error } = await supabase
       .from('classes')
       .insert([{
-        location_id: 1,
+        location_id: Number(formData.loc_id),
         name: formData.class_name,
         description: formData.class_description,
         date: formData.class_date,
@@ -95,7 +100,7 @@ export default function AddClass() {
       }]);
 
     if (error) {
-      // console.error(error);
+      console.error(error);
       alert('Error adding class, please try again later!');
     } else {
       // console.log('Class successfully added!');
@@ -114,22 +119,13 @@ export default function AddClass() {
           onChange={handleInputChange}
         >
           <option value="" disabled>Location</option>
-          {studioLocations.map((loc) =>
-            <option key={loc.location_id} id={loc.location_id}>{loc.name}</option>
-          )}
+          {studioLocs.map((loc) => {
+            const locId = loc.location_id;
+            return (
+              <option key={locId} id={locId}>{loc.name}</option>
+            );
+          })}
         </select>
-        {/* <label htmlFor="location">
-          Location:
-          <input
-            id="location"
-            type="text"
-            name="location"
-            placeholder="Location"
-            value={formData.location}
-            onChange={handleInputChange}
-            required
-          />
-        </label> */}
         <label htmlFor="class_name">
           Class Name:
           <input
