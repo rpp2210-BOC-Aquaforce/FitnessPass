@@ -110,7 +110,7 @@ export default function AddClass() {
 
   return (
     <div className="flex flex-col content-start justify-center items-center py-4 gap-y-4">
-      <h1 className="text-xl">Add Class</h1>
+      <h1 className="mt-4 text-3xl text-orange-500 font-semibold tracking-wider">Add Class</h1>
       <form onSubmit={handleSubmit} className="flex flex-col gap-y-2">
         <label htmlFor="location">
           Location:
@@ -132,7 +132,7 @@ export default function AddClass() {
               })}
             </select>
             <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-              <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+              <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" /></svg>
             </div>
           </div>
         </label>
@@ -227,9 +227,20 @@ export default function AddClass() {
             required
           />
         </label>
-        <button type="submit">Add Class</button>
+        <button
+          type="submit"
+          className="mt-6 bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+        >
+          Add Class
+        </button>
       </form>
-      <button type="submit" onClick={() => router.push('/studio/1234')}>Cancel</button>
+      <button
+        type="submit"
+        onClick={() => router.push('/studio/1234')}
+        className="inline-block align-baseline font-bold text-sm text-orange-500 hover:text-orange-600"
+      >
+        Cancel
+      </button>
     </div>
   );
 }
