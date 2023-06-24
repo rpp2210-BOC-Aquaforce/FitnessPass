@@ -110,63 +110,51 @@ export default function Ratings() {
 
   return (
     <div className="text-2xl">
-      <div className="flex flex-row justify-end text-2xl md:w-1/3 text-2xl mt-5">
-        <Link href="/user/123/profile"> My Profile</Link>
+      <div className="flex justify-end md:w-1/3 mt-5">
+        <Link href="/user/123/profile">My Profile</Link>
       </div>
-      <h1 className="relative sm:inset-x-20 inset-y-4 text-5xl">My Ratings</h1>
+      <h1 className="relative m:inset-x-20 inset-y-4 text-5xl">My Ratings</h1>
       <div className="relative sm:inset-10 md:w-1/3">
-        <div className="inline-block">
-          <label htmlFor="form">
+        <div>
+          <label htmlFor="form" className="block mb-4">
             Rate this class:
-            <div className="bg-white">
-              Class Name:
-              {' '}
-              {classList.name}
-              <br />
-              Class Description:
-              {' '}
-              {classList.description}
-              <br />
-              Class Date:
-              {' '}
-              {classList.date}
-              <br />
-              Instructor:
-              {' '}
-              {classList.instructor}
-              <br />
+            <div className="bg-white p-4 mb-4">
+              <p className="font-bold">Class Name:</p>
+              <p>{classList.name}</p>
+              <p className="font-bold">Class Description:</p>
+              <p>{classList.description}</p>
+              <p className="font-bold">Class Date:</p>
+              <p>{classList.date}</p>
+              <p className="font-bold">Instructor:</p>
+              <p>{classList.instructor}</p>
             </div>
-            <form>
-              <label htmlFor="rating">
-                1
-                <input name="rating" type="radio" value="1" onChange={onChange} />
-              </label>
-              <label htmlFor="rating">
-                2
-                <input name="rating" type="radio" value="2" onChange={onChange} />
-              </label>
-              <label htmlFor="rating">
-                3
-                <input name="rating" type="radio" value="3" onChange={onChange} />
-              </label>
-              <label htmlFor="rating">
-                4
-                <input name="rating" type="radio" value="4" onChange={onChange} />
-              </label>
-              <label htmlFor="rating">
-                5
-                <input name="rating" type="radio" value="5" onChange={onChange} />
-              </label>
-              <button type="button" className="ml-5 rounded-lg border-black border-2">Submit</button>
-            </form>
           </label>
+          <form>
+            <div className="flex mb-4">
+              {[1, 2, 3, 4, 5].map((value) => (
+                <label htmlFor={`rating-${value}`} key={value} className="flex items-center mr-4">
+                  {value}
+                  <input
+                    name="rating"
+                    id={`rating-${value}`}
+                    type="radio"
+                    value={value}
+                    onChange={onChange}
+                    className="ml-1"
+                  />
+                </label>
+              ))}
+            </div>
+            <button type="button" className="ml-5 rounded-lg border border-black py-2 px-4">
+              Submit
+            </button>
+          </form>
         </div>
-        <br />
       </div>
       <div className="relative sm:inset-10 flex sm:place-content-between md:w-1/3">
-        <Link href="/user/123/favorites"> My Schedule</Link>
-        <Link href="/user/123/classes"> Classes</Link>
-        <Link href="/user/123/favorites"> My Favorites</Link>
+        <Link href="/user/123/favorites">My Schedule</Link>
+        <Link href="/user/123/classes">Classes</Link>
+        <Link href="/user/123/favorites">My Favorites</Link>
       </div>
     </div>
   );
