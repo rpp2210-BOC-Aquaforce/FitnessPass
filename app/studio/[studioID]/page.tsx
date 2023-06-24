@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/extensions
 import Image from 'next/image';
 import Link from 'next/link';
 import AddLocation from '../../../components/AddLocation';
