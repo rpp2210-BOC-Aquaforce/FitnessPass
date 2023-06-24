@@ -1,15 +1,17 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, {
+  useState, useEffect, useRef, useCallback,
+} from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/free-mode';
 import 'swiper/css/pagination';
 import {
-  format, addDays, startOfWeek, isSameDay,
+  format, addDays, startOfWeek, isSameDay, differenceInWeeks,
 } from 'date-fns';
 import { FitnessClasses } from './FitnessClasses';
-import { UserClasses, UserClass } from '../types';
+import { UserClass } from '../types';
 
 const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const parseLocalDate = (dateString: string) => {
@@ -78,13 +80,42 @@ const renderWeekSlides = (
   return weeks;
 };
 
-export default function ScheduleView({ userClasses }: UserClasses) {
-  const [activeSlide, setActiveSlide] = useState(26);
+const getNextScheduledClass = (userClasses: UserClass[]) => {
+  const currentDate = new Date();
+  for (let i = 0; i < userClasses.length; i += 1) {
+    const classDate = parseLocalDate(userClasses[i].classes.date);
+    if (classDate >= currentDate) {
+      return classDate;
+    }
+  }
+  return currentDate; // return current date if no future classes found
+};
+
+type ScheduleViewProps = {
+  userClasses: UserClass[];
+  setUserClasses: React.Dispatch<React.SetStateAction<UserClass[]>>;
+}
+
+export default function ScheduleView({ userClasses, setUserClasses }: ScheduleViewProps) {
+  const [activeSlide, setActiveSlide] = useState<number>(26);
   const [activeDay, setActiveDay] = useState<Date>(new Date());
+  const [viewAll, setViewAll] = useState<boolean>(false);
+  const swiperRef = useRef<any>(null);
+
+  const gotoClassDate = useCallback((date: Date) => {
+    const initialSlideIndex = 26 + differenceInWeeks(date, new Date()) + 1;
+    setActiveSlide(initialSlideIndex);
+    swiperRef.current.swiper.slideTo(initialSlideIndex, 250);
+    setActiveDay(date);
+  }, []);
 
   useEffect(() => {
-    setActiveDay(new Date());
-  }, []);
+    if (viewAll) {
+      return;
+    }
+    const nextScheduledClass = getNextScheduledClass(userClasses);
+    gotoClassDate(nextScheduledClass);
+  }, [userClasses, viewAll, gotoClassDate]);
 
   const weekDifference = activeSlide - 26;
   const plural = activeSlide === 27 || activeSlide === 25 ? '' : 's';
@@ -108,13 +139,21 @@ export default function ScheduleView({ userClasses }: UserClasses) {
     <div className="flex flex-col items-start p-2 mt-2 bg-white shadow-md rounded-lg w-full min-h-[148px] h-full">
       <div className="flex w-full justify-between">
         <h2 className="text-sm font-bold mb-5 p-2">{weekTitle}</h2>
-        <span className="text-sm font-semibold mb-5 p-2">View Calendar</span>
+        <button
+          type="button"
+          className="text-sm font-semibold mb-5 p-2"
+          onClick={() => setViewAll((prev) => !prev)}
+        >
+          {viewAll ? 'View by Date' : 'View All'}
+
+        </button>
       </div>
       <Swiper
         initialSlide={26} // Start from the current week
         slidesPerView={1}
         spaceBetween={16}
         freeMode
+        ref={swiperRef}
         pagination={{
           clickable: true,
         }}
@@ -128,7 +167,7 @@ export default function ScheduleView({ userClasses }: UserClasses) {
         {renderWeekSlides(52, activeDay, setActiveDay, scheduledDates)}
         {' '}
         {/* Display 52 weeks */}
-        <FitnessClasses userClasses={classesForActiveDay} />
+        <FitnessClasses userClasses={viewAll ? userClasses : classesForActiveDay} />
       </Swiper>
     </div>
   );

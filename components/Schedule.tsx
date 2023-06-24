@@ -34,6 +34,6 @@ export default function Schedule() {
   }, []);
 
   return (
-    <ScheduleView userClasses={userClasses} />
+    <ScheduleView userClasses={userClasses} setUserClasses={setUserClasses} />
   );
 }
