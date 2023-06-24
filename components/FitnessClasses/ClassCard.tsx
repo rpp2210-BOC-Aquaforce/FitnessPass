@@ -43,7 +43,7 @@ export default function ClassCard({ userClass }: { userClass: UserClass }) {
           <div className="w-2 h-2 bg-gray-400" />
           <div className="w-2 h-2 bg-gray-400" />
         </div>
-        <button type="button" className="text-center text-white text-xs font-black uppercase tracking-wide rounded-md bg-mint-orange px-2 py-1 mt-2">Sign Up</button>
+        <button type="button" className="text-center text-white text-xs font-black uppercase tracking-wide rounded-md bg-mint-orange px-2 py-1 mt-2">Edit</button>
         <button type="button" className="text-center text-white text-xs font-black uppercase tracking-wide rounded-md bg-red-300 px-2 py-1 mt-2">Remove</button>
       </div>
     </div>

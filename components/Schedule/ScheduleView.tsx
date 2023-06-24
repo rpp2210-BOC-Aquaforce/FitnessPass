@@ -10,8 +10,8 @@ import 'swiper/css/pagination';
 import {
   format, addDays, startOfWeek, isSameDay, differenceInWeeks,
 } from 'date-fns';
-import { FitnessClasses } from './FitnessClasses';
-import { UserClass } from '../types';
+import { FitnessClasses } from '../FitnessClasses';
+import { UserClass } from '../../types';
 
 const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const parseLocalDate = (dateString: string) => {
@@ -93,10 +93,11 @@ const getNextScheduledClass = (userClasses: UserClass[]) => {
 
 type ScheduleViewProps = {
   userClasses: UserClass[];
-  setUserClasses: React.Dispatch<React.SetStateAction<UserClass[]>>;
+  // setUserClasses: React.Dispatch<React.SetStateAction<UserClass[]>>;
 }
 
-export default function ScheduleView({ userClasses, setUserClasses }: ScheduleViewProps) {
+// export default function ScheduleView({ userClasses, setUserClasses }: ScheduleViewProps) {
+export default function ScheduleView({ userClasses }: ScheduleViewProps) {
   const [activeSlide, setActiveSlide] = useState<number>(26);
   const [activeDay, setActiveDay] = useState<Date>(new Date());
   const [viewAll, setViewAll] = useState<boolean>(false);

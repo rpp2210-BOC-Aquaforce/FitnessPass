@@ -1,11 +1,11 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import supabase from '../lib/supabase';
-import { UserClass } from '../types';
+import supabase from '../../lib/supabase';
+import { UserClass } from '../../types';
 import ScheduleView from './ScheduleView';
 
-export default function Schedule() {
+export default function Schedule({ userId }: { userId: number}) {
   const [userClasses, setUserClasses] = useState<UserClass[]>([]);
   const getClasses = async () => {
     try {
@@ -15,7 +15,7 @@ export default function Schedule() {
           *,
           classes(*,locations(*))
         `)
-        .eq('user_id', 1);
+        .eq('user_id', userId);
 
       if (error) {
         throw error;
@@ -34,6 +34,7 @@ export default function Schedule() {
   }, []);
 
   return (
-    <ScheduleView userClasses={userClasses} setUserClasses={setUserClasses} />
+    // <ScheduleView userClasses={userClasses} setUserClasses={setUserClasses} />
+    <ScheduleView userClasses={userClasses} />
   );
 }

@@ -18,8 +18,8 @@ export default function RootLayout({
             <Link href="/studio/1234" className="p-4 bg-mint-orange hover:bg-solid-orange duration-500 transition-all">
               Studios
             </Link>
-            <Link href="/user" className="p-4 bg-mint-orange hover:bg-solid-orange duration-500 transition-all">
-              Users
+            <Link href="/user/1/profile" className="p-4 bg-mint-orange hover:bg-solid-orange duration-500 transition-all">
+              My Profile (user)
             </Link>
           </nav>
           {children}

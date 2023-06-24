@@ -129,10 +129,10 @@ export default function UserProfile() {
         Next bill due in 30 days!
       </div>
       <div className="relative sm:inset-10 flex sm:place-content-between md:w-1/3">
-        {/* <Link href="/user/123/favorites"> My Schedule</Link>
-        <Link href="/user/123/classes"> Classes</Link> */}
-        <Link href="/user/123/favorites"> My Favorites</Link>
-        <Link href="/user/123/ratings"> My Ratings</Link>
+        {/* <Link href="/user/1/favorites"> My Schedule</Link>
+        <Link href="/user/1/classes"> Classes</Link> */}
+        <Link href="/user/1/favorites"> My Favorites</Link>
+        <Link href="/user/1/ratings"> My Ratings</Link>
 
       </div>
     </div>

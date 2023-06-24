@@ -1,2 +1,3 @@
 export { default as Ping } from './Ping';
-export { default as Schedule } from './Schedule';
+export * from './Schedule';
+export * from './FitnessClasses';
