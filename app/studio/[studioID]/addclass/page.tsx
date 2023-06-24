@@ -112,20 +112,30 @@ export default function AddClass() {
     <div className="flex flex-col content-start justify-center items-center py-4 gap-y-4">
       <h1 className="text-xl">Add Class</h1>
       <form onSubmit={handleSubmit} className="flex flex-col gap-y-2">
-        <select
-          id="location"
-          name="location"
-          value={formData.location}
-          onChange={handleInputChange}
-        >
-          <option value="" disabled>Location</option>
-          {studioLocs.map((loc) => {
-            const locId = loc.location_id;
-            return (
-              <option key={locId} id={locId}>{loc.name}</option>
-            );
-          })}
-        </select>
+        <label htmlFor="location">
+          Location:
+          <div className="relative">
+            <select
+              id="location"
+              name="location"
+              value={formData.location}
+              onChange={handleInputChange}
+              className="shadow appearance-none border rounded-sm border-teal-300 w-full py-2 px-3 text-gray-800 leading-tight focus:outline-none focus:shadow-outline"
+              required
+            >
+              <option value="" disabled>Please Select Location</option>
+              {studioLocs.map((loc) => {
+                const locId = loc.location_id;
+                return (
+                  <option key={locId} id={locId}>{loc.name}</option>
+                );
+              })}
+            </select>
+            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+              <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+            </div>
+          </div>
+        </label>
         <label htmlFor="class_name">
           Class Name:
           <input
@@ -135,6 +145,7 @@ export default function AddClass() {
             placeholder="Class Name"
             value={formData.class_name}
             onChange={handleInputChange}
+            className="shadow appearance-none border rounded-sm border-teal-300 w-full py-2 px-3 text-gray-800 leading-tight focus:outline-none focus:shadow-outline"
             required
           />
         </label>
@@ -147,6 +158,7 @@ export default function AddClass() {
             placeholder="Class Description"
             value={formData.class_description}
             onChange={handleInputChange}
+            className="shadow appearance-none border rounded-sm border-teal-300 w-full py-2 px-3 text-gray-800 leading-tight focus:outline-none focus:shadow-outline"
             required
           />
         </label>
@@ -159,6 +171,7 @@ export default function AddClass() {
             placeholder="Instructor"
             value={formData.instructor}
             onChange={handleInputChange}
+            className="shadow appearance-none border rounded-sm border-teal-300 w-full py-2 px-3 text-gray-800 leading-tight focus:outline-none focus:shadow-outline"
             required
           />
         </label>
@@ -170,6 +183,7 @@ export default function AddClass() {
             name="class_date"
             value={formData.class_date}
             onChange={handleInputChange}
+            className="shadow appearance-none border rounded-sm border-teal-300 w-full py-2 px-3 text-gray-800 leading-tight focus:outline-none focus:shadow-outline"
             required
           />
         </label>
@@ -181,6 +195,7 @@ export default function AddClass() {
             name="class_start"
             value={formData.class_start}
             onChange={handleInputChange}
+            className="shadow appearance-none border rounded-sm border-teal-300 w-full py-2 px-3 text-gray-800 leading-tight focus:outline-none focus:shadow-outline"
             required
           />
         </label>
@@ -196,6 +211,7 @@ export default function AddClass() {
             placeholder="Duration (Mins)"
             value={formData.class_duration}
             onChange={handleInputChange}
+            className="shadow appearance-none border rounded-sm border-teal-300 w-full py-2 px-3 text-gray-800 leading-tight focus:outline-none focus:shadow-outline"
             required
           />
         </label>
@@ -207,6 +223,7 @@ export default function AddClass() {
             name="class_tags"
             value={formData.class_tags}
             onChange={handleInputChange}
+            className="shadow appearance-none border rounded-sm border-teal-300 w-full py-2 px-3 text-gray-800 leading-tight focus:outline-none focus:shadow-outline"
             required
           />
         </label>
