@@ -26,7 +26,6 @@ export default NextAuth({
         if (!credentials) {
           throw new Error('Missing credentials!');
         }
-        console.log(credentials);
         const userEmail = credentials.email;
         const { data: users, error }: { data: User[] | null; error: any } = await supabase
           .from('users')
