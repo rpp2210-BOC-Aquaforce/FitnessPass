@@ -21,29 +21,31 @@ export default function Nav() {
   };
 
   const renderLink = (href: string, text: string) => (
-    <Link href={href} className="p-4 bg-slate-500/20 hover:bg-slate-200 duration-500 transition-all">
+    <Link href={href} className="p-4 bg-mint-orange hover:bg-solid-orange duration-500 transition-all">
       {text}
     </Link>
   );
 
   return (
-    <nav>
-      {session?.user && <p>{`Welcome! ${session.user.email}`}</p>}
-      {renderLink('/', 'Home')}
-      {!session && renderLink('/auth', 'SignIn')}
-      {session && (
+    <>
+      <nav className="flex flex-wrap">
+        {renderLink('/', 'Home')}
+        {!session && renderLink('/auth', 'Log In')}
+        {session && (
         <>
-          {renderLink('/studio', 'Studios')}
-          {renderLink('/user', 'Users')}
+          {renderLink('/studio/1234', 'Studios')}
+          {renderLink('/user/1/profile', 'My Profile (user)')}
           <button
             type="button"
             onClick={handleLogout}
-            className="p-4 bg-slate-500/20 hover:bg-slate-200 duration-500 transition-all"
+            className="flex p-4 h-auto w-auto bg-seafoam/20 hover:bg-solid-orange duration-500 transition-all"
           >
             Logout
           </button>
         </>
-      )}
-    </nav>
+        )}
+      </nav>
+      {session?.user && <p>{`Welcome ${session.user.email}!`}</p>}
+    </>
   );
 }
