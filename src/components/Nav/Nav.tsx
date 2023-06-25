@@ -3,18 +3,10 @@
 import Link from 'next/link';
 import { useSession, signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
 
 export default function Nav() {
   const { data: session } = useSession();
   const router = useRouter();
-
-  useEffect(() => {
-    console.log(session);
-    if (!session) {
-      router.replace('/login');
-    }
-  }, [session, router]);
 
   const handleLogout = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
