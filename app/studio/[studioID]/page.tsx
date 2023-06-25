@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import AddLocation from '../../../components/AddLocation';
+import AddLocation from '@/components/AddLocation';
 import styles from './page.module.css';
 
 export default function StudioPage() {

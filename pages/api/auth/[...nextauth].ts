@@ -1,8 +1,8 @@
 import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import GoogleProvider from 'next-auth/providers/google';
-import { checkPassword } from '../../../lib/auth';
-import supabase from '../../../lib/supabase';
+import { checkPassword } from '@/lib/auth';
+import supabase from '@/lib/supabase';
 
 interface User {
   user_id: string;

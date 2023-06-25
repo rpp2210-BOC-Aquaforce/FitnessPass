@@ -1,4 +1,4 @@
-import { Schedule } from '../../../../components/index';
+import { Schedule } from '@/components/index';
 
 export default function Page({ params }: { params: { userID: string }}) {
   return (

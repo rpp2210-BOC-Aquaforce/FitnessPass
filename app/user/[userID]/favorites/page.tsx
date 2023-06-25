@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 
-import MyFavorites from '../../../../components/MyFavorites';
+import MyFavorites from '@/components/MyFavorites';
 
 export default async function Favorites() {
   return (
