@@ -2,16 +2,13 @@
 
 import Link from 'next/link';
 import { useSession, signOut } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
 
 export default function Nav() {
   const { data: session } = useSession();
-  const router = useRouter();
 
   const handleLogout = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    await signOut();
-    router.push('/login');
+    signOut({ callbackUrl: `${process.env.NEXT_PUBLIC_URL}/login` });
   };
 
   const renderLink = (href: string, text: string) => (

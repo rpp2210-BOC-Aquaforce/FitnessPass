@@ -1,9 +1,17 @@
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib/auth';
+import { redirect } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 import AddLocation from '@/components/AddLocation';
 import styles from './page.module.css';
 
-export default function StudioPage() {
+export default async function StudioPage() {
+  const session = await getServerSession(authOptions);
+  if (!session) {
+    redirect('/login');
+  }
+
   return (
     <main className="flex flex-col items-center justify-center min-h-screen">
       <p className="text-3xl font-bold mb-4">

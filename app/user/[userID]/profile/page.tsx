@@ -1,10 +1,19 @@
 'use client';
 
+import { redirect } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import supabase from '../../../../lib/supabase';
+import { supabase } from '@/lib';
 
 export default function UserProfile() {
+  useSession({
+    required: true,
+    onUnauthenticated() {
+      redirect('/login');
+    },
+  });
+
   interface User {
    age: number,
    city: string,

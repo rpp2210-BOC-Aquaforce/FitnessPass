@@ -1,10 +1,19 @@
 'use client';
 
+import { redirect } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
-import supabase from '../../../../lib/supabase';
+import { supabase } from '@/lib';
 
 export default function Ratings() {
+  useSession({
+    required: true,
+    onUnauthenticated() {
+      redirect('/login');
+    },
+  });
+
   interface ClassList {
     class_id: number,
     location_id: number,

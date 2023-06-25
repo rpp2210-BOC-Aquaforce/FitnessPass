@@ -1,6 +1,6 @@
 import './globals.css';
-import NextAuthProvider from './providers/AuthProvider';
 import { Nav } from '@/components';
+import NextAuthProvider from './providers/AuthProvider';
 
 export default function RootLayout({
   children,

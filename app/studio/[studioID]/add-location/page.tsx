@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, ChangeEvent, FormEvent } from 'react';
-import supabase from '../../../../lib/supabase';
+import { supabase } from '@/lib';
 
 // NEEDS DYNAMIC STUDIO ID
 type FormData = {

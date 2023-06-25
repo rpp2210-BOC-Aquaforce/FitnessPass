@@ -1,8 +1,8 @@
 /* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-shadow */
-import { hashPassword } from '../../lib/auth';
-import supabase from '../../lib/supabase';
+import { hashPassword } from '@/lib/auth';
+import supabase from '@/lib/supabase';
 
 async function handler(
   req: { method: string; body: any; },

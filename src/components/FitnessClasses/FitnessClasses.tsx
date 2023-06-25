@@ -1,4 +1,4 @@
-import { UserClasses } from '@/types';
+import { UserClasses } from '@/lib/types';
 import ClassCard from './ClassCard';
 
 export default function FitnessClasses({ userClasses }: UserClasses) {
