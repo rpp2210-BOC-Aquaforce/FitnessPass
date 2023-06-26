@@ -43,15 +43,15 @@ interface MapProps {
 export default function Map({ center, classes, setList }: MapProps) {
   const [activeMarker, setActiveMarker] = useState<number | null>(null);
   const [markers, setMarkers] = useState<marker[]>([]);
+  const apiKey: string | undefined = process.env.GOOGLE_MAPS_API_KEY as string;
 
   const { isLoaded } = useLoadScript({
-    googleMapsApiKey: 'AIzaSyAxLZBfmUBWLcaK0WibtdtCWlmPvuB0Aws',
+    googleMapsApiKey: apiKey,
   });
 
-  Geocode.setApiKey('AIzaSyAxLZBfmUBWLcaK0WibtdtCWlmPvuB0Aws');
+  Geocode.setApiKey(apiKey);
 
   const mapInstanceRef = useRef<google.maps.Map | null>(null);
-
   if (isLoaded && mapInstanceRef.current && markers.length > 0) {
     const bounds = new google.maps.LatLngBounds();
     if (center) {
@@ -62,17 +62,6 @@ export default function Map({ center, classes, setList }: MapProps) {
     });
     mapInstanceRef.current.fitBounds(bounds);
   }
-
-  // const handleOnLoad = (map:google.maps.Map) => {
-  //   const bounds = new google.maps.LatLngBounds();
-  //   markers.forEach(({ position }) => {
-  //     bounds.extend(position);
-  //   });
-  //   if (center) {
-  //     bounds.extend(center);
-  //   }
-  //   map.fitBounds(bounds);
-  // };
 
   useEffect(() => {
     if (Array.isArray(classes)) {
@@ -134,7 +123,6 @@ export default function Map({ center, classes, setList }: MapProps) {
         <GoogleMap
           onLoad={(map) => {
             mapInstanceRef.current = map;
-            // handleOnLoad(map);
           }}
           mapContainerStyle={{ width: '100vw', height: '80vh' }}
         >

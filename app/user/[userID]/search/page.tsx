@@ -6,9 +6,10 @@ import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import Geocode from 'react-geocode';
 import moment from 'moment';
-import supabase from '../../../lib/supabase';
+import supabase from '../../../../lib/supabase';
 
-import { Map, List } from '../../../components/index';
+import Map from '../../../../components/Map';
+import List from '../../../../components/List';
 
 type LatLngLiteral = google.maps.LatLngLiteral;
 type ValuePiece = Date | null;

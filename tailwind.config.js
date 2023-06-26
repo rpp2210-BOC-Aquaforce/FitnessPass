@@ -8,10 +8,15 @@ module.exports = {
   ],
   theme: {
     extend: {
+      colors: {
+        'solid-orange': '#FF9F1C',
+        'mint-orange': '#FFBF69',
+        'mint-seafoam': '#CBF3F0',
+        seafoam: '#2EC4B6',
+      },
       backgroundImage: {
-        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-conic':
-          'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+        'gradient-radial': 'radial-gradient(circle at center, #CBF3F0, #2EC4B6, #FFFFFF)',
+        'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, #CBF3F0, #2EC4B6, #FFFFFF)',
       },
     },
   },
