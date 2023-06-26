@@ -1,6 +1,3 @@
-/* eslint-disable no-console */
-/* eslint-disable camelcase */
-
 'use client';
 
 import { useEffect, useState } from 'react';
@@ -9,12 +6,9 @@ import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import Geocode from 'react-geocode';
 import moment from 'moment';
-import dotenv from 'dotenv';
 import supabase from '../../../lib/supabase';
 
 import { Map, List } from '../../../components/index';
-
-dotenv.config();
 
 type LatLngLiteral = google.maps.LatLngLiteral;
 type ValuePiece = Date | null;
@@ -69,10 +63,8 @@ export default function Search() {
                 }
               }
             },
-            (error) => {
-              console.error(error);
-            },
-          );
+          )
+          .catch((error) => error);
       });
     }
   }, []);
@@ -104,18 +96,19 @@ export default function Search() {
     setList(true);
     const zipRegex = /^[0-9]{5}(?:-[0-9]{4})?$/;
     if (zipRegex.test(searchByLocation)) {
-      const { data: locations, error } = await supabase
-        .from('locations')
-        .select('*')
-        .ilike('zip', searchByLocation);
-      if (error) {
-        console.error('supabase error', error);
-      } else {
-        locations.forEach(async ({ location_id } : { location_id: number }) => {
+      try {
+        const { data: locations, error } = await supabase
+          .from('locations')
+          .select('*')
+          .ilike('zip', searchByLocation);
+        if (error) {
+          return error;
+        }
+        locations.forEach(async (location) => {
           const { data: classes } = await supabase
             .from('classes')
             .select('*, locations(*)')
-            .eq('location_id', location_id)
+            .eq('location_id', location.location_id)
             .eq('date', searchByDate);
           if (classes) {
             classes.forEach(({ Class }: {Class: CLASS}) => {
@@ -125,31 +118,37 @@ export default function Search() {
             });
           }
         });
+      } catch (err) {
+        return null;
       }
-    } else {
+      return null;
+    }
+    try {
       const { data: locations, error } = await supabase
         .from('locations')
         .select('*')
         .ilike('city', searchByLocation);
       if (error) {
-        console.error('supabase error', error);
-      } else {
-        locations.forEach(async ({ location_id } : { location_id: number }) => {
-          const { data: classes } = await supabase
-            .from('classes')
-            .select('*, locations(*)')
-            .eq('location_id', location_id)
-            .eq('date', searchByDate);
-          if (classes) {
-            classes.forEach((Class) => {
-              if (!searchByClass || (searchByClass && Class.name === searchByClass)) {
-                setClasses((prevClasses) => [...prevClasses, Class]);
-              }
-            });
-          }
-        });
+        return error;
       }
+      locations.forEach(async (location) => {
+        const { data: classes } = await supabase
+          .from('classes')
+          .select('*, locations(*)')
+          .eq('location_id', location.location_id)
+          .eq('date', searchByDate);
+        if (classes) {
+          classes.forEach((Class) => {
+            if (!searchByClass || (searchByClass && Class.name === searchByClass)) {
+              setClasses((prevClasses) => [...prevClasses, Class]);
+            }
+          });
+        }
+      });
+    } catch (err) {
+      console.error('Unexpected error: ', err);
     }
+    return null;
   };
 
   return (
