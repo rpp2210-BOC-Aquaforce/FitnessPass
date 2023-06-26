@@ -1,47 +1,36 @@
-/* eslint-disable no-console */
+/* eslint-disable no-nested-ternary */
+/* eslint-disable no-shadow */
+/* eslint-disable no-await-in-loop */
 /* eslint-disable camelcase */
+/* eslint-disable import/no-extraneous-dependencies */
+/* eslint-disable no-plusplus */
+/* eslint-disable default-case */
+/* eslint-disable no-case-declarations */
 
 'use client';
 
-import { useEffect, useState } from 'react';
+import { SetStateAction, useEffect, useState } from 'react';
 
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import Geocode from 'react-geocode';
-import moment from 'moment';
-import dotenv from 'dotenv';
-import supabase from '../../../lib/supabase';
-
-import { Map, List } from '../../../components/index';
-
-dotenv.config();
+import Moment from 'moment';
+import supabase from './lib/supabase';
+import { Map, List } from './components/index';
 
 type LatLngLiteral = google.maps.LatLngLiteral;
-type ValuePiece = Date | null;
 
 export default function Search() {
-  type CLASS = {
-    class_id: number,
-    date: string,
-    duration: number,
-    instructor: string,
-    locations: {name: string, street: string, city: string, state: string, zip: string},
-    name: string,
-    time: string,
-  }
-
   const [searchByClass, setSearchByClass] = useState('');
   const [searchByLocation, setSearchByLocation] = useState('');
-  const [selectedDate, setSelectedDate] = useState<ValuePiece|[ValuePiece, ValuePiece]>(new Date());
+  const [date, setDate] = useState(new Date());
 
-  const [showCalendar, setShowCalendar] = useState<boolean>(false);
-  const [list, setList] = useState(false);
+  const [showCalendar, setShowCalendar] = useState(false);
+  const [map, setMap] = useState(false);
   const [searched, setSearched] = useState(false);
 
   const [myLocation, setMyLocation] = useState<LatLngLiteral>();
-  const [Classes, setClasses] = useState<CLASS[]>([]);
-
-  const apiKey: string | undefined = process.env.GOOGLE_MAPS_API_KEY as string;
+  const [Classes, setClasses] = useState([]);
 
   useEffect(() => {
     if ('geolocation' in navigator) {
@@ -52,18 +41,20 @@ export default function Search() {
           lng: coords.longitude,
         });
 
-        Geocode.setApiKey(apiKey);
-        Geocode.fromLatLng(`${coords.latitude}`, `${coords.longitude}`)
+        const key: string | undefined = process.env.GOOGLE_MAPS_API_KEY;
+        console.log('kkkkk', key);
+
+        Geocode.setApiKey(key);
+        Geocode.fromLatLng(coords.latitude, coords.longitude)
           .then(
             (response) => {
               const address = response.results[0].address_components;
-              for (let i = 0; i < address.length; i += 1) {
-                for (let j = 0; j < address[i].types.length; j += 1) {
+              for (let i = 0; i < address.length; i++) {
+                for (let j = 0; j < address[i].types.length; j++) {
                   switch (address[i].types[j]) {
                     case 'sublocality':
-                      setSearchByLocation(address[i].long_name);
-                      break;
-                    default:
+                      const City = address[i].long_name;
+                      setSearchByLocation(City);
                       break;
                   }
                 }
@@ -77,31 +68,16 @@ export default function Search() {
     }
   }, []);
 
-  const handleDateChange = (date: ValuePiece|[ValuePiece, ValuePiece]) => {
-    setSelectedDate(date);
+  const handleDate = (value: SetStateAction<Date>) => {
+    setDate(value);
     setShowCalendar(false);
   };
 
-  const convertToMoment = (date: Date | Date[] | ValuePiece | [ValuePiece, ValuePiece]):
-  moment.Moment | null => {
-    if (date instanceof Date) {
-      return moment(date);
-    }
-    if (Array.isArray(date) && date.length > 0 && date[0] instanceof Date) {
-      return moment(date[0]);
-    }
-    if (date instanceof Object && 'value' in date && date.value instanceof Date) {
-      return moment(date.value);
-    }
-    return null;
-  };
-
   const search = async () => {
-    const searchByDate = convertToMoment(selectedDate)?.format('YYYY-MM-DD');
+    const searchByDate = Moment(date).format('YYYY-MM-DD');
 
     setClasses([]);
     setSearched(true);
-    setList(true);
     const zipRegex = /^[0-9]{5}(?:-[0-9]{4})?$/;
     if (zipRegex.test(searchByLocation)) {
       const { data: locations, error } = await supabase
@@ -111,16 +87,18 @@ export default function Search() {
       if (error) {
         console.error('supabase error', error);
       } else {
-        locations.forEach(async ({ location_id } : { location_id: number }) => {
-          const { data: classes } = await supabase
+        locations.forEach(async ({ location_id }) => {
+          const { data: classes, error } = await supabase
             .from('classes')
             .select('*, locations(*)')
             .eq('location_id', location_id)
             .eq('date', searchByDate);
-          if (classes) {
-            classes.forEach(({ Class }: {Class: CLASS}) => {
+          if (error) {
+            console.error('supabase error', error);
+          } else {
+            classes.forEach((Class) => {
               if (!searchByClass || (searchByClass && Class.name === searchByClass)) {
-                setClasses((prevClasses) => [...prevClasses, Class]);
+                setClasses((Classes) => [...Classes, classes]);
               }
             });
           }
@@ -134,16 +112,19 @@ export default function Search() {
       if (error) {
         console.error('supabase error', error);
       } else {
-        locations.forEach(async ({ location_id } : { location_id: number }) => {
-          const { data: classes } = await supabase
+        locations.forEach(async ({ location_id }) => {
+          const { data: classes, error } = await supabase
             .from('classes')
             .select('*, locations(*)')
             .eq('location_id', location_id)
             .eq('date', searchByDate);
-          if (classes) {
+          if (error) {
+            console.error('supabase error', error);
+          } else {
             classes.forEach((Class) => {
+              console.log('ClassClass', Class)
               if (!searchByClass || (searchByClass && Class.name === searchByClass)) {
-                setClasses((prevClasses) => [...prevClasses, Class]);
+                setClasses((Classes) => [...Classes, Class]);
               }
             });
           }
@@ -170,33 +151,19 @@ export default function Search() {
         </div>
         <div className="flex">
           <input
-            value={selectedDate ? convertToMoment(selectedDate)?.format('YYYY-MM-DD') : ''}
+            value={date.toLocaleDateString()}
             onFocus={() => setShowCalendar(true)}
             onChange={() => { setShowCalendar(false); }}
             className="text-black text-center"
           />
           <button type="button" className="bg-blue-500 text-white" onClick={search}>GO</button>
         </div>
-        {showCalendar ? (
-          <div>
-            <Calendar
-              calendarType="US"
-              minDate={new Date()}
-              value={selectedDate}
-              onChange={handleDateChange}
-              className="fixed"
-            />
-          </div>
-        ) : ''}
+        {showCalendar ? <div><Calendar calendarType="US" minDate={new Date()} value={date} onChange={handleDate} /></div> : ''}
       </div>
       <div>
-        {searched && (
-          list ? (
-            <List classes={Classes} setList={setList} />
-          ) : (
-            <Map center={myLocation} classes={Classes} setList={setList} />
-          )
-        )}
+        {searched && map ? <Map center={myLocation} classes={Classes} setMap={setMap} />
+          : searched && !map ? <List classes={Classes} setMap={setMap} />
+            : ''}
       </div>
     </div>
   );

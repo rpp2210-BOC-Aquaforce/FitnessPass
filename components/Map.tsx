@@ -2,16 +2,47 @@
 
 'use client';
 
-import { useEffect, useState } from 'react';
+import {
+  Dispatch, SetStateAction, useEffect, useState, useRef,
+} from 'react';
 
 import {
   useLoadScript, GoogleMap, Marker, InfoWindow,
 } from '@react-google-maps/api';
 import Geocode from 'react-geocode';
 
-export default function Map({ center, classes, setMap }) {
-  const [activeMarker, setActiveMarker] = useState(null);
-  const [markers, setMarkers] = useState([]);
+type LatLngLiteral = google.maps.LatLngLiteral;
+
+type CLASS = {
+  class_id: number,
+  date: string,
+  duration: number,
+  instructor: string,
+  locations: {name: string, street: string, city: string, state: string, zip: string},
+  name: string,
+  time: string,
+}
+
+type marker = {
+  class_id: number,
+  date: string,
+  duration: number,
+  instructor: string,
+  locations: {name: string, street: string, city: string, state: string, zip: string},
+  name: string,
+  time: string,
+  address: string,
+  position: LatLngLiteral,
+}
+
+interface MapProps {
+  center: LatLngLiteral | undefined;
+  classes: CLASS[];
+  setList: Dispatch<SetStateAction<boolean>>;
+}
+export default function Map({ center, classes, setList }: MapProps) {
+  const [activeMarker, setActiveMarker] = useState<number | null>(null);
+  const [markers, setMarkers] = useState<marker[]>([]);
 
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: 'AIzaSyAxLZBfmUBWLcaK0WibtdtCWlmPvuB0Aws',
@@ -19,42 +50,78 @@ export default function Map({ center, classes, setMap }) {
 
   Geocode.setApiKey('AIzaSyAxLZBfmUBWLcaK0WibtdtCWlmPvuB0Aws');
 
+  const mapInstanceRef = useRef<google.maps.Map | null>(null);
+
+  if (isLoaded && mapInstanceRef.current && markers.length > 0) {
+    const bounds = new google.maps.LatLngBounds();
+    if (center) {
+      bounds.extend(center);
+    }
+    markers.forEach(({ position }) => {
+      bounds.extend(position);
+    });
+    mapInstanceRef.current.fitBounds(bounds);
+  }
+
+  // const handleOnLoad = (map:google.maps.Map) => {
+  //   const bounds = new google.maps.LatLngBounds();
+  //   markers.forEach(({ position }) => {
+  //     bounds.extend(position);
+  //   });
+  //   if (center) {
+  //     bounds.extend(center);
+  //   }
+  //   map.fitBounds(bounds);
+  // };
+
   useEffect(() => {
-    classes.forEach(({
-      class_id, name, date, time, duration, instructor, locations,
-    }) => {
-      const address = `${locations.street}, ${locations.city}, ${locations.state}${locations.zip}`;
-      Geocode.fromAddress(address).then(
-        (response) => {
-          const position = response.results[0].geometry.location;
-          const Class = {
-            class_id, name, date, time, duration, instructor, address, position, locations,
-          };
-          setMarkers((markers) => [...markers, Class]);
-        },
-        (error) => {
-          console.error(error);
+    if (Array.isArray(classes)) {
+      classes.forEach(
+        ({
+          class_id,
+          name,
+          date,
+          time,
+          duration,
+          instructor,
+          locations,
+        }: CLASS) => {
+          const address = `${locations.street}, ${locations.city}, ${locations.state}${locations.zip}`;
+          Geocode.fromAddress(address).then(
+            (response) => {
+              const position = response.results[0].geometry.location;
+              const Class = {
+                class_id,
+                name,
+                date,
+                time,
+                duration,
+                instructor,
+                address,
+                position,
+                locations,
+              };
+              setMarkers((prevMarkers) => [...prevMarkers, Class]);
+            },
+            (error) => {
+              console.error(error);
+            },
+          );
         },
       );
-    });
+    }
   }, []);
 
-  const handleActiveMarker = (marker) => {
-    if (marker === activeMarker) {
+  const handleActiveMarker = (markerID: number | null) => {
+    if (markerID === activeMarker) {
       return;
     }
-    setActiveMarker(marker);
+    setActiveMarker(markerID);
   };
 
-  const handleOnLoad = (map) => {
-    const bounds = new google.maps.LatLngBounds();
-    markers.forEach(({ position }) => bounds.extend(position));
-    bounds.extend(center);
-    map.fitBounds(bounds);
-  };
-
-  if (classes.length === 0) return <div>0 result</div>;
+  if (!Array.isArray(classes) || classes.length === 0) return <div>0 result</div>;
   if (!isLoaded) return <div>loading...</div>;
+
   return (
     <div>
       <div>
@@ -62,20 +129,22 @@ export default function Map({ center, classes, setMap }) {
         {' '}
         results
       </div>
-      <button type="button" className="bg-green-500 text-white" onClick={() => setMap(false)}>List</button>
+      <button type="button" className="bg-green-500 text-white" onClick={() => setList(true)}>List</button>
       <div className="items-center">
         <GoogleMap
-          zoom={10}
-          // center={center}
-          onLoad={handleOnLoad}
+          onLoad={(map) => {
+            mapInstanceRef.current = map;
+            // handleOnLoad(map);
+          }}
           mapContainerStyle={{ width: '100vw', height: '80vh' }}
         >
           <Marker
-            position={center}
+            key={0}
+            position={center || { lat: 0, lng: 0 }}
             icon="http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
-            onClick={() => handleActiveMarker('myLocation')}
+            onClick={() => handleActiveMarker(0)}
           >
-            {activeMarker === 'myLocation' ? (
+            {activeMarker === 0 ? (
               <InfoWindow onCloseClick={() => setActiveMarker(null)}>
                 <div className="text-black">
                   My Location
