@@ -4,8 +4,10 @@ import { useEffect, useState } from 'react';
 
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
+import Geocode from 'react-geocode';
 
 type ValuePiece = Date | null;
+type LatLngLiteral = google.maps.LatLngLiteral;
 
 export default function Search() {
   const [searchByClass, setSearchByClass] = useState('');
@@ -13,11 +15,36 @@ export default function Search() {
   const [selectedDate, setSelectedDate] = useState<ValuePiece|[ValuePiece, ValuePiece]>(new Date());
 
   const [showCalendar, setShowCalendar] = useState<boolean>(false);
+  const [myLocation, setMyLocation] = useState<LatLngLiteral>();
 
   useEffect(() => {
-    console.log('searchByClass', searchByClass);
-    console.log('searchByLocation', searchByLocation);
-    console.log('showCalendar', showCalendar);
+    if ('geolocation' in navigator) {
+      navigator.geolocation.getCurrentPosition(({ coords }) => {
+        setMyLocation({
+          lat: coords.latitude,
+          lng: coords.longitude,
+        });
+        Geocode.setApiKey('AIzaSyAxLZBfmUBWLcaK0WibtdtCWlmPvuB0Aws');
+        Geocode.fromLatLng(`${coords.latitude}`, `${coords.longitude}`)
+          .then(
+            (response: { results: { address_components: any; }[]; }) => {
+              const address = response.results[0].address_components;
+              for (let i = 0; i < address.length; i += 1) {
+                for (let j = 0; j < address[i].types.length; j += 1) {
+                  switch (address[i].types[j]) {
+                    case 'sublocality':
+                      setSearchByLocation(address[i].long_name);
+                      break;
+                    default:
+                      break;
+                  }
+                }
+              }
+            },
+          )
+          .catch((error: string) => error);
+      });
+    }
   }, []);
 
   const handleDateChange = (date: ValuePiece|[ValuePiece, ValuePiece]) => {
@@ -28,6 +55,7 @@ export default function Search() {
   const search = () => {
     console.log('searchByClass', searchByClass);
     console.log('searchByLocation', searchByLocation);
+    console.log('myLocation', myLocation);
   };
 
   return (
