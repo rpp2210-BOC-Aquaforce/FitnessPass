@@ -8,6 +8,7 @@ import Geocode from 'react-geocode';
 import supabase from '../../../../lib/supabase';
 
 import List from '../../../../components/ListView';
+import Map from '../../../../components/MapView';
 
 type ValuePiece = Date | null;
 type LatLngLiteral = google.maps.LatLngLiteral;
@@ -89,13 +90,6 @@ export default function Search() {
     } else {
       column = 'city';
     }
-    console.log('searchByClass', searchByClass);
-    console.log('searchByLocation', searchByLocation);
-    console.log('searchByDate', searchByDate);
-    console.log('myLocation', myLocation);
-    console.log('searched', searched);
-    console.log('column', column);
-
     try {
       const { data: locations, error } = await supabase
         .from('locations')
@@ -169,7 +163,7 @@ export default function Search() {
           list ? (
             <List classes={Classes} setList={setList} />
           ) : (
-            <div>Map</div>
+            <Map center={myLocation} classes={Classes} setList={setList} />
           )
         )}
       </div>
