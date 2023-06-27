@@ -104,21 +104,21 @@ export default function Search() {
       if (error) {
         return error;
       }
-      console.log('locations', locations);
-    //   locations.forEach(async (location) => {
-    //     const { data: classes } = await supabase
-    //       .from('classes')
-    //       .select('*, locations(*)')
-    //       .eq('location_id', location.location_id)
-    //       .eq('date', searchByDate);
-    //     if (classes) {
-    //       classes.forEach((Class) => {
-    //         if (!searchByClass || (searchByClass && Class.name === searchByClass)) {
-    //           setClasses((prevClasses) => [...prevClasses, Class]);
-    //         }
-    //       });
-    //     }
-    //   });
+      locations.forEach(async (location) => {
+        const { data: classes } = await supabase
+          .from('classes')
+          .select('*, locations(*)')
+          .eq('location_id', location.location_id)
+          .eq('date', searchByDate);
+        console.log('classes', classes);
+        //     if (classes) {
+        //       classes.forEach((Class) => {
+        //         if (!searchByClass || (searchByClass && Class.name === searchByClass)) {
+        //           setClasses((prevClasses) => [...prevClasses, Class]);
+        //         }
+        //       });
+        //     }
+      });
     } catch (err) {
       console.error('Unexpected error: ', err);
     }
