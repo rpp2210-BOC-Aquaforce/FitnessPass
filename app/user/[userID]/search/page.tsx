@@ -7,6 +7,8 @@ import 'react-calendar/dist/Calendar.css';
 import Geocode from 'react-geocode';
 import supabase from '../../../../lib/supabase';
 
+import List from '../../../../components/ListView';
+
 type ValuePiece = Date | null;
 type LatLngLiteral = google.maps.LatLngLiteral;
 
@@ -91,9 +93,7 @@ export default function Search() {
     console.log('searchByLocation', searchByLocation);
     console.log('searchByDate', searchByDate);
     console.log('myLocation', myLocation);
-    console.log('list', list);
     console.log('searched', searched);
-    console.log('Classes', Classes);
     console.log('column', column);
 
     try {
@@ -151,17 +151,28 @@ export default function Search() {
         />
         <button type="button" className="bg-blue-500 text-white" onClick={search}>GO</button>
       </div>
-      {showCalendar ? (
-        <div>
-          <Calendar
-            className="fixed"
-            calendarType="US"
-            minDate={new Date()}
-            value={selectedDate}
-            onChange={handleDateChange}
-          />
-        </div>
-      ) : ''}
+      <div>
+        {showCalendar ? (
+          <div>
+            <Calendar
+              className="fixed"
+              calendarType="US"
+              minDate={new Date()}
+              value={selectedDate}
+              onChange={handleDateChange}
+            />
+          </div>
+        ) : ''}
+      </div>
+      <div>
+        {searched && (
+          list ? (
+            <List classes={Classes} setList={setList} />
+          ) : (
+            <div>Map</div>
+          )
+        )}
+      </div>
     </div>
   );
 }
