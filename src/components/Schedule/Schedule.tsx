@@ -23,9 +23,11 @@ export default function Schedule({ userId }: { userId: number}) {
 
       console.log('data', data);
 
-      setUserClasses(data.sort((a, b) => a.classes.date.localeCompare(b.classes.date)));
+      setUserClasses(
+        data.sort((a: UserClass, b: UserClass) => a.classes.date.localeCompare(b.classes.date)),
+      );
     } catch (error) {
-      console.error('Error fetching user classes:', error);
+      // console.error('Error fetching user classes:', error);
     }
   };
 

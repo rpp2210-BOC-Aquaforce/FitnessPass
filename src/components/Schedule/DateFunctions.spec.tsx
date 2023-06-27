@@ -1,6 +1,6 @@
-import userClasses from '@/components/Schedule/mockUserClasses';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { format, addDays } from 'date-fns';
+import userClasses from './mockUserClasses';
 import {
   parseLocalDate,
   getScheduledDates,
@@ -8,7 +8,7 @@ import {
   renderWeekDays,
   renderWeekSlides,
   getWeekTitle,
-} from './date-fns';
+} from './DateFunctions';
 
 describe('parseLocalDate', () => {
   it('should correctly parse a date string', () => {

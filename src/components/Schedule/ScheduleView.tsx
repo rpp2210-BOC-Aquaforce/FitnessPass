@@ -1,5 +1,6 @@
 'use client';
 
+import { FitnessClasses } from '@/components/FitnessClasses';
 import React, {
   useState, useEffect, useRef, useCallback,
 } from 'react';
@@ -17,8 +18,7 @@ import {
   getNextScheduledClass,
   renderWeekSlides,
   getWeekTitle,
-} from '@/lib/date-fns';
-import { FitnessClasses } from '@/components/FitnessClasses';
+} from './DateFunctions';
 
 type ScheduleViewProps = {
   userClasses: UserClass[];
@@ -33,7 +33,8 @@ export default function ScheduleView({ userClasses }: ScheduleViewProps) {
   const swiperRef = useRef<any>(null);
 
   const gotoClassDate = useCallback((date: Date) => {
-    const initialSlideIndex = 26 + differenceInWeeks(date, new Date()) + 1;
+    if (!swiperRef.current) return;
+    const initialSlideIndex = 26 + differenceInWeeks(date, new Date());
     setActiveSlide(initialSlideIndex);
     swiperRef.current.swiper.slideTo(initialSlideIndex, 250);
     setActiveDay(date);
@@ -79,9 +80,10 @@ export default function ScheduleView({ userClasses }: ScheduleViewProps) {
           clickable: true,
         }}
         onSlideChange={(swiper) => {
-          const direction = swiper.activeIndex > activeSlide ? 7 : -7;
+          console.log('activeSlide:', activeSlide);
+          console.log('swiper.activeIndex:', swiper.activeIndex);
           setActiveSlide(swiper.activeIndex);
-          setActiveDay(addDays(activeDay, direction));
+          setActiveDay(addDays(new Date(), swiper.activeIndex - 26));
         }}
         className="w-full h-full"
       >
