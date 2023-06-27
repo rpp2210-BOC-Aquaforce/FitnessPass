@@ -1,9 +1,20 @@
-import supabase from '../../lib/supabase';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib/auth';
+import { redirect } from 'next/navigation';
+import Link from 'next/link';
 
-export default async function Posts() {
-  const { data: test, error } = await supabase
-    .from('test')
-    .select('textrow');
+export default async function Users() {
+  const session = await getServerSession(authOptions);
+  if (!session) {
+    redirect('/login');
+  }
 
-  return <pre>{JSON.stringify({ data: test, error }, null, 2)}</pre>;
+  return (
+    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+      Users
+      <Link href="/user/123/profile">
+        <button type="button" className="relative sm:inset-x-20 inset-y-4 text-5xl">My Profile</button>
+      </Link>
+    </main>
+  );
 }
