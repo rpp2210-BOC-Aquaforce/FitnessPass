@@ -5,9 +5,20 @@ import { useEffect, useState } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import Geocode from 'react-geocode';
+import supabase from '../../../../lib/supabase';
 
 type ValuePiece = Date | null;
 type LatLngLiteral = google.maps.LatLngLiteral;
+
+  type CLASS = {
+    class_id: number,
+    date: string,
+    duration: number,
+    instructor: string,
+    locations: {name: string, street: string, city: string, state: string, zip: string},
+    name: string,
+    time: string,
+  }
 
 export default function Search() {
   const [searchByClass, setSearchByClass] = useState('');
@@ -16,6 +27,10 @@ export default function Search() {
 
   const [showCalendar, setShowCalendar] = useState<boolean>(false);
   const [myLocation, setMyLocation] = useState<LatLngLiteral>();
+
+  const [Classes, setClasses] = useState<CLASS[]>([]);
+  const [list, setList] = useState(false);
+  const [searched, setSearched] = useState(false);
 
   useEffect(() => {
     if ('geolocation' in navigator) {
@@ -52,10 +67,76 @@ export default function Search() {
     setShowCalendar(false);
   };
 
-  const search = () => {
-    console.log('searchByClass', searchByClass);
-    console.log('searchByLocation', searchByLocation);
-    console.log('myLocation', myLocation);
+  const formattedDate = (date:any) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+
+  const search = async () => {
+    const searchByDate = formattedDate(selectedDate);
+
+    setClasses([]);
+    setSearched(true);
+    setList(true);
+
+    const zipRegex = /^[0-9]{5}(?:-[0-9]{4})?$/;
+    if (zipRegex.test(searchByLocation)) {
+      try {
+        const { data: locations, error } = await supabase
+          .from('locations')
+          .select('*')
+          .ilike('zip', searchByLocation);
+        if (error) {
+          return error;
+        }
+        locations.forEach(async (location) => {
+          const { data: classes } = await supabase
+            .from('classes')
+            .select('*, locations(*)')
+            .eq('location_id', location.location_id)
+            .eq('date', searchByDate);
+          if (classes) {
+            classes.forEach(({ Class }: {Class: CLASS}) => {
+              if (!searchByClass || (searchByClass && Class.name === searchByClass)) {
+                setClasses((prevClasses) => [...prevClasses, Class]);
+              }
+            });
+          }
+        });
+      } catch (err) {
+        return null;
+      }
+      return null;
+    }
+    try {
+      const { data: locations, error } = await supabase
+        .from('locations')
+        .select('*')
+        .ilike('city', searchByLocation);
+      if (error) {
+        return error;
+      }
+      locations.forEach(async (location) => {
+        const { data: classes } = await supabase
+          .from('classes')
+          .select('*, locations(*)')
+          .eq('location_id', location.location_id)
+          .eq('date', searchByDate);
+        if (classes) {
+          classes.forEach((Class) => {
+            if (!searchByClass || (searchByClass && Class.name === searchByClass)) {
+              setClasses((prevClasses) => [...prevClasses, Class]);
+            }
+          });
+        }
+      });
+    } catch (err) {
+      console.error('Unexpected error: ', err);
+    }
+    console.log('Classes', Classes);
+    return null;
   };
 
   return (
