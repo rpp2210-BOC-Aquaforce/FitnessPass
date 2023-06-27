@@ -5,14 +5,9 @@
 import {
   Dispatch, SetStateAction, useEffect, useRef, useState,
 } from 'react';
-
 import {
-  useLoadScript,
+  useLoadScript, GoogleMap, Marker, InfoWindow,
 } from '@react-google-maps/api';
-
-// import {
-//   useLoadScript, GoogleMap, Marker, InfoWindow,
-// } from '@react-google-maps/api';
 import Geocode from 'react-geocode';
 
 type CLASS = {
@@ -45,6 +40,7 @@ type marker = {
 }
 
 export default function Map({ center, classes, setList }: MapProps) {
+  const [activeMarker, setActiveMarker] = useState<number | null>(null);
   const [markers, setMarkers] = useState<marker[]>([]);
 
   const { isLoaded } = useLoadScript({
@@ -63,6 +59,13 @@ export default function Map({ center, classes, setList }: MapProps) {
     });
     mapInstanceRef.current.fitBounds(bounds);
   }
+
+  const handleActiveMarker = (markerID: number | null) => {
+    if (markerID === activeMarker) {
+      return;
+    }
+    setActiveMarker(markerID);
+  };
 
   useEffect(() => {
     if (Array.isArray(classes)) {
@@ -112,6 +115,66 @@ export default function Map({ center, classes, setList }: MapProps) {
         results
       </div>
       <button type="button" className="bg-green-500 text-white" onClick={() => setList(true)}>List</button>
+      <div className="items-center">
+        <GoogleMap
+          onLoad={(map) => {
+            mapInstanceRef.current = map;
+          }}
+          mapContainerStyle={{ width: '100vw', height: '80vh' }}
+        >
+          <Marker
+            key={0}
+            position={center || { lat: 0, lng: 0 }}
+            icon="http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
+            onClick={() => handleActiveMarker(0)}
+          >
+            {activeMarker === 0 ? (
+              <InfoWindow onCloseClick={() => setActiveMarker(null)}>
+                <div className="text-black">
+                  My Location
+                </div>
+              </InfoWindow>
+            ) : null}
+          </Marker>
+
+          {markers.map(({
+            class_id, name, date, time, duration, instructor, address, position, locations,
+          }) => (
+            <Marker
+              key={class_id}
+              position={position}
+              icon="http://maps.google.com/mapfiles/ms/icons/green-dot.png"
+              onClick={() => handleActiveMarker(class_id)}
+            >
+              {activeMarker === class_id ? (
+                <InfoWindow onCloseClick={() => setActiveMarker(null)}>
+                  <div className="text-black">
+                    <h3>
+                      {name}
+                      {' - '}
+                      {locations.name}
+                    </h3>
+                    <h5>{instructor}</h5>
+                    <div>
+                      {date}
+                      {' '}
+                      {time}
+                    </div>
+                    <div>
+                      {duration}
+                      {' minutes'}
+                    </div>
+                    <div>
+                      {address}
+                    </div>
+                    <button type="button" className="bg-orange-500 text-white">Sign Up</button>
+                  </div>
+                </InfoWindow>
+              ) : null}
+            </Marker>
+          ))}
+        </GoogleMap>
+      </div>
     </div>
   );
 }
