@@ -110,14 +110,13 @@ export default function Search() {
           .select('*, locations(*)')
           .eq('location_id', location.location_id)
           .eq('date', searchByDate);
-        console.log('classes', classes);
-        //     if (classes) {
-        //       classes.forEach((Class) => {
-        //         if (!searchByClass || (searchByClass && Class.name === searchByClass)) {
-        //           setClasses((prevClasses) => [...prevClasses, Class]);
-        //         }
-        //       });
-        //     }
+        if (classes) {
+          classes.forEach((Class) => {
+            if (!searchByClass || (searchByClass && Class.name === searchByClass)) {
+              setClasses((prevClasses) => [...prevClasses, Class]);
+            }
+          });
+        }
       });
     } catch (err) {
       console.error('Unexpected error: ', err);
