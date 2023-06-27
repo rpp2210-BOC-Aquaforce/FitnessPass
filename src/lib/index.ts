@@ -1,2 +1,2 @@
+// eslint-disable-next-line import/prefer-default-export
 export { default as supabase } from './supabase';
-export * from './date-fns';
