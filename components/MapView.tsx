@@ -43,10 +43,12 @@ export default function Map({ center, classes, setList }: MapProps) {
   const [activeMarker, setActiveMarker] = useState<number | null>(null);
   const [markers, setMarkers] = useState<marker[]>([]);
 
+  const apiKey: string | undefined = process.env.GOOGLE_MAPS_API_KEY as string;
+
   const { isLoaded } = useLoadScript({
-    googleMapsApiKey: 'AIzaSyAxLZBfmUBWLcaK0WibtdtCWlmPvuB0Aws',
+    googleMapsApiKey: apiKey,
   });
-  Geocode.setApiKey('AIzaSyAxLZBfmUBWLcaK0WibtdtCWlmPvuB0Aws');
+  Geocode.setApiKey(apiKey);
 
   const mapInstanceRef = useRef<google.maps.Map | null>(null);
   if (isLoaded && mapInstanceRef.current && markers.length > 0) {

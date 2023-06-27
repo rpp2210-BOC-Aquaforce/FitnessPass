@@ -35,6 +35,8 @@ export default function Search() {
   const [searched, setSearched] = useState(false);
   const [Classes, setClasses] = useState<CLASS[]>([]);
 
+  const apiKey: string | undefined = process.env.GOOGLE_MAPS_API_KEY as string;
+
   useEffect(() => {
     if ('geolocation' in navigator) {
       navigator.geolocation.getCurrentPosition(({ coords }) => {
@@ -42,7 +44,7 @@ export default function Search() {
           lat: coords.latitude,
           lng: coords.longitude,
         });
-        Geocode.setApiKey('AIzaSyAxLZBfmUBWLcaK0WibtdtCWlmPvuB0Aws');
+        Geocode.setApiKey(apiKey);
         Geocode.fromLatLng(`${coords.latitude}`, `${coords.longitude}`)
           .then(
             (response: { results: { address_components: any; }[]; }) => {
