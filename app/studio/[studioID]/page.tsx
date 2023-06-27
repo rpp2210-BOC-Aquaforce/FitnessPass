@@ -44,12 +44,12 @@ export default function StudioPage() {
     <main className={styles.container}>
       {/* <div className="text-3xl font-bold mb-4"> */}
       <div className="text-3xl font-bold mb-4">
-        <h1 className={styles.infoHeader}>Studio Profile</h1>
+        <h1 className={styles.header}>Studio Profile</h1>
         <Image
           src={studioInfo.photo}
           alt="gym placeholder"
-          width={300}
-          height={300}
+          width={250}
+          height={250}
           className={styles.centeredImage}
         />
         <h5 className={styles.infoHeader}>Studio Name:</h5>
