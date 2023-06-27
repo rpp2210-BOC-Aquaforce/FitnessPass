@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import Geocode from 'react-geocode';
+import supabase from '../../../../lib/supabase';
 
 type ValuePiece = Date | null;
 type LatLngLiteral = google.maps.LatLngLiteral;
@@ -30,6 +31,7 @@ export default function Search() {
   const [list, setList] = useState(false);
   const [searched, setSearched] = useState(false);
   const [Classes, setClasses] = useState<CLASS[]>([]);
+
   useEffect(() => {
     if ('geolocation' in navigator) {
       navigator.geolocation.getCurrentPosition(({ coords }) => {
@@ -72,16 +74,43 @@ export default function Search() {
     return `${year}-${month}-${day}`;
   };
 
-  const search = () => {
+  const search = async () => {
     const searchByDate = formattedDate(selectedDate);
     setClasses([]);
     setSearched(true);
     setList(true);
+
     const zipRegex = /^[0-9]{5}(?:-[0-9]{4})?$/;
+    let column = '';
     if (zipRegex.test(searchByLocation)) {
-      console.log('zipcode');
+      column = 'zip';
     } else {
-      console.log('city name');
+      column = 'city';
+    }
+    try {
+      const { data: locations, error } = await supabase
+        .from('locations')
+        .select('*')
+        .ilike(column, searchByLocation);
+      if (error) {
+        return error;
+      }
+      locations.forEach(async (location) => {
+        const { data: classes } = await supabase
+          .from('classes')
+          .select('*, locations(*)')
+          .eq('location_id', location.location_id)
+          .eq('date', searchByDate);
+        if (classes) {
+          classes.forEach((Class) => {
+            if (!searchByClass || (searchByClass && Class.name === searchByClass)) {
+              setClasses((prevClasses) => [...prevClasses, Class]);
+            }
+          });
+        }
+      });
+    } catch (err) {
+      console.error('Unexpected error: ', err);
     }
     console.log('searchByClass', searchByClass);
     console.log('searchByLocation', searchByLocation);
@@ -89,7 +118,9 @@ export default function Search() {
     console.log('myLocation', myLocation);
     console.log('list', list);
     console.log('searched', searched);
-    console.log('Classes', Classes);
+    console.log('Classes', Classes)
+
+    return null;
   };
 
   return (
