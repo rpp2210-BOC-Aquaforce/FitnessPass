@@ -14,7 +14,7 @@ interface StudioInfo {
 }
 
 export default function StudioPage() {
-  const studioID: number = 1;
+  const studioID = 1;
   const starterData: StudioInfo = {
     studio_name: 'Globogym',
     studio_email: 'whiteGoodman@bullByTheHorns.com',
@@ -31,13 +31,18 @@ export default function StudioPage() {
       console.error(error);
     } else {
       // Do something with data
-      setStudioInfo(data);
+      console.log('data: ', data[0]);
+      setStudioInfo(data[0]);
     }
   };
 
-  // useEffect(() => {
-  //   fetchStudioData();
-  // }, []);
+  useEffect(() => {
+    fetchStudioData();
+  }, []);
+
+  useEffect(() => {
+    console.log('studio info state: ', studioInfo)
+  }, [studioInfo]);
 
   return (
     // <main className="flex flex-col items-center justify-center min-h-screen">
@@ -46,7 +51,7 @@ export default function StudioPage() {
       <div className="text-3xl font-bold mb-4">
         <h1 className={styles.header}>Studio Profile</h1>
         <Image
-          src={studioInfo.photo}
+          src="/images/placeholder1.png"
           alt="gym placeholder"
           width={250}
           height={250}

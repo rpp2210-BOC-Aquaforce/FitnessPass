@@ -1,8 +1,8 @@
 'use client';
 
-// import Location from './location';
-
+//import Location from './location';
 import React, { useEffect } from 'react';
+import AddLocation from '../../../../components/AddLocation';
 import styles from './page.module.css';
 import supabase from '../../../../lib/supabase';
 
@@ -33,6 +33,7 @@ export default function StudioLocations() {
       <div>Look, another one</div>
       <div>Yep, one more</div>
       <div>Nope, this is just text.</div>
+      <AddLocation />
     </div>
   );
 }
