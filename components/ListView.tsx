@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+
 'use client';
 
 type CLASS = {
@@ -25,6 +27,41 @@ export default function List({ classes, setList } : ListProps) {
         results
       </div>
       <button type="button" className="bg-green-500 text-white" onClick={() => setList(false)}>Map</button>
+      <div>
+        {classes.map(({
+          class_id, name, date, time, duration, instructor, locations,
+        }) => {
+          const location = locations;
+          return (
+            <div key={class_id} className="p-5">
+              <h3>
+                {name}
+                {' - '}
+                {location.name}
+              </h3>
+              <h5>{instructor}</h5>
+              <div>
+                {date}
+                {' '}
+                {time}
+              </div>
+              <div>
+                {duration}
+                {' minutes'}
+              </div>
+              <div>
+                {location.street}
+                {', '}
+                {location.city}
+                {', '}
+                {location.state}
+                {location.zip}
+              </div>
+              <button type="button" className="bg-orange-500 text-white">Sign Up</button>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }
