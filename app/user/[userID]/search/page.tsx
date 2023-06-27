@@ -87,6 +87,15 @@ export default function Search() {
     } else {
       column = 'city';
     }
+    console.log('searchByClass', searchByClass);
+    console.log('searchByLocation', searchByLocation);
+    console.log('searchByDate', searchByDate);
+    console.log('myLocation', myLocation);
+    console.log('list', list);
+    console.log('searched', searched);
+    console.log('Classes', Classes);
+    console.log('column', column);
+
     try {
       const { data: locations, error } = await supabase
         .from('locations')
@@ -95,30 +104,24 @@ export default function Search() {
       if (error) {
         return error;
       }
-      locations.forEach(async (location) => {
-        const { data: classes } = await supabase
-          .from('classes')
-          .select('*, locations(*)')
-          .eq('location_id', location.location_id)
-          .eq('date', searchByDate);
-        if (classes) {
-          classes.forEach((Class) => {
-            if (!searchByClass || (searchByClass && Class.name === searchByClass)) {
-              setClasses((prevClasses) => [...prevClasses, Class]);
-            }
-          });
-        }
-      });
+      console.log('locations', locations);
+    //   locations.forEach(async (location) => {
+    //     const { data: classes } = await supabase
+    //       .from('classes')
+    //       .select('*, locations(*)')
+    //       .eq('location_id', location.location_id)
+    //       .eq('date', searchByDate);
+    //     if (classes) {
+    //       classes.forEach((Class) => {
+    //         if (!searchByClass || (searchByClass && Class.name === searchByClass)) {
+    //           setClasses((prevClasses) => [...prevClasses, Class]);
+    //         }
+    //       });
+    //     }
+    //   });
     } catch (err) {
       console.error('Unexpected error: ', err);
     }
-    console.log('searchByClass', searchByClass);
-    console.log('searchByLocation', searchByLocation);
-    console.log('searchByDate', searchByDate);
-    console.log('myLocation', myLocation);
-    console.log('list', list);
-    console.log('searched', searched);
-    console.log('Classes', Classes)
 
     return null;
   };
