@@ -1,0 +1,83 @@
+import { UserClass } from '@/lib/types';
+
+const userClasses: UserClass[] = [
+  {
+    id: 1,
+    user_id: 1,
+    class_id: 1,
+    class_rating: 4.5,
+    favorite: true,
+    created_at: new Date('2023-06-01T00:00:00Z'),
+    classes: {
+      class_id: 1,
+      location_id: 1,
+      name: 'Yoga 101',
+      description: 'A beginner level class for yoga enthusiasts',
+      date: '2023-06-30',
+      time: '10:00',
+      duration: 60,
+      tags: 'yoga,beginner,fitness',
+      instructor: 'John Doe',
+      total_rating: 4.5,
+      num_ratings: 100,
+      created_at: new Date('2023-01-01T00:00:00Z'),
+      locations: {
+        name: 'Downtown Studio',
+        photo_url: 'https://example.com/photo1.jpg',
+      },
+    },
+  },
+  {
+    id: 2,
+    user_id: 1,
+    class_id: 2,
+    class_rating: 5,
+    favorite: false,
+    created_at: new Date('2023-06-02T00:00:00Z'),
+    classes: {
+      class_id: 2,
+      location_id: 2,
+      name: 'Advanced Pilates',
+      description: 'An advanced level class for Pilates enthusiasts',
+      date: '2023-07-01',
+      time: '11:00',
+      duration: 90,
+      tags: 'pilates,advanced,fitness',
+      instructor: 'Jane Doe',
+      total_rating: 4.8,
+      num_ratings: 200,
+      created_at: new Date('2023-01-02T00:00:00Z'),
+      locations: {
+        name: 'Uptown Studio',
+        photo_url: 'https://example.com/photo2.jpg',
+      },
+    },
+  },
+  {
+    id: 3,
+    user_id: 1,
+    class_id: 3,
+    class_rating: null,
+    favorite: true,
+    created_at: new Date('2023-06-03T00:00:00Z'),
+    classes: {
+      class_id: 3,
+      location_id: null,
+      name: 'Online Zumba',
+      description: 'A fun and energetic online Zumba class',
+      date: '2023-07-02',
+      time: '12:00',
+      duration: null,
+      tags: 'zumba,online,fitness',
+      instructor: 'Alex Doe',
+      total_rating: null,
+      num_ratings: null,
+      created_at: new Date('2023-01-03T00:00:00Z'),
+      locations: {
+        name: null,
+      },
+    },
+  },
+];
+
+export default userClasses;
