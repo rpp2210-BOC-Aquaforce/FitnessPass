@@ -56,6 +56,12 @@ import GoogleProvider from 'next-auth/providers/google';
 import { checkPassword } from '../../../lib/auth';
 import supabase from '../../../lib/supabase';
 
+// interface User {
+//   user_id: string;
+//   email: string;
+//   password: string;
+// }
+
 export default NextAuth({
   session: {
     strategy: 'jwt',
@@ -63,6 +69,11 @@ export default NextAuth({
   },
   providers: [
     CredentialsProvider({
+      credentials: {
+        // id: { label: 'ID', type: 'user_id', placeholder: '' },
+        email: { label: 'email', type: 'email' },
+        password: { label: 'password', type: 'password' },
+      },
       async authorize(credentials) {
         if (!credentials) {
           throw new Error('Missing credentials!');
@@ -70,8 +81,9 @@ export default NextAuth({
         const userEmail = credentials.email;
         const { data: users, error } = await supabase
           .from('users')
-          .select('email, password')
+          .select('user_id, email, password')
           .eq('email', userEmail);
+          // .returns<User[]>();
 
         if (users === null) {
           throw new Error('No user found!');
@@ -92,7 +104,8 @@ export default NextAuth({
         }
         // if return obnject inside authroize,
         // then we let NextAuth know that authroization succeed
-        return { email: users[0].email };
+        return { id: users[0].user_id, email: users[0].email };
+
         // info stored in session token
       },
     }),
