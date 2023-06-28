@@ -121,12 +121,26 @@ export const authOptions: NextAuthOptions = {
         ...session,
         user: {
           ...session.user,
-          id: token.sub,
+          id: token.id,
+          studio_user: token.studio_user,
         },
       };
     },
+    jwt: ({ token, user }) => {
+      console.log('JWT Callback', { token, user });
+      if (user) {
+        const u = user as unknown as any;
+        return {
+          ...token,
+          id: u.id,
+          studio_user: JSON.parse(u.studioUser),
+        };
+      }
+      return token;
+    },
     //
     async signIn({ account, profile }) {
+      console.log('signin callback', { account, profile });
       if (account && account.provider === 'google') {
       // we can do DB queries here
         const { data: users, error } = await supabase
