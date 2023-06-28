@@ -5,10 +5,10 @@ import { useEffect, useState } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import Geocode from 'react-geocode';
-import supabase from '../../../../lib/supabase';
+import supabase from '@/lib/supabase';
 
-import List from '../../../../components/Search/ListView';
-import Map from '../../../../components/Search/MapView';
+import List from '@/components/Search/ListView';
+import Map from '@/components/Search/MapView';
 
 type ValuePiece = Date | null;
 type LatLngLiteral = google.maps.LatLngLiteral;

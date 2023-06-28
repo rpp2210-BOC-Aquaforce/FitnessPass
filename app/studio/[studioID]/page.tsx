@@ -1,9 +1,9 @@
 'use client';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth';
+
 import { redirect } from 'next/navigation';
 
 import React, { useState, useEffect } from 'react';
+import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import AddLocation from '@/components/AddLocation';
@@ -18,11 +18,12 @@ interface StudioInfo {
 }
 
 export default async function StudioPage() {
-  const session = await getServerSession(authOptions);
-  if (!session) {
-    redirect('/login');
-  }
-
+  useSession({
+    required: true,
+    onUnauthenticated() {
+      redirect('/login');
+    },
+  });
   const studioID = 1;
   const starterData: StudioInfo = {
     studio_name: 'Globogym',

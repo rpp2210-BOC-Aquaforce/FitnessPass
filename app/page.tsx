@@ -1,11 +1,4 @@
-import { Ping, Search } from '../components/index';
-
-type Todo = {
-  userId: number,
-  id: number,
-  title: string,
-  completed: boolean
-}
+import { Search } from '@/components/index';
 
 export default async function Home() {
   return (

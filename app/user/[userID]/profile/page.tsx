@@ -2,23 +2,21 @@
 
 import { redirect } from 'next/navigation';
 import { useSession } from 'next-auth/react';
-import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
 import {
+  faCalendar, faHeart, faDumbbell, faStar,
+} from '@fortawesome/free-solid-svg-icons';
+
+import Profile from '@/components/Profile';
+
+export default function UserProfilePage() {
   useSession({
     required: true,
     onUnauthenticated() {
       redirect('/login');
     },
   });
-
-  faCalendar, faHeart, faDumbbell, faStar,
-} from '@fortawesome/free-solid-svg-icons';
-import Profile from '../../../../components/Profile';
-
-export default function UserProfilePage() {
   return (
     <div className="text-2xl">
 

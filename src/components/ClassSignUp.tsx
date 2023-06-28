@@ -3,7 +3,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import supabase from '../lib/supabase';
+import supabase from '@/lib/supabase';
 
 export default function ClassSignUp({ class_id } : { class_id: number }) {
   const user_id = 1; // fake user_id for testing
