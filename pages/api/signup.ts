@@ -14,17 +14,21 @@ async function handler(
   }
 
   const data = req.body;
-  const { email, password } = data;
+  const { email, password, isStudio } = data;
 
   if (!email || !email.includes('@') || !password || password.trim().length < 7) {
     res.status(422).json({ message: 'Invalid Input, please re-enter your email or password' });
     return;
   }
 
+  const userTable = isStudio ? 'studio_users' : 'users';
+  const userEmail = isStudio ? 'studio_email' : 'email';
+  console.log('userTable', userTable);
+
   const { data: users, error } = await supabase
-    .from('users')
-    .select('email, password')
-    .eq('email', email);
+    .from(`${userTable}`)
+    .select(`${userEmail}, password`)
+    .eq(`${userEmail}`, email);
 
   if (error) {
     // Handle error here
@@ -38,8 +42,8 @@ async function handler(
   const hashedPassword = await hashPassword(password);
 
   await supabase
-    .from('users')
-    .insert([{ email, password: hashedPassword }]);
+    .from(`${userTable}`)
+    .insert([{ [userEmail]: email, password: hashedPassword }]);
 
   res.status(201).json({ message: 'new user account created!' });
 }

@@ -14,10 +14,11 @@ import classes from './auth-form.module.css';
 
 function AuthForm() {
   const [isLogin, setIsLogin] = useState(true);
-  const [isStudio, setIsStudio] = useState(true);
+  const [isStudio, setIsStudio] = useState(false);
   const [signInMessage, setSignInMessage] = useState<string>('');
   const [loadingMessage, setLoadingMessage] = useState('');
   const { data: session, status } = useSession();
+  console.log('outer session', session);
   const router = useRouter();
   const callbackUrl = `${process.env.NEXT_PUBLIC_URL}`;
 
@@ -43,12 +44,11 @@ function AuthForm() {
     setIsStudio((prevState) => !prevState);
   }
 
-  // eslint-disable-next-line consistent-return
-  async function createUser(email: any, password: any) {
+  async function createUser(email: any, password: any): Promise<any> {
     try {
       const response = await fetch('/api/signup', {
         method: 'POST',
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email, password, isStudio }),
         headers: {
           'Content-Type': 'application/json',
         },
@@ -60,6 +60,7 @@ function AuthForm() {
       return result;
     } catch (error) {
       console.log(error);
+      return null;
     }
   }
 
@@ -76,6 +77,7 @@ function AuthForm() {
         redirect: false,
         email: enteredEmail,
         password: enteredPassword,
+        isStudio,
         callbackUrl,
       });
       setLoadingMessage('');
@@ -95,6 +97,15 @@ function AuthForm() {
       } catch (error) {
         console.log(error);
       }
+    }
+  }
+
+  async function googleSignInHandler(event: { preventDefault: () => void; }) {
+    event.preventDefault();
+    try {
+      const result = await signIn('google', { callbackUrl });
+    } catch (error) {
+      console.error('Sign-in error:', error);
     }
   }
 
@@ -128,7 +139,7 @@ function AuthForm() {
             {isStudio ? 'Switch to Member Login' : 'Switch to Studio Login'}
           </button>
           <div>
-            <button type="button" onClick={() => signIn('google', { callbackUrl })}>
+            <button type="button" onClick={googleSignInHandler}>
               <span>
                 Log in with Google
               </span>
