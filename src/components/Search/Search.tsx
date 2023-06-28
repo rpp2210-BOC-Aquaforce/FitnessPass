@@ -14,13 +14,20 @@ type ValuePiece = Date | null;
 type LatLngLiteral = google.maps.LatLngLiteral;
 
 type CLASS = {
-  class_id: number,
-  date: string,
-  duration: number,
-  instructor: string,
-  locations: {name: string, street: string, city: string, state: string, zip: string},
-  name: string,
-  time: string,
+  class_id: number;
+  location_id: number;
+  name: string;
+  description: string;
+  date: string;
+  time: string;
+  duration: number;
+  tags: string; // Assuming tags is an array of strings
+  instructor: string;
+  total_rating: number;
+  num_ratings: number;
+  created_at: Date;
+  locations:
+  {name: string, street: string, city: string, state: string, zip: string, photo_url: string},
 }
 
 export default function Search() {
