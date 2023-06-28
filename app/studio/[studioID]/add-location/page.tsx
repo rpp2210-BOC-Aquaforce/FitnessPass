@@ -62,13 +62,13 @@ function StudioLocationForm() {
           },
         ]);
       if (error) {
-        console.error('Supabase Error: ', error);
+        // console.error('Supabase Error: ', error);
       } else {
         // Temporary Submit Routing for MVP
         window.location.href = '/studio/1234/';
       }
     } catch (err) {
-      console.error('Unexpected error: ', err);
+      // console.error('Unexpected error: ', err);
     }
 
     // Photo Insert is stretch goal

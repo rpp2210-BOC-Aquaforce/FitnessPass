@@ -8,35 +8,45 @@ type FavoriteEntryProps = {
 
 export default function FavoriteEntry({ favorite }: FavoriteEntryProps) {
   return (
-    <div className="text-2xl">
-      <h1 className="relative sm:inset-x-20 inset-y-4 text-5xl">My Favorites</h1>
-      <div className="relative sm:inset-10 inset-y-4 md:w-1/3 bg-white rounded-lg p-4 shadow">
-        <div className="mb-4">
-          <h2 className="text-xl font-bold">{favorite.name}</h2>
-          <p className="text-gray-500">{favorite.description}</p>
-        </div>
-        <div className="text-gray-600">
-          <p className="mb-2">
-            Instructor:
-            {' '}
-            {favorite.instructor}
+    <div className="w-full flex justify-center">
+      <div className="w-5/6 bg-white p-4 mb-4 text-xs justify-center h-25 mb-5 h-full rounded-lg shadow">
+        <div className="flex mb-4">
+          <div className="w-1/3 p-2 h-full flex items-start">
+            <img
+              src="https://images.pexels.com/photos/1954524/pexels-photo-1954524.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+              alt="gym"
+              className="w-full h-full object-cover"
+            />
+          </div>
+          <div className="w-2/3">
+            <div className="flex flex-wrap">
+              <p className="font-bold text-seafoam mr-4">Class Name:</p>
+              <p className="text-orange">{favorite.name}</p>
+            </div>
+            <div className="flex flex-wrap">
+              <p className="font-bold text-seafoam mr-4">Class Description:</p>
+              <p className="text-orange">{favorite.description}</p>
+            </div>
+            <div className="flex flex-wrap">
+              <p className="font-bold text-seafoam mr-4">Class Date:</p>
+              <p className="text-orange">{favorite.date}</p>
+            </div>
+            <div className="flex flex-wrap">
+              <p className="font-bold text-seafoam mr-4 mb-2">Time:</p>
+              <p className="text-orange">{favorite.time}</p>
+            </div>
+            <div className="flex flex-wrap">
+              <p className="font-bold text-seafoam mr-4 mb-2">Instructor:</p>
+              <p className="text-orange">{favorite.instructor}</p>
+            </div>
+            <button
+              type="button"
+              className="rounded-lg border border-black py-2 px-4 text-white hover:text-orangeLight border rounded-full border-white bg-orange"
+            >
+              Remove
+            </button>
+          </div>
 
-          </p>
-          <p className="mb-2">
-            Location:
-            {' '}
-            {favorite.location}
-          </p>
-          <p className="mb-2">
-            Date:
-            {' '}
-            {favorite.date}
-          </p>
-          <p>
-            Time:
-            {' '}
-            {favorite.time}
-          </p>
         </div>
       </div>
     </div>
