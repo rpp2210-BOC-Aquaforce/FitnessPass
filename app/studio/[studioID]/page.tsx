@@ -1,9 +1,12 @@
 'use client';
 
+import { redirect } from 'next/navigation';
+
 import React, { useState, useEffect } from 'react';
+import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
-import AddLocation from '../../../components/AddLocation';
+import AddLocation from '@/components/AddLocation';
 import fetchStudioData from '../../../pages/api/studioProfile';
 import styles from './page.module.css';
 // import supabase from '../../../lib/supabase';
@@ -14,7 +17,13 @@ interface StudioInfo {
   photo: string;
 }
 
-export default function StudioPage() {
+export default async function StudioPage() {
+  useSession({
+    required: true,
+    onUnauthenticated() {
+      redirect('/login');
+    },
+  });
   const studioID = 1;
   const starterData: StudioInfo = {
     studio_name: 'Globogym',

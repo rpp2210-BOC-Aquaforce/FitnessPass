@@ -2,11 +2,10 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-// eslint-disable-next-line import/order, import/no-duplicates
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
+import supabase from '@/lib/supabase';
 import FavoriteEntry from './FavoriteEntry';
-import supabase from '../lib/supabase';
 
 export default function MyFavorites() {
   interface ClassListAgain {

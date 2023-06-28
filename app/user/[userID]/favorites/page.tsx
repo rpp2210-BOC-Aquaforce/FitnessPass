@@ -5,7 +5,7 @@ import Link from 'next/link';
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendar, faHeart, faDumbbell } from '@fortawesome/free-solid-svg-icons';
-import Favorites from '../../../../components/Favorites';
+import Favorites from '@/components/Favorites';
 
 export default async function FavoritesPage() {
   return (

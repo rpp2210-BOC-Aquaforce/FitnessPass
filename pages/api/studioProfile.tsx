@@ -1,4 +1,4 @@
-import { supabase } from '../../lib';
+import { supabase } from '@/lib';
 
 interface StudioUser {
   studio_name: string;

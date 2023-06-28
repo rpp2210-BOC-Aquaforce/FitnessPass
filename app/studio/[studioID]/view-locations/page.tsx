@@ -2,7 +2,7 @@
 
 // import Location from './location';
 // import React, { useEffect, useState } from 'react';
-import AddLocation from '../../../../components/AddLocation';
+import AddLocation from '@/components/AddLocation';
 import styles from './page.module.css';
 
 export default function StudioLocations() {

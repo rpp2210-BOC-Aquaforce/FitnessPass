@@ -1,12 +1,21 @@
 'use client';
 
+import { redirect } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendar, faHeart, faDumbbell } from '@fortawesome/free-solid-svg-icons';
-import Ratings from '../../../../components/Ratings';
+import Ratings from '@/components/Ratings';
 
 export default function RatingsPage() {
+  useSession({
+    required: true,
+    onUnauthenticated() {
+      redirect('/login');
+    },
+  });
+
   return (
     <div>
       <Ratings />

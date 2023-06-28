@@ -10,9 +10,9 @@ import 'swiper/css/pagination';
 import {
   format, addDays, startOfWeek, isSameDay, differenceInWeeks,
 } from 'date-fns';
+import { UserClass } from '@/lib/types';
+import { parseLocalDate } from '@/lib';
 import { FitnessClasses } from '../FitnessClasses';
-import { UserClass } from '../../types';
-import { parseLocalDate } from '../../lib';
 
 const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 

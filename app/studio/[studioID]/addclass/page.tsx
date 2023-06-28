@@ -7,7 +7,7 @@ import React, {
   ChangeEvent,
   FormEvent,
 } from 'react';
-import supabase from '../../../../lib/supabase';
+import { supabase } from '@/lib';
 
 // To-Do:
 // Refactor tags section to be more user-friendly

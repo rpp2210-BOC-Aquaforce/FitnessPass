@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import { UserClass, ReactChildren } from '../../types';
+import { UserClass, ReactChildren } from '@/lib/types';
 
 function TextDiv({ children }: ReactChildren) {
   return <div className="text-seafoam text-[10px] pt-1 font-black uppercase tracking-wide">{children}</div>;
