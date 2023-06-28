@@ -1,14 +1,15 @@
 import { redirect } from 'next/navigation';
-import { useSession } from 'next-auth/react';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib/auth';
 import { Schedule } from '@/components/index';
 
-export default function Page({ params }: { params: { userID: string }}) {
-  useSession({
-    required: true,
-    onUnauthenticated() {
-      redirect('/login');
-    },
-  });
+export default async function Page({ params }: { params: { userID: string }}) {
+  const session = await getServerSession(authOptions);
+  if (!session) {
+    redirect('/login');
+  }
+
+  console.log('session', session);
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-3 sm:p-8 ">

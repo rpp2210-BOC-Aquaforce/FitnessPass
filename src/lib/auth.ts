@@ -39,7 +39,7 @@ export const authOptions: NextAuthOptions = {
         const userEmail = credentials.email;
         const { data: users, error }: { data: User[] | null; error: any } = await supabase
           .from('users')
-          .select('email, password')
+          .select('user_id, email, password')
           .eq('email', userEmail)
           .returns<User[]>();
 
@@ -72,4 +72,16 @@ export const authOptions: NextAuthOptions = {
       clientSecret: process.env.GOOGLE_CLIENT_SECRET || '',
     }),
   ],
+  callbacks: {
+    session: ({ session, token }) => {
+      console.log('Session Callback', { session, token });
+      return {
+        ...session,
+        user: {
+          ...session.user,
+          id: token.sub,
+        },
+      };
+    },
+  },
 };
