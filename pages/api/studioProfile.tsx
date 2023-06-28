@@ -1,4 +1,4 @@
-import supabase from '../lib/supabase.ts';
+import supabase from '../../lib/supabase.js';
 
 export default async function getStudioInfo() {
   try {
@@ -12,6 +12,7 @@ export default async function getStudioInfo() {
 
     // Return the data as a response
   } catch (error) {
-    console.error(error);
+    // console.log(error);
   }
+  return -1;
 }
