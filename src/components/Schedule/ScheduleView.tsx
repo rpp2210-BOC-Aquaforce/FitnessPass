@@ -2,7 +2,7 @@
 
 import { FitnessClasses } from '@/components/FitnessClasses';
 import React, {
-  useState, useEffect, useRef, useCallback,
+  useState, useEffect, useRef,
 } from 'react';
 import { Swiper } from 'swiper/react';
 import 'swiper/css';
@@ -25,30 +25,32 @@ type ScheduleViewProps = {
   // setUserClasses: React.Dispatch<React.SetStateAction<UserClass[]>>;
 }
 
+const initialSlide = 5;
+const totalSlides = 10;
+const today = new Date();
 // export default function ScheduleView({ userClasses, setUserClasses }: ScheduleViewProps) {
 export default function ScheduleView({ userClasses }: ScheduleViewProps) {
-  const [activeSlide, setActiveSlide] = useState<number>(26);
-  const [activeDay, setActiveDay] = useState<Date>(new Date());
+  const [activeSlide, setActiveSlide] = useState<number>(initialSlide);
+  const [activeDay, setActiveDay] = useState<Date>(today);
   const [viewAll, setViewAll] = useState<boolean>(false);
   const swiperRef = useRef<any>(null);
-
-  const gotoClassDate = useCallback((date: Date) => {
-    if (!swiperRef.current) return;
-    const initialSlideIndex = 26 + differenceInWeeks(date, new Date());
-    setActiveSlide(initialSlideIndex);
-    swiperRef.current.swiper.slideTo(initialSlideIndex, 250);
-    setActiveDay(date);
-  }, []);
 
   useEffect(() => {
     if (viewAll) {
       return;
     }
+    const gotoClassDate = (date: Date) => {
+      if (!swiperRef.current) return;
+      const initialSlideIndex = initialSlide + differenceInWeeks(date, today);
+      setActiveSlide(initialSlideIndex);
+      swiperRef.current.swiper.slideTo(initialSlideIndex, 250);
+      setActiveDay(date);
+    };
     const nextScheduledClass = getNextScheduledClass(userClasses);
     gotoClassDate(nextScheduledClass);
-  }, [userClasses, viewAll, gotoClassDate]);
+  }, [userClasses, viewAll]);
 
-  const weekTitle = getWeekTitle(activeSlide);
+  const weekTitle = getWeekTitle(activeSlide, initialSlide);
 
   const classesForActiveDay = userClasses.filter((userClass) => {
     const classDate = parseLocalDate(userClass.classes.date);
@@ -71,7 +73,7 @@ export default function ScheduleView({ userClasses }: ScheduleViewProps) {
         </button>
       </div>
       <Swiper
-        initialSlide={26} // Start from the current week
+        initialSlide={initialSlide} // Start from the current week
         slidesPerView={1}
         spaceBetween={16}
         freeMode
@@ -83,11 +85,11 @@ export default function ScheduleView({ userClasses }: ScheduleViewProps) {
           console.log('activeSlide:', activeSlide);
           console.log('swiper.activeIndex:', swiper.activeIndex);
           setActiveSlide(swiper.activeIndex);
-          setActiveDay(addDays(new Date(), swiper.activeIndex - 26));
+          setActiveDay(addDays(today, swiper.activeIndex - initialSlide));
         }}
         className="w-full h-full"
       >
-        {renderWeekSlides(52, activeDay, setActiveDay, scheduledDates)}
+        {renderWeekSlides(totalSlides, activeDay, setActiveDay, scheduledDates)}
         {' '}
         {/* Display 52 weeks */}
         <FitnessClasses userClasses={viewAll ? userClasses : classesForActiveDay} />
