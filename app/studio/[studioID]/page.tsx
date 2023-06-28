@@ -28,7 +28,7 @@ export default function StudioPage() {
   }, []);
 
   useEffect(() => {
-    console.log('studio info state: ', studioInfo)
+    // console.log('studio info state: ', studioInfo)
   }, [studioInfo]);
 
   return (

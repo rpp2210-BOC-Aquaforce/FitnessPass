@@ -1,9 +1,16 @@
 import { supabase } from '../../lib';
 
-const fetchStudioData = async (studioID: number, setter: Function ) => {
+interface StudioUser {
+  studio_name: string;
+  studio_email: string;
+  photo: string;
+}
+type SetterFunction = (data: StudioUser) => void;
+
+const fetchStudioData = async (studioID: number, setter: SetterFunction) => {
   const { data, error } = await supabase
     .from('studio_users')
-    .select('*')
+    .select('studio_name, studio_email, photo')
     .eq('studio_id', studioID);
   if (error) {
     // console.error(error);
