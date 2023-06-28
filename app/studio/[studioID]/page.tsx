@@ -4,8 +4,9 @@ import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import AddLocation from '../../../components/AddLocation';
+import fetchStudioData from '../../../pages/api/studioProfile';
 import styles from './page.module.css';
-import supabase from '../../../lib/supabase';
+// import supabase from '../../../lib/supabase';
 
 interface StudioInfo {
   studio_name: string;
@@ -22,22 +23,8 @@ export default function StudioPage() {
   };
   const [studioInfo, setStudioInfo] = useState<StudioInfo>(starterData);
 
-  const fetchStudioData = async () => {
-    const { data, error } = await supabase
-      .from('studio_users')
-      .select('*')
-      .eq('studio_id', studioID);
-    if (error) {
-      console.error(error);
-    } else {
-      // Do something with data
-      console.log('data: ', data[0]);
-      setStudioInfo(data[0]);
-    }
-  };
-
   useEffect(() => {
-    fetchStudioData();
+    fetchStudioData(studioID, setStudioInfo);
   }, []);
 
   useEffect(() => {

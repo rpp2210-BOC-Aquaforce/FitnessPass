@@ -28,6 +28,8 @@ export default function StudioLocations() {
   useEffect(() => {
     fetchStudioLocations();
   }, []);
+
+
   return (
     <div className={styles.locationList}>
       <h1 className={styles.header}>All Locations</h1>

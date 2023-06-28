@@ -1,18 +1,18 @@
-import supabase from '../../lib/supabase.js';
+import { supabase } from '../../lib';
 
-export default async function getStudioInfo() {
-  try {
-    // Make a GET request to your Supabase database
-    const { data, error } = await supabase.from('studio_users').select('*');
-
-    if (error) {
-      throw error;
-    }
-    return data;
-
-    // Return the data as a response
-  } catch (error) {
-    // console.log(error);
+const fetchStudioData = async (studioID: number, setter: Function ) => {
+  const { data, error } = await supabase
+    .from('studio_users')
+    .select('*')
+    .eq('studio_id', studioID);
+  if (error) {
+    // console.error(error);
+  } else {
+    // Do something with data
+    // console.log('data: ', data[0]);
+    setter(data[0]);
   }
   return -1;
-}
+};
+
+export default fetchStudioData;
