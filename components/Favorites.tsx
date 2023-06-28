@@ -1,28 +1,14 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import supabase from '../lib/supabase';
+import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
+// eslint-disable-next-line import/order, import/no-duplicates
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUser } from '@fortawesome/free-solid-svg-icons';
 import FavoriteEntry from './FavoriteEntry';
+import supabase from '../lib/supabase';
 
 export default function MyFavorites() {
-  // interface ClassListHere {
-  //   class_id: number;
-  //   id: number;
-  //   user_id: number;
-  //   favorite: boolean;
-  //   class_rating: number;
-  //   created_at: string;
-  // }
-
-  // const defaultClassHere: ClassListHere = {
-  //   class_id: 0,
-  //   id: 0,
-  //   user_id: 0,
-  //   favorite: false,
-  //   class_rating: 0,
-  //   created_at: 'string',
-  // };
-
   interface ClassListAgain {
     class_id: number;
     location_id: number;
@@ -37,21 +23,6 @@ export default function MyFavorites() {
     created_at: string;
   }
 
-  // const defaultClassAgain: ClassListAgain = {
-  //   class_id: 0,
-  //   location_id: 0,
-  //   name: 'string',
-  //   description: 'string',
-  //   date: 'string',
-  //   time: 'string',
-  //   duration: 0,
-  //   instructor: 'string',
-  //   total_rating: 0,
-  //   num_ratings: 0,
-  //   created_at: 'string',
-  // };
-
-  // const [classList, setClassListHere] = useState<ClassListHere>(defaultClassHere);
   const [classListAgain, setClassListAgain] = useState<ClassListAgain[]>([]);
 
   async function getClassesAgain() {
@@ -79,8 +50,14 @@ export default function MyFavorites() {
   }, []);
 
   return (
-    <div className="text-2xl">
-
+    <div className="text-m">
+      <div className="flex justify-end md:w-1/3 mt-5 text-seafoam">
+        <Link href="/user/123/profile">
+          My Profile
+          <FontAwesomeIcon icon={faUser} className="pl-2 pr-3" />
+        </Link>
+      </div>
+      <h1 className="relative mx-auto text-center text-2xl text-seafoam mb-8">My Favorites</h1>
       {classListAgain.map((favorite: ClassListAgain) => (
         <FavoriteEntry
           favorite={favorite}

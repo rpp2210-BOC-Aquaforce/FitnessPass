@@ -13,6 +13,8 @@ module.exports = {
         'mint-orange': '#FFBF69',
         'mint-seafoam': '#CBF3F0',
         seafoam: '#2EC4B6',
+        orange: 'rgb(255, 159, 28)',
+        orangeLight: 'rgb(255, 191, 105)',
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(circle at center, #CBF3F0, #2EC4B6, #FFFFFF)',
