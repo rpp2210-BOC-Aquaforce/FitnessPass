@@ -33,6 +33,7 @@ export default function ScheduleView({ userClasses }: ScheduleViewProps) {
   const [activeSlide, setActiveSlide] = useState<number>(initialSlide);
   const [activeDay, setActiveDay] = useState<Date>(today);
   const [viewAll, setViewAll] = useState<boolean>(false);
+  const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(false);
   const swiperRef = useRef<any>(null);
 
   useEffect(() => {
@@ -59,6 +60,12 @@ export default function ScheduleView({ userClasses }: ScheduleViewProps) {
 
   const scheduledDates = getScheduledDates(userClasses);
 
+  const handleViewAllClick = async () => {
+    setIsButtonDisabled(true);
+    setViewAll((prev) => !prev);
+    setTimeout(() => setIsButtonDisabled(false), 100);
+  };
+
   return (
     <div className="flex flex-col items-start p-2 mt-2 bg-white shadow-md rounded-lg w-full min-h-[148px] h-full">
       <div className="flex w-full justify-between">
@@ -66,7 +73,8 @@ export default function ScheduleView({ userClasses }: ScheduleViewProps) {
         <button
           type="button"
           className="text-sm font-semibold mb-5 p-2"
-          onClick={() => setViewAll((prev) => !prev)}
+          onClick={handleViewAllClick}
+          disabled={isButtonDisabled}
         >
           {viewAll ? 'View by Date' : 'View All'}
 
