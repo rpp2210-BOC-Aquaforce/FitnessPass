@@ -35,8 +35,6 @@ export default function MyFavorites() {
         console.error('Supabase Error: ', error);
       } else {
         setClassListAgain(allClasses); // Update the state with the array of classes
-        console.log('my fav', classListAgain);
-        console.log('type here', typeof allClasses);
         return allClasses;
       }
     } catch (err) {

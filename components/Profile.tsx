@@ -52,9 +52,6 @@ export default function Profile() {
         console.error('Supabase Error: ', error);
       } else {
         setUser(users[0]);
-        console.log('users', user);
-        console.log('type HERE OK', typeof user);
-
         return users;
       }
     } catch (err) {
