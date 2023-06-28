@@ -1,10 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import React, { useState, useEffect } from 'react';
-// eslint-disable-next-line import/no-extraneous-dependencies
+import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { faCalendar, faHeart, faDumbbell } from '@fortawesome/free-solid-svg-icons';
 import Ratings from '../../../../components/Ratings';
 
