@@ -7,8 +7,8 @@ import 'react-calendar/dist/Calendar.css';
 import Geocode from 'react-geocode';
 import supabase from '../../../../lib/supabase';
 
-import List from '../../../../components/ListView';
-import Map from '../../../../components/MapView';
+import List from '../../../../components/Search/ListView';
+import Map from '../../../../components/Search/MapView';
 
 type ValuePiece = Date | null;
 type LatLngLiteral = google.maps.LatLngLiteral;
@@ -35,7 +35,7 @@ export default function Search() {
   const [searched, setSearched] = useState(false);
   const [Classes, setClasses] = useState<CLASS[]>([]);
 
-  const apiKey: string | undefined = process.env.GOOGLE_MAPS_API_KEY as string;
+  const apiKey: string | undefined = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string;
 
   useEffect(() => {
     if ('geolocation' in navigator) {
@@ -122,7 +122,7 @@ export default function Search() {
   };
 
   return (
-    <div className="text-black">
+    <div className="text-black mt-10">
       <div className="flex">
         <input
           placeholder="Yoga, Pilates, Zumba..."

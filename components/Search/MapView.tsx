@@ -9,6 +9,7 @@ import {
   useLoadScript, GoogleMap, Marker, InfoWindow,
 } from '@react-google-maps/api';
 import Geocode from 'react-geocode';
+import ClassSignUp from '../ClassSignUp';
 
 type CLASS = {
   class_id: number,
@@ -43,7 +44,7 @@ export default function Map({ center, classes, setList }: MapProps) {
   const [activeMarker, setActiveMarker] = useState<number | null>(null);
   const [markers, setMarkers] = useState<marker[]>([]);
 
-  const apiKey: string | undefined = process.env.GOOGLE_MAPS_API_KEY as string;
+  const apiKey: string | undefined = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string;
 
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: apiKey,
@@ -169,7 +170,7 @@ export default function Map({ center, classes, setList }: MapProps) {
                     <div>
                       {address}
                     </div>
-                    <button type="button" className="bg-orange-500 text-white">Sign Up</button>
+                    <ClassSignUp class_id={class_id} />
                   </div>
                 </InfoWindow>
               ) : null}

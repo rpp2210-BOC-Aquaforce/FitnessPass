@@ -2,6 +2,8 @@
 
 'use client';
 
+import ClassSignUp from '../ClassSignUp';
+
 type CLASS = {
   class_id: number,
   date: string,
@@ -57,7 +59,7 @@ export default function List({ classes, setList } : ListProps) {
                 {location.state}
                 {location.zip}
               </div>
-              <button type="button" className="bg-orange-500 text-white">Sign Up</button>
+              <ClassSignUp class_id={class_id} />
             </div>
           );
         })}
