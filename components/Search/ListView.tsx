@@ -1,68 +1,84 @@
+/* eslint-disable @next/next/no-img-element */
 /* eslint-disable camelcase */
 
 'use client';
 
 import ClassSignUp from '../ClassSignUp';
+import { Class, ReactChildren } from '../../types';
 
-type CLASS = {
-  class_id: number,
-  date: string,
-  duration: number,
-  instructor: string,
-  locations: {name: string, street: string, city: string, state: string, zip: string},
-  name: string
-  time: string
+// type CLASS = {
+//   class_id: number,
+//   date: string,
+//   duration: number,
+//   instructor: string,
+//   locations:{
+//     name: string, street: string, city: string, state: string, zip: string, photo_url: string},
+//   name: string
+//   time: string
+// }
+
+function TextDiv({ children }: ReactChildren) {
+  return <div className="text-seafoam text-[10px] pt-1 font-black uppercase tracking-wide">{children}</div>;
 }
 
-interface ListProps {
-  classes: CLASS[];
-  setList: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-export default function List({ classes, setList } : ListProps) {
+export default function List(
+  { classes, setList } : {classes: Class[], setList: React.Dispatch<React.SetStateAction<boolean>>},
+) {
   if (classes.length === 0) return <div>0 result</div>;
   return (
     <div>
-      <div>
+      <div className="text-mint-orange mt-2">
         {classes.length}
         {' '}
         results
       </div>
-      <button type="button" className="bg-green-500 text-white" onClick={() => setList(false)}>Map</button>
+      <button type="button" className="text-center text-white text-xs font-black uppercase tracking-wide rounded-md bg-green-400 px-2 py-1 mt-2" onClick={() => setList(false)}>Map</button>
       <div>
         {classes.map(({
-          class_id, name, date, time, duration, instructor, locations,
-        }) => {
-          const location = locations;
-          return (
-            <div key={class_id} className="p-5">
-              <h3>
-                {name}
-                {' - '}
-                {location.name}
-              </h3>
-              <h5>{instructor}</h5>
-              <div>
-                {date}
-                {' '}
+          class_id, name, time, duration, total_rating, locations,
+        }) => (
+          <div key={class_id} className="flex items-start mt-4 bg-white w-full">
+            <img
+              className="h-full w-[116.60px] object-cover"
+              src={locations.photo_url ?? 'https://via.placeholder.com/117x104'}
+              alt="Placeholder"
+            />
+            <div className="flex flex-col justify-between ml-4 flex-grow">
+              <TextDiv>{name}</TextDiv>
+              <TextDiv>
                 {time}
-              </div>
-              <div>
+                {' '}
+                (
                 {duration}
-                {' minutes'}
-              </div>
-              <div>
-                {location.street}
+                {' '}
+                min)
+              </TextDiv>
+              <TextDiv>{locations.name}</TextDiv>
+              <TextDiv>
+                {locations.street}
                 {', '}
-                {location.city}
+                {locations.city}
                 {', '}
-                {location.state}
-                {location.zip}
+                {locations.state}
+                {locations.zip}
+              </TextDiv>
+              <TextDiv>
+                Ratings:
+                {' '}
+                {total_rating}
+              </TextDiv>
+            </div>
+            <div className="flex flex-col justify-between items-end ml-4">
+              <div className="flex space-x-2">
+                <div className="w-2 h-2 bg-gray-400" />
+                <div className="w-2 h-2 bg-gray-400" />
+                <div className="w-2 h-2 bg-gray-400" />
+                <div className="w-2 h-2 bg-gray-400" />
               </div>
               <ClassSignUp class_id={class_id} />
             </div>
-          );
-        })}
+          </div>
+        ))}
       </div>
     </div>
   );

@@ -5,6 +5,10 @@ export type ReactChildren = {
 export interface Location {
   name: string | null;
   photo_url?: string | null;
+  street: string | null;
+  city: string | null;
+  state: string | null;
+  zip: string | null;
 }
 
 export interface Class {
