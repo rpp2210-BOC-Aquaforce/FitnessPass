@@ -125,6 +125,7 @@ export const authOptions: NextAuthOptions = {
         },
       };
     },
+    //
     async signIn({ account, profile }) {
       if (account && account.provider === 'google') {
       // we can do DB queries here
