@@ -1,5 +1,6 @@
 'use client';
 
+import React from 'react';
 import { UserClass } from '@/lib/types';
 import { SwiperSlide } from 'swiper/react';
 import {
@@ -85,8 +86,8 @@ export const renderWeekSlides = (
   return weeks;
 };
 
-export const getWeekTitle = (activeSlide: number) => {
-  const weekDifference = activeSlide - 26;
+export const getWeekTitle = (activeSlide: number, initialSlide = 26) => {
+  const weekDifference = activeSlide - initialSlide;
   const plural = Math.abs(weekDifference) === 1 ? '' : 's';
   if (weekDifference < 0) {
     return `${Math.abs(weekDifference)} Week${plural} Ago`;
