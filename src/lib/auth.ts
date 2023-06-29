@@ -1,4 +1,3 @@
-/* eslint-disable indent */
 import CredentialsProvider from 'next-auth/providers/credentials';
 import GoogleProvider from 'next-auth/providers/google';
 import { hash, compare } from 'bcryptjs';
@@ -14,12 +13,6 @@ export async function checkPassword(password: string, hashedPassword: string) {
   const validPass = await compare(password, hashedPassword);
   return validPass;
 }
-
-// interface User {
-//   studio_id: string;
-//   studio_email: string;
-//   password: string;
-// }
 
 export const authOptions: NextAuthOptions = {
   session: {
@@ -40,17 +33,16 @@ export const authOptions: NextAuthOptions = {
           throw new Error('Missing credentials!');
         }
         const userEmail = credentials.email;
-        const studioUser = credentials.isStudio;
+        const studioUser = JSON.parse(credentials.isStudio);
 
         console.log('credentials.isStudio', credentials.isStudio);
 
-        if (studioUser === 'true') {
+        if (studioUser === true) {
           const { data: users, error } = await supabase
           // const { data: users, error }: { data: User[] | null; error: any } = await supabase
-          .from('studio_users')
-          .select('studio_id, studio_email, password')
-          .eq('studio_email', userEmail);
-          // .returns<User[]>();
+            .from('studio_users')
+            .select('studio_id, studio_email, password')
+            .eq('studio_email', userEmail);
 
           if (users === null) {
             throw new Error('No user found!');
@@ -72,8 +64,6 @@ export const authOptions: NextAuthOptions = {
             throw new Error('your password is incorrect!');
           }
 
-          // return { id: result[id], email: result };
-          // return { id: users[0].user_id, email: users[0].email };
           return { id: users[0].studio_id, email: users[0].studio_email, studioUser };
         }
         const { data: users, error } = await supabase
@@ -88,7 +78,6 @@ export const authOptions: NextAuthOptions = {
           console.log(error);
         }
 
-        console.log('regular users', users);
         if (users && users.length === 0) {
           throw new Error('No user found!');
         }
@@ -99,10 +88,7 @@ export const authOptions: NextAuthOptions = {
           throw new Error('your password is incorrect!');
         }
 
-        console.log('users[0].user_id', users[0].user_id);
         return { id: users[0].user_id, email: users[0].email, studioUser };
-        // return { ...users, studioUser };
-        //  return { users };
       },
     }),
 
@@ -112,64 +98,112 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   pages: {
-    error: '/api/auth/error', // Specify the custom error handler
+    error: '/api/auth/error',
   },
+
   callbacks: {
-    session: ({ session, token }) => {
-      console.log('Session Callback', { session, token });
-      return {
-        ...session,
-        user: {
-          ...session.user,
-          id: token.id,
-          studio_user: token.studio_user,
-        },
-      };
-    },
-    jwt: ({ token, user }) => {
-      console.log('JWT Callback', { token, user });
-      if (user) {
-        const u = user as unknown as any;
-        return {
-          ...token,
-          id: u.id,
-          studio_user: JSON.parse(u.studioUser),
-        };
-      }
-      return token;
-    },
-    //
-    async signIn({ account, profile }) {
-      console.log('signin callback', { account, profile });
+    async signIn({
+      account, profile,
+    }) {
+      // console.log('signin callback', {
+      //   user, account, profile, email, credentials,
+      // });
       if (account && account.provider === 'google') {
-      // we can do DB queries here
-        const { data: users, error } = await supabase
+        const { data: members, error: memberError } = await supabase
           .from('users')
           .select('user_id, email, password')
           .eq('email', profile && profile.email);
 
-        // if (users === null) {
-        //   throw new Error('No user found!');
-        // }
+        const { data: studio, error: studioError } = await supabase
+          .from('studio_users')
+          .select('studio_id, studio_email, password')
+          .eq('studio_email', profile && profile.email);
 
-        if (error) {
-          console.log(error);
+        if (memberError) {
+          console.log(memberError);
+          return false;
         }
-        if (users && users.length === 0) {
-          // window.location.href = `${process.env.NEXT_PUBLIC_URL}/login`;
-          // throw new Error('No user found!');
-          // res.redirect('/signup');
+        if (studioError) {
+          console.log(memberError);
           return false;
         }
 
-        // const isValidPassword = await checkPassword(credentials.password, users[0].password);
+        // if not find , add to DB
+        if (members.length === 0 && studio.length === 0) {
+          return false;
+        }
 
-        // if (!isValidPassword) {
-        //   throw new Error('your password is incorrect!');
-        // }
         return true;
       }
-      return true; // do other things for other providers
+      return true;
+    },
+    session: async ({ session, token }) => {
+      // console.log('Session Callback1', { session, user, token });
+      if (token.provider === 'credentials') {
+        return {
+          ...session,
+          user: {
+            ...session.user,
+            id: token.id,
+            studio_user: token.studio_user,
+          },
+        };
+      }
+      let studioUser = true;
+      let id;
+      const { data: members, error: memberError } = await supabase
+        .from('users')
+        .select('user_id, email, password')
+        .eq('email', token.email);
+
+      if (memberError) {
+        console.log(memberError);
+      }
+
+      if (members && members.length !== 0) {
+        studioUser = false;
+        id = members[0]?.user_id;
+      } else {
+        const { data: studio, error: studioError } = await supabase
+          .from('studio_users')
+          .select('studio_id, studio_email, password')
+          .eq('studio_email', token.email);
+
+        if (studioError) {
+          console.log(memberError);
+        }
+
+        if (studio && studio.length !== 0) {
+          studioUser = true;
+          id = studio[0]?.studio_id;
+        }
+      }
+      return {
+        ...session,
+        user: {
+          ...session.user,
+          id,
+          studio_user: studioUser,
+        },
+      };
+    },
+
+    jwt: ({
+      token, user, account,
+    }) => {
+      // console.log('JWT Callback', {
+      //   token, user, account, profile,
+      // });
+      const u = user as unknown as any;
+      if (user) {
+        return {
+          ...token,
+          ...account,
+          id: u.id,
+          studio_user: u.studioUser,
+        };
+      }
+      return token;
     },
   },
 };

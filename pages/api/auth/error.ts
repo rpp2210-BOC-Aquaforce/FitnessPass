@@ -7,7 +7,7 @@ const errorHandler: NextApiHandler = async (req, res) => {
   if (error === 'AccessDenied') {
     // Handle the "AccessDenied" error
     const loginLink = "<a href='/login'>here</a>";
-    const errorMessage = `Access denied. Click ${loginLink} to sign in.`;
+    const errorMessage = `You have not registered with us. Please click ${loginLink} to sign up :)`;
     const htmlResponse = `<!DOCTYPE html><html><body>${errorMessage}</body></html>`;
     res.setHeader('Content-Type', 'text/html');
     res.status(403).send(htmlResponse);

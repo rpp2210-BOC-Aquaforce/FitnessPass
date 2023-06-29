@@ -103,7 +103,8 @@ function AuthForm() {
   async function googleSignInHandler(event: { preventDefault: () => void; }) {
     event.preventDefault();
     try {
-      const result = await signIn('google', { callbackUrl });
+      const result = await signIn('google', { isStudio });
+      // const result = await signIn('google', { callbackUrl });
     } catch (error) {
       console.error('Sign-in error:', error);
     }

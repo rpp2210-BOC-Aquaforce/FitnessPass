@@ -39,6 +39,7 @@ async function handler(
     res.status(422).json({ message: 'User is already exist' });
     return;
   }
+
   const hashedPassword = await hashPassword(password);
 
   await supabase
