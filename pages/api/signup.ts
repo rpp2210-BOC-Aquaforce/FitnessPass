@@ -23,12 +23,12 @@ async function handler(
 
   const userTable = isStudio ? 'studio_users' : 'users';
   const userEmail = isStudio ? 'studio_email' : 'email';
-  console.log('userTable', userTable);
-
+  // console.log('userTable', userTable);
+  // change the sign up logic here -> scen both studio_user and users table;
   const { data: users, error } = await supabase
-    .from(`${userTable}`)
-    .select(`${userEmail}, password`)
-    .eq(`${userEmail}`, email);
+    .from('users')
+    .select('email, password')
+    .eq('email', email);
 
   if (error) {
     // Handle error here
@@ -36,6 +36,21 @@ async function handler(
   }
 
   if (users && users.length !== 0) {
+    res.status(422).json({ message: 'User is already exist' });
+    return;
+  }
+
+  const { data: studioUsers, error: errorStudioUsers } = await supabase
+    .from('studio_users')
+    .select('studio_email, password')
+    .eq('studio_email', email);
+
+  if (errorStudioUsers) {
+    // Handle error here
+    console.error(errorStudioUsers);
+  }
+
+  if (studioUsers && studioUsers.length !== 0) {
     res.status(422).json({ message: 'User is already exist' });
     return;
   }
