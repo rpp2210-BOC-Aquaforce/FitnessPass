@@ -3,10 +3,14 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import supabase from '../lib/supabase';
 
 export default function ClassSignUp({ class_id } : { class_id: number }) {
-  const user_id = 1; // fake user_id for testing
+  const user_id = null; // fake user_id for testing
+  // const user_id = 1; // fake user_id for testing
+
+  const router = useRouter();
 
   const [signed, setSigned] = useState<boolean>(false);
 
@@ -28,12 +32,16 @@ export default function ClassSignUp({ class_id } : { class_id: number }) {
     }
     return null;
   };
+
   useEffect(() => {
     checkSignUp();
   }, []);
 
   const signUp = async () => {
-    setSigned(true);
+    if (!user_id) {
+      console.log('guest user');
+      router.push('/login');
+    }
     try {
       const { data, error } = await supabase
         .from('user_classes')
@@ -43,9 +51,8 @@ export default function ClassSignUp({ class_id } : { class_id: number }) {
       if (error) {
         return error;
       }
-      if (data) {
-        console.log(`signed up user ${user_id} in class ${class_id}`);
-      }
+      setSigned(true);
+      console.log(`signed up user ${user_id} in class ${class_id}`, data);
     } catch (err) {
       console.error('Unexpected error: ', err);
     }
@@ -53,7 +60,6 @@ export default function ClassSignUp({ class_id } : { class_id: number }) {
   };
 
   const cancelSignUp = async () => {
-    setSigned(false);
     try {
       const { data, error } = await supabase
         .from('user_classes')
@@ -64,9 +70,8 @@ export default function ClassSignUp({ class_id } : { class_id: number }) {
       if (error) {
         return error;
       }
-      if (data) {
-        console.log(`cancel sign up user ${user_id} in class ${class_id}`);
-      }
+      setSigned(false);
+      console.log(`cancel user ${user_id} in class ${class_id}`, data);
     } catch (err) {
       console.error('Unexpected error: ', err);
     }
