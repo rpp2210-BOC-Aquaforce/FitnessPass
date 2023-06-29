@@ -7,18 +7,25 @@ import React, {
   ChangeEvent,
   FormEvent,
 } from 'react';
-import { getLocations, addClass } from '../lib/api';
-import { StudioAddClass } from '../types';
+import { getLocations, addClass } from '../../lib/api';
+import { StudioAddClass } from '../../types';
 
 // To-Do:
 // Refactor tags section to be more user-friendly
 // Handle UTC timezome consistency for class start time
 // Route based on studio id, not hard-coded studio id
 
-export default function AddClassForm() {
+type propsTypes = {
+  studioLocs: Array<{
+    location_id: string,
+    name: string,
+  }>
+}
+
+export default function AddClassForm({ studioLocs }:propsTypes) {
   const router = useRouter();
 
-  const [studioLocs, setStudioLocs] = useState([{ location_id: '', name: '' }]);
+  // const [studioLocs, setStudioLocs] = useState([{ location_id: '', name: '' }]);
   const [formData, setFormData] = useState<StudioAddClass>({
     loc_id: '',
     location: '',
@@ -31,22 +38,22 @@ export default function AddClassForm() {
     instructor: '',
   });
 
-  // To be refactored to fetch studio locations on form load (need studio id from auth)
-  // To be refactored -- if no studio locations, give curtosey message to add studio location
-  const fetchStudioLocations = async () => {
-    const studioId = '2'; // Temporarily hard-coded until auth merged in *
-    await getLocations(studioId)
-      .then((data) => {
-        setStudioLocs(data);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  };
+  // // To be refactored to fetch studio locations on form load (need studio id from auth)
+  // // To be refactored -- if no studio locations, give curtosey message to add studio location
+  // const fetchStudioLocations = async () => {
+  //   const studioId = '2'; // Temporarily hard-coded until auth merged in *
+  //   await getLocations(studioId)
+  //     .then((data) => {
+  //       setStudioLocs(data);
+  //     })
+  //     .catch((err) => {
+  //       console.error(err);
+  //     });
+  // };
 
-  useEffect(() => {
-    fetchStudioLocations();
-  }, []);
+  // useEffect(() => {
+  //   fetchStudioLocations();
+  // }, []);
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement |
     HTMLSelectElement>) => {
@@ -80,13 +87,14 @@ export default function AddClassForm() {
 
   return (
     <div className="flex flex-col content-start justify-center items-center py-4 gap-y-4">
-      <h1 className="mt-4 text-3xl text-orange-500 font-semibold tracking-wider">Add Class</h1>
-      <form onSubmit={handleSubmit} className="flex flex-col gap-y-2">
-        <label htmlFor="location">
+      <h1 className="mt-4 text-3xl text-orange-500 font-semibold tracking-wider" data-testid="add_class_title">Add Class</h1>
+      <form data-testid="add_class_form" onSubmit={handleSubmit} className="flex flex-col gap-y-2">
+        <label htmlFor="location" data-testid="location_label">
           Location:
           <div className="relative">
             <select
               id="location"
+              data-testid="location_selector"
               name="location"
               value={formData.location}
               onChange={handleInputChange}
@@ -110,6 +118,7 @@ export default function AddClassForm() {
           Class Name:
           <input
             id="class_name"
+            data-testid="class_name_input"
             type="text"
             name="class_name"
             placeholder="Class Name"
@@ -123,6 +132,7 @@ export default function AddClassForm() {
           Class Description:
           <textarea
             id="class_description"
+            data-testid="class_description_input"
             spellCheck="true"
             name="class_description"
             placeholder="Class Description"
@@ -136,6 +146,7 @@ export default function AddClassForm() {
           Instructor:
           <input
             id="instructor"
+            data-testid="class_instructor_input"
             type="text"
             name="instructor"
             placeholder="Instructor"
@@ -200,6 +211,7 @@ export default function AddClassForm() {
         </label>
         <button
           type="submit"
+          data-testid="add_class_submit"
           className="mt-6 bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
         >
           Add Class
@@ -207,6 +219,7 @@ export default function AddClassForm() {
       </form>
       <button
         type="submit"
+        data-testid="add_class_cancel"
         onClick={() => router.push('/studio/1234')}
         className="inline-block align-baseline font-bold text-sm text-orange-500 hover:text-orange-600"
       >
