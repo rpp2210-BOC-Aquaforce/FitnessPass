@@ -3,11 +3,10 @@
 import { useRouter } from 'next/navigation';
 import React, {
   useState,
-  useEffect,
   ChangeEvent,
   FormEvent,
 } from 'react';
-import { getLocations, addClass } from '../../lib/api';
+import { addClass } from '../../lib/api';
 import { StudioAddClass } from '../../types';
 
 // To-Do:
@@ -37,23 +36,6 @@ export default function AddClassForm({ studioLocs }:propsTypes) {
     class_tags: '',
     instructor: '',
   });
-
-  // // To be refactored to fetch studio locations on form load (need studio id from auth)
-  // // To be refactored -- if no studio locations, give curtosey message to add studio location
-  // const fetchStudioLocations = async () => {
-  //   const studioId = '2'; // Temporarily hard-coded until auth merged in *
-  //   await getLocations(studioId)
-  //     .then((data) => {
-  //       setStudioLocs(data);
-  //     })
-  //     .catch((err) => {
-  //       console.error(err);
-  //     });
-  // };
-
-  // useEffect(() => {
-  //   fetchStudioLocations();
-  // }, []);
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement |
     HTMLSelectElement>) => {

@@ -1,8 +1,7 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+/* eslint-disable import/no-extraneous-dependencies */
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 // import { useRouter } from 'next/navigation';
-import Select from 'react-select';
-import selectEvent from 'react-select-event';
 import AddClassForm from './AddClassForm';
 import studioLocations from './mockStudioLocations';
 
@@ -82,7 +81,7 @@ describe('Add Class Form', () => {
     const submitButton = screen.getByTestId('add_class_submit');
     await user.click(submitButton);
     expect(screen.getByTestId('add_class_title')).not.toBeInTheDocument();
-  })
+  });
 
   it('Redirects to the studio profile page on form cancel', async () => {
     render(<AddClassForm studioLocs={studioLocations} />);
@@ -90,5 +89,5 @@ describe('Add Class Form', () => {
     const cancelButton = screen.getByTestId('add_class_cancel');
     await user.click(cancelButton);
     expect(screen.getByTestId('add_class_title')).not.toBeInTheDocument();
-  })
+  });
 });
