@@ -8,6 +8,7 @@ import React, {
   FormEvent,
 } from 'react';
 import { getLocations, addClass } from '../../../../lib/api';
+import { StudioAddClass } from '../../../../types';
 
 // To-Do:
 // Refactor tags section to be more user-friendly
@@ -15,23 +16,11 @@ import { getLocations, addClass } from '../../../../lib/api';
 // Route based on studio id, not hard-coded studio id
 // Move all server code outside of this function
 
-type FormData = {
-  loc_id: string;
-  location: string;
-  class_name: string;
-  class_description: string;
-  class_date: string;
-  class_start: string;
-  class_duration: number;
-  class_tags: string;
-  instructor: string;
-}
-
 export default function AddClass() {
   const router = useRouter();
 
   const [studioLocs, setStudioLocs] = useState([{ location_id: '', name: '' }]);
-  const [formData, setFormData] = useState<FormData>({
+  const [formData, setFormData] = useState<StudioAddClass>({
     loc_id: '',
     location: '',
     class_name: '',
