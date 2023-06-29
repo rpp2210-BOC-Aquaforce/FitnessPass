@@ -1,14 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import supabase from '../../lib/supabase';
 
-type Data = {
-  location_id: number,
-  name: string
-}
-
 export default async function getStudioLocations(
   req: NextApiRequest,
-  res: NextApiResponse<Data>,
+  res: NextApiResponse,
 ) {
   const { data, error } = await supabase
     .from('locations')
