@@ -1,3 +1,5 @@
+import { StudioAddClass } from '../types';
+
 /* eslint-disable consistent-return */
 export const fetcher = async ({
   url, method, body, json = true,
@@ -21,7 +23,7 @@ export const fetcher = async ({
   }
 };
 
-// Would like to refactor to a get method
+// Would like to refactor to a get method, requires more research on Fetch API
 export const getLocations = (studio: string) => fetcher({ url: '/api/fetch-studio-locs', method: 'post', body: { studioId: studio } });
 
-export const addClass = (classData) => fetcher({ url: '/api/add-class', method: 'post', body: classData });
+export const addClass = (classData: StudioAddClass) => fetcher({ url: '/api/add-class', method: 'post', body: classData });
