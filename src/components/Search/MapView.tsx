@@ -199,7 +199,7 @@ export default function Map({ center, classes, setList }: MapProps) {
                         <div className="w-2 h-2 bg-gray-400" />
                         <div className="w-2 h-2 bg-gray-400" />
                       </div>
-                      <ClassSignUp class_id={class_id} />
+                      <ClassSignUp user_id={1} class_id={class_id} />
                     </div>
                   </div>
                 </InfoWindow>
