@@ -7,8 +7,7 @@ import React, {
   ChangeEvent,
   FormEvent,
 } from 'react';
-import supabase from '../../../../lib/supabase';
-import { getLocations } from '../../../../lib/api';
+import { getLocations, addClass } from '../../../../lib/api';
 
 // To-Do:
 // Refactor tags section to be more user-friendly
@@ -57,7 +56,6 @@ export default function AddClass() {
       });
   };
 
-  // [] to be refactored to include change of studio id (need studio id from auth)
   useEffect(() => {
     fetchStudioLocations();
   }, []);
@@ -79,33 +77,17 @@ export default function AddClass() {
       ...prevData,
       [name]: value,
     }));
-    // console.log('Form Data: ', formData);
   };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const { error } = await supabase
-      .from('classes')
-      .insert([{
-        location_id: Number(formData.loc_id),
-        name: formData.class_name,
-        description: formData.class_description,
-        date: formData.class_date,
-        time: formData.class_start,
-        duration: formData.class_duration,
-        tags: JSON.stringify(formData.class_tags),
-        instructor: formData.instructor,
-        total_rating: 0,
-        num_ratings: 0,
-      }]);
-
-    if (error) {
-      // console.error(error);
-      alert('Error adding class, please try again later!');
-    } else {
-      // console.log('Class successfully added!');
-      router.push('/studio/1234');
-    }
+    await addClass(formData)
+      .then(() => {
+        router.push('/studio/1234');
+      })
+      .catch(() => {
+        alert('Error adding class, please try again later!');
+      });
   };
 
   return (
