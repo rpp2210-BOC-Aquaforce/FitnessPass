@@ -10,7 +10,7 @@ import {
 } from '@react-google-maps/api';
 import Geocode from 'react-geocode';
 import { ReactChildren } from '@/lib/types';
-import ClassSignUp from '../ClassSignUp';
+import ClassSignUp from '@/components/ClassSignUp';
 
 function TextDiv({ children }: ReactChildren) {
   return <div className="text-seafoam text-[10px] pt-1 font-black uppercase tracking-wide">{children}</div>;

@@ -5,7 +5,7 @@
 
 import { ReactChildren } from '@/lib/types';
 
-import ClassSignUp from '../ClassSignUp';
+import ClassSignUp from '@/components/ClassSignUp';
 
 type CLASS = {
   class_id: number;
@@ -82,7 +82,7 @@ export default function List(
                 <div className="w-2 h-2 bg-gray-400" />
                 <div className="w-2 h-2 bg-gray-400" />
               </div>
-              <ClassSignUp class_id={class_id} />
+              <ClassSignUp user_id={1} class_id={class_id} />
             </div>
           </div>
         ))}
