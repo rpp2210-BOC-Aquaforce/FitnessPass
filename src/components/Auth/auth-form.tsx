@@ -18,7 +18,6 @@ function AuthForm() {
   const [signInMessage, setSignInMessage] = useState<string>('');
   const [loadingMessage, setLoadingMessage] = useState('');
   const { data: session, status } = useSession();
-  console.log('outer session', session);
   const router = useRouter();
   const callbackUrl = `${process.env.NEXT_PUBLIC_URL}`;
 
@@ -132,18 +131,18 @@ function AuthForm() {
           >
             {isLogin ? 'Create new account' : 'Login with existing account'}
           </button>
-          <button
-            type="button"
-            className={classes.toggle}
-            onClick={studioSwitchAuthModeHandler}
-          >
-            {isStudio ? 'Switch to Member Login' : 'Switch to Studio Login'}
-          </button>
           <div>
             <button type="button" onClick={googleSignInHandler}>
               <span>
                 Log in with Google
               </span>
+            </button>
+            <button
+              type="button"
+              className={classes.toggle}
+              onClick={studioSwitchAuthModeHandler}
+            >
+              {isStudio ? 'Switch to Member Login' : 'Switch to Studio Login'}
             </button>
           </div>
           <div className={classes.message}>
