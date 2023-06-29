@@ -8,6 +8,7 @@ import React, {
   FormEvent,
 } from 'react';
 import supabase from '../../../../lib/supabase';
+import { getLocations } from '../../../../lib/api';
 
 // To-Do:
 // Refactor tags section to be more user-friendly
@@ -46,17 +47,14 @@ export default function AddClass() {
   // To be refactored to fetch studio locations on form load (need studio id from auth)
   // To be refactored -- if no studio locations, give curtosey message to add studio location
   const fetchStudioLocations = async () => {
-    const { data, error } = await supabase
-      .from('locations')
-      .select('location_id, name')
-      .eq('studio_id', '2');
-    if (error) {
-      console.error(error);
-    } else {
-      // console.log('Fetch Data: ', data);
-      setStudioLocs(data);
-    }
-    // console.log('Studio Locations: ', studioLocs);
+    const studioId = '2'; // Temporarily hard-coded until auth merged in *
+    await getLocations(studioId)
+      .then((data) => {
+        setStudioLocs(data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   };
 
   // [] to be refactored to include change of studio id (need studio id from auth)
