@@ -90,4 +90,33 @@
   text-decoration: none;
 }
 
+.actions .signin {
+  position: flex;
+  font-size: 14px;
+  color: #FF9F1C;
+  text-decoration: none;
+}
 
+.control p {
+  display: block;
+  color: #FF9F1C;
+  font-weight: bold;
+  font-size: 1.5rem;
+  margin-bottom: 3rem;
+}
+
+/* .actions .signinError {
+  margin-top: 4rem;
+  position: flex;
+  font-size: 14px;
+  color: #FF9F1C;
+  text-decoration: none;
+} */
+
+.actions .guestError {
+  margin-top: 5rem;
+  position: flex;
+  font-size: 14px;
+  color: #FF9F1C;
+  text-decoration: none;
+}

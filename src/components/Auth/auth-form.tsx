@@ -21,6 +21,8 @@ function AuthForm() {
   const router = useRouter();
   const callbackUrl = `${process.env.NEXT_PUBLIC_URL}`;
 
+  console.log('session =>', session);
+
   // useEffect(() => {
   //   if (status === 'loading') {
   //     setLoadingMessage('please wait...');
