@@ -87,7 +87,6 @@ export default function ScheduleView({ userClasses }: ScheduleViewProps) {
 
         </button>
       </div>
-      <p>{`State is ${activeSlide}`}</p>
       <Swiper
         modules={[Virtual, Navigation]}
         initialSlide={initialSlide} // Start from the current week
