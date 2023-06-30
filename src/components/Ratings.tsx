@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import Slider from 'react-slick';
-import { supabase } from '@/lib';
+import supabase from '../lib/supabase';
 import RatingEntry from './RatingEntry';
 // eslint-disable-next-line import/no-extraneous-dependencies
 

@@ -1,21 +1,24 @@
 'use client';
 
-import React from 'react';
-import supabase from '@/lib/supabase';
+import React, { useState, useEffect } from 'react';
+import { faStar } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import supabase from '../lib/supabase';
 
 type RatingEntryProps = {
   rating: any;
-  classRating: any
+  classRating: any;
+
 };
 
 export default function RatingEntry({ rating, classRating }: RatingEntryProps) {
+  const [ratingValues, setRatingValues] = useState(0);
   async function updateRating(element: number) {
     try {
       const { error } = await supabase
         .from('user_classes')
         .update({ class_rating: element })
         .eq('class_id', 4);
-      console.log('were here');
       if (error) {
         console.error('Supabase Error: ', error);
       }
@@ -45,8 +48,6 @@ export default function RatingEntry({ rating, classRating }: RatingEntryProps) {
   useEffect(() => {
     currentRating();
   });
-
-
 
   const calculateFilledStars = () => {
     // eslint-disable-next-line max-len
@@ -101,6 +102,12 @@ export default function RatingEntry({ rating, classRating }: RatingEntryProps) {
                 <p className="font-bold text-seafoam mr-4 mb-2">Instructor:</p>
                 <p className="text-orange">{rating.instructor}</p>
               </div>
+              <div className="flex flex-wrap">
+                <p className="font-bold text-seafoam mr-4 mb-2">Current Rating:</p>
+                {/* <p className="text-orange">{ratingValues}</p> */}
+                <div className="star-rating">{generateStarIcons()}</div>
+              </div>
+              <p className="font-bold text-orange mb-4">Update or submit your rating below:</p>
             </div>
           </div>
           <form className="inline-flex">
