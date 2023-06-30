@@ -36,3 +36,16 @@ export interface UserClass {
 export interface UserClasses {
   userClasses: UserClass[] | [];
 }
+
+export interface StudioAddClass {
+  [key: string]: unknown;
+  loc_id: string;
+  location: string;
+  class_name: string;
+  class_description: string;
+  class_date: string;
+  class_start: string;
+  class_duration: number;
+  class_tags: string;
+  instructor: string;
+}
