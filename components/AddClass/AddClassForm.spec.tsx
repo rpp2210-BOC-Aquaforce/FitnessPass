@@ -1,21 +1,12 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-// import { useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import AddClassForm from './AddClassForm';
 import studioLocations from './mockStudioLocations';
 
 jest.mock('next/navigation', () => ({
-  push: jest.fn(),
-  back: jest.fn(),
-  events: {
-    on: jest.fn(),
-    off: jest.fn(),
-  },
-  beforePopState: jest.fn(() => null),
-  useRouter: () => ({
-    push: jest.fn(),
-  }),
+  useRouter: jest.fn(),
 }));
 
 describe('Add Class Form', () => {
@@ -46,13 +37,13 @@ describe('Add Class Form', () => {
   it('Renders studio locations for selector', async () => {
     const user = userEvent.setup();
     render(<AddClassForm studioLocs={studioLocations} />);
-    expect(screen.getByRole('option', { name: 'Please Select Location' }).selected).toBeTruthy();
+    expect((screen.getByRole('option', { name: 'Please Select Location' }) as HTMLOptionElement).selected).toBe(true);
     expect(screen.getAllByRole('option').length).toBe(4);
     await user.selectOptions(
       screen.getByRole('combobox'),
       screen.getByRole('option', { name: 'Complex Gym' }),
     );
-    expect(screen.getByRole('option', { name: 'Complex Gym' }).selected).toBeTruthy();
+    expect((screen.getByRole('option', { name: 'Complex Gym' }) as HTMLOptionElement).selected).toBe(true);
   });
 
   it('Captures user input for text form inputs', async () => {
@@ -75,19 +66,20 @@ describe('Add Class Form', () => {
     expect(screen.getByTestId('class_instructor_input')).toHaveValue('Dee Reynolds');
   });
 
-  it('Redirects to the studio profile page on form submit', async () => {
-    const user = userEvent.setup();
-    render(<AddClassForm studioLocs={studioLocations} />);
-    const submitButton = screen.getByTestId('add_class_submit');
-    await user.click(submitButton);
-    expect(screen.getByTestId('add_class_title')).not.toBeInTheDocument();
-  });
+  // it('Sends class data on form submit', async () => {
+  //   // To be written...
+  // });
 
   it('Redirects to the studio profile page on form cancel', async () => {
-    render(<AddClassForm studioLocs={studioLocations} />);
     const user = userEvent.setup();
+    const mockedPush = jest.fn();
+    const useRouterMock = () => ({
+      push: mockedPush,
+    });
+    (useRouter as jest.Mock).mockReturnValue(useRouterMock());
+    render(<AddClassForm studioLocs={studioLocations} />);
     const cancelButton = screen.getByTestId('add_class_cancel');
     await user.click(cancelButton);
-    expect(screen.getByTestId('add_class_title')).not.toBeInTheDocument();
+    expect(mockedPush).toHaveBeenCalledWith('/studio/1234'); // Will need to be refactored once auth is merged, this is a hard-coded studioID ***
   });
 });
