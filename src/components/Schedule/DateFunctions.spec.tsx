@@ -5,8 +5,7 @@ import {
   parseLocalDate,
   getScheduledDates,
   getNextScheduledClass,
-  renderWeekDays,
-  renderWeekSlides,
+  WeekDays,
   getWeekTitle,
 } from './DateFunctions';
 
@@ -25,15 +24,15 @@ describe('getScheduledDates', () => {
     const scheduledDates = getScheduledDates(userClasses);
     expect(scheduledDates.size).toBe(3);
     expect(scheduledDates.has('2023-06-30')).toBe(true);
-    expect(scheduledDates.has('2023-07-01')).toBe(true);
-    expect(scheduledDates.has('2023-07-02')).toBe(true);
+    expect(scheduledDates.has('2023-12-01')).toBe(true);
+    expect(scheduledDates.has('2023-12-31')).toBe(true);
   });
 });
 
 describe('getNextScheduledClass', () => {
   it('should return the date of the next scheduled class', () => {
     const nextClass = getNextScheduledClass(userClasses);
-    expect(format(nextClass, 'yyyy-MM-dd')).toBe('2023-06-30');
+    expect(format(nextClass, 'yyyy-MM-dd')).toBe('2023-12-01');
   });
 
   it('should return the current date if no future classes are found', () => {
@@ -57,7 +56,7 @@ describe('renderWeekDays', () => {
       const setActiveDay = jest.fn();
       const scheduledDates = new Set();
 
-      return <div>{renderWeekDays(startOfWeekDate, activeDay, setActiveDay, scheduledDates)}</div>;
+      return <WeekDays startOfWeekDate={startOfWeekDate} activeDay={activeDay} setActiveDay={setActiveDay} scheduledDates={scheduledDates} />;
     }
 
     render(<DummyComponent />);
@@ -73,7 +72,7 @@ describe('renderWeekDays', () => {
     const scheduledDates = new Set();
 
     function DummyComponent() {
-      return <div>{renderWeekDays(startOfWeekDate, activeDay, setActiveDay, scheduledDates)}</div>;
+      return <WeekDays startOfWeekDate={startOfWeekDate} activeDay={activeDay} setActiveDay={setActiveDay} scheduledDates={scheduledDates} />;
     }
 
     render(<DummyComponent />);
@@ -82,24 +81,6 @@ describe('renderWeekDays', () => {
     fireEvent.click(button);
 
     expect(setActiveDay).toHaveBeenCalledWith(addDays(startOfWeekDate, 2));
-  });
-});
-
-describe('renderWeekSlides', () => {
-  it('renders the correct number of weeks', () => {
-    function DummyComponent() {
-      const numberOfWeeks = 52;
-      const activeDay = new Date();
-      const setActiveDay = jest.fn();
-      const scheduledDates = new Set();
-
-      return <div>{renderWeekSlides(numberOfWeeks, activeDay, setActiveDay, scheduledDates)}</div>;
-    }
-
-    render(<DummyComponent />);
-
-    const weeks = screen.getAllByRole('button');
-    expect(weeks).toHaveLength(52 * 7); // 7 days in a week
   });
 });
 

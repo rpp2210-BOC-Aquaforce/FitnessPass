@@ -94,8 +94,8 @@ export default function ScheduleView({ userClasses }: ScheduleViewProps) {
         ref={swiperRef}
         virtual
         onSlideChange={(swiper) => {
-          console.log('activeSlide:', activeSlide);
-          console.log('swiper.activeIndex:', swiper.activeIndex);
+          // console.log('activeSlide:', activeSlide);
+          // console.log('swiper.activeIndex:', swiper.activeIndex);
           if (swiper.activeIndex === activeSlide) return;
           setActiveSlide(swiper.activeIndex);
           setActiveDay(addDays(today, swiper.activeIndex - initialSlide));
