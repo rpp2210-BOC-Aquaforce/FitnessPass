@@ -1,3 +1,5 @@
+import { Session } from 'next-auth';
+
 export type ReactChildren = {
   children: React.ReactNode;
 }
@@ -35,6 +37,15 @@ export interface UserClass {
 
 export interface UserClasses {
   userClasses: UserClass[] | [];
+}
+
+export interface CustomSession extends Session {
+  user: {
+    id: string;
+    name?: string;
+    email?: string;
+    image?: string;
+  } & Session['user'];
 }
 
 export interface StudioAddClass {

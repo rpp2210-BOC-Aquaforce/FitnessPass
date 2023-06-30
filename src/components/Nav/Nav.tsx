@@ -29,7 +29,7 @@ export default function Nav() {
 
   return (
     <>
-      <nav className="flex flex-wrap">
+      <nav className="flex flex-wrap min-h-[56px]">
         {!session && renderLink('/login', 'Log In')}
         {session && (
         <>
@@ -45,7 +45,7 @@ export default function Nav() {
         </>
         )}
       </nav>
-      {session?.user && <p>{`Welcome ${session.user.email}!`}</p>}
+      {/* {session?.user && <p>{`Welcome ${session.user.email}!`}</p>} */}
     </>
   );
 }
