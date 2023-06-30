@@ -1,9 +1,16 @@
 import { StudioAddClass } from '@/lib/types';
 
+interface FetcherInput {
+  url: string;
+  method: 'get' | 'post' | 'put' | 'delete';
+  body?: Record<string, unknown>;
+  json?: boolean;
+}
+
 /* eslint-disable consistent-return */
 export const fetcher = async ({
   url, method, body, json = true,
-}) => {
+}: FetcherInput) => {
   const res = await fetch(url, {
     method,
     ...(body && { body: JSON.stringify(body) }),

@@ -38,6 +38,7 @@ export interface UserClasses {
 }
 
 export interface StudioAddClass {
+  [key: string]: unknown;
   loc_id: string;
   location: string;
   class_name: string;
