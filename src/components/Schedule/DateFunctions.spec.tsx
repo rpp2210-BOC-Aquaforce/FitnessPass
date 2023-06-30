@@ -56,7 +56,14 @@ describe('renderWeekDays', () => {
       const setActiveDay = jest.fn();
       const scheduledDates = new Set();
 
-      return <WeekDays startOfWeekDate={startOfWeekDate} activeDay={activeDay} setActiveDay={setActiveDay} scheduledDates={scheduledDates} />;
+      return (
+        <WeekDays
+          startOfWeekDate={startOfWeekDate}
+          activeDay={activeDay}
+          setActiveDay={setActiveDay}
+          scheduledDates={scheduledDates}
+        />
+      );
     }
 
     render(<DummyComponent />);
@@ -72,7 +79,14 @@ describe('renderWeekDays', () => {
     const scheduledDates = new Set();
 
     function DummyComponent() {
-      return <WeekDays startOfWeekDate={startOfWeekDate} activeDay={activeDay} setActiveDay={setActiveDay} scheduledDates={scheduledDates} />;
+      return (
+        <WeekDays
+          startOfWeekDate={startOfWeekDate}
+          activeDay={activeDay}
+          setActiveDay={setActiveDay}
+          scheduledDates={scheduledDates}
+        />
+      );
     }
 
     render(<DummyComponent />);

@@ -10,7 +10,11 @@ import 'swiper/css';
 import 'swiper/css/free-mode';
 import 'swiper/css/pagination';
 import {
-  addDays, isSameDay, differenceInWeeks, startOfWeek,
+  format,
+  addDays,
+  isSameDay,
+  differenceInWeeks,
+  startOfWeek,
 } from 'date-fns';
 import { UserClass } from '@/lib/types';
 import {
@@ -87,7 +91,7 @@ export default function ScheduleView({ userClasses }: ScheduleViewProps) {
       <Swiper
         modules={[Virtual, Navigation]}
         initialSlide={initialSlide} // Start from the current week
-        navigation={true}
+        navigation
         slidesPerView={1}
         spaceBetween={1}
         loop={false}
@@ -104,14 +108,18 @@ export default function ScheduleView({ userClasses }: ScheduleViewProps) {
       >
         {/* {renderWeekSlides(totalSlides, activeDay, setActiveDay, scheduledDates)} */}
         {weeks.map((_, index) => {
-            const startOfWeekDate = startOfWeek(addDays(new Date(), (index - totalSlides / 2) * 7));
-            return (
-              <SwiperSlide key={index} virtualIndex={index} className="flex w-full h-full">
-                <WeekDays startOfWeekDate={startOfWeekDate} activeDay={activeDay} setActiveDay={setActiveDay} scheduledDates={scheduledDates}/>
-              </SwiperSlide>
-            );
-        })
-        }
+          const startOfWeekDate = startOfWeek(addDays(new Date(), (index - totalSlides / 2) * 7));
+          return (
+            <SwiperSlide key={`week-${format(startOfWeekDate, 'yyyy-MM-dd')}`} virtualIndex={index} className="flex w-full h-full">
+              <WeekDays
+                startOfWeekDate={startOfWeekDate}
+                activeDay={activeDay}
+                setActiveDay={setActiveDay}
+                scheduledDates={scheduledDates}
+              />
+            </SwiperSlide>
+          );
+        })}
         {' '}
         <FitnessClasses userClasses={viewAll ? userClasses : classesForActiveDay} />
       </Swiper>

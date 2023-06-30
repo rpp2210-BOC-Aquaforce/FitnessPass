@@ -21,7 +21,7 @@ export default function Schedule({ userId }: { userId: number}) {
         throw error;
       }
 
-      console.log('data', data);
+      console.log('schedule data', data);
 
       setUserClasses(
         data.sort((a: UserClass, b: UserClass) => a.classes.date.localeCompare(b.classes.date)),

@@ -2,13 +2,12 @@
 
 import React from 'react';
 import { UserClass } from '@/lib/types';
-import { SwiperSlide } from 'swiper/react';
 import {
-  format, addDays, isSameDay, startOfWeek,
+  format, addDays, isSameDay,
 } from 'date-fns';
 
 const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-type SetActiveDayFunction = React.Dispatch<React.SetStateAction<Date>>;
+// type SetActiveDayFunction = React.Dispatch<React.SetStateAction<Date>>;
 
 export const parseLocalDate = (dateString: string) => {
   const [year, month, day] = dateString.split('-').map(Number);
@@ -36,38 +35,7 @@ export const getNextScheduledClass = (userClasses: UserClass[]) => {
   return currentDate; // return current date if no future classes found
 };
 
-// export const WeekDays = (
-//   startOfWeekDate: Date,
-//   activeDay: Date,
-//   setActiveDay: (date: Date) => void,
-//   scheduledDates: Set<string | unknown>,
-// ) => days.map((day, index) => {
-//   const date = addDays(startOfWeekDate, index);
-//   const isActiveDay = isSameDay(activeDay, date);
-//   const isScheduled = scheduledDates.has(format(date, 'yyyy-MM-dd'));
-
-//   return (
-//     <button
-//       key={format(date, 'yyyy-MM-dd')}
-//       data-testid={`day-${day}`}
-//       type="button"
-//       className={`flex flex-col items-center w-auto p-1 rounded-lg min-w-[38px] min-h-[76px] ${isActiveDay ? 'bg-seafoam text-white' : 'bg-gray-200'}`}
-//       onClick={() => setActiveDay(date)}
-//     >
-//       <span className="flex text-sm font-semibold">{day}</span>
-//       <span
-//         className={`w-6 h-6 rounded-full flex items-center text-xs justify-center mt-2 ${
-//           isActiveDay ? 'bg-white text-seafoam' : 'bg-seafoam text-white'
-//         }`}
-//       >
-//         {date.getDate()}
-//       </span>
-//       {isScheduled && <span className="w-2 h-2 rounded-full bg-solid-orange mt-2" />}
-//     </button>
-//   );
-// });
-
-export function WeekDays ({
+export function WeekDays({
   startOfWeekDate,
   activeDay,
   setActiveDay,
@@ -78,57 +46,36 @@ export function WeekDays ({
   setActiveDay: (date: Date) => void,
   scheduledDates: Set<string | unknown>
 }) {
-
   return (
-  <span className='flex flex-wrap justify-center'>
-    {days.map((day, index) => {
-    const date = addDays(startOfWeekDate, index);
-    const isActiveDay = isSameDay(activeDay, date);
-    const isScheduled = scheduledDates.has(format(date, 'yyyy-MM-dd'));
+    <span className="flex flex-wrap justify-center">
+      {days.map((day, index) => {
+        const date = addDays(startOfWeekDate, index);
+        const isActiveDay = isSameDay(activeDay, date);
+        const isScheduled = scheduledDates.has(format(date, 'yyyy-MM-dd'));
 
-    return (
-      <button
-        key={format(date, 'yyyy-MM-dd')}
-        data-testid={`day-${day}`}
-        type="button"
-        className={`flex flex-col m-2 items-center w-auto p-1 rounded-lg min-w-[38px] min-h-[76px] ${isActiveDay ? 'bg-seafoam text-white' : 'bg-gray-200'}`}
-        onClick={() => setActiveDay(date)}
-      >
-        <span className="flex text-sm font-semibold">{day}</span>
-        <span
-          className={`w-6 h-6 rounded-full flex items-center text-xs justify-center mt-2 ${
-            isActiveDay ? 'bg-white text-seafoam' : 'bg-seafoam text-white'
-          }`}
-        >
-          {date.getDate()}
-        </span>
-        {isScheduled && <span className="w-2 h-2 rounded-full bg-solid-orange mt-2" />}
-      </button>
-    );
-  })
-  }
-</span>
+        return (
+          <button
+            key={format(date, 'yyyy-MM-dd')}
+            data-testid={`day-${day}`}
+            type="button"
+            className={`flex flex-col m-2 items-center w-auto p-1 rounded-lg min-w-[38px] min-h-[76px] ${isActiveDay ? 'bg-seafoam text-white' : 'bg-gray-200'}`}
+            onClick={() => setActiveDay(date)}
+          >
+            <span className="flex text-sm font-semibold">{day}</span>
+            <span
+              className={`w-6 h-6 rounded-full flex items-center text-xs justify-center mt-2 ${
+                isActiveDay ? 'bg-white text-seafoam' : 'bg-seafoam text-white'
+              }`}
+            >
+              {date.getDate()}
+            </span>
+            {isScheduled && <span className="w-2 h-2 rounded-full bg-solid-orange mt-2" />}
+          </button>
+        );
+      })}
+    </span>
   );
-};
-
-// export const renderWeekSlides = (
-//   numberOfWeeks: number,
-//   activeDay: Date,
-//   setActiveDay: SetActiveDayFunction,
-//   scheduledDates: Set<string | unknown>,
-// ) => {
-//   const weeks = [...Array(numberOfWeeks)].map((_, index) => {
-//     const startOfWeekDate = startOfWeek(addDays(new Date(), (index - numberOfWeeks / 2) * 7));
-//     // const keyIndex = format(startOfWeekDate, 'yyyy-MM-dd');
-//     return (
-//       <SwiperSlide key={index} virtualIndex={index} className="flex w-full h-full">
-//         <div className="flex-shrink flex space-x-3 justify-center ">{renderWeekDays(startOfWeekDate, activeDay, setActiveDay, scheduledDates)}</div>
-//       </SwiperSlide>
-//     );
-//   });
-
-//   return weeks;
-// };
+}
 
 export const getWeekTitle = (activeSlide: number, initialSlide = 26) => {
   const weekDifference = activeSlide - initialSlide;
