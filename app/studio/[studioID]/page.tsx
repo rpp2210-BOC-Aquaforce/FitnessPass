@@ -3,13 +3,12 @@
 import { redirect } from 'next/navigation';
 
 import React, { useState, useEffect } from 'react';
+import { Session, User } from 'next-auth';
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
-import AddLocation from '@/components/AddLocation';
 import fetchStudioData from '../../../pages/api/studioProfile';
 import styles from './page.module.css';
-// import supabase from '../../../lib/supabase';
 
 interface StudioInfo {
   studio_name: string;
@@ -17,28 +16,30 @@ interface StudioInfo {
   photo: string;
 }
 
+interface MyUser extends User {
+  id: string;
+}
+
 export default async function StudioPage() {
-  useSession({
+  const { data: session } = useSession({
     required: true,
     onUnauthenticated() {
       redirect('/login');
     },
-  });
-  const studioID = 1;
+  }) as { data: Session & { user?: MyUser | null }};
+
+  const studioID = (session?.user as any)?.id;
+
   const starterData: StudioInfo = {
-    studio_name: 'Globogym',
-    studio_email: 'whiteGoodman@bullByTheHorns.com',
-    photo: '/images/placeholder2.png',
+    studio_name: session?.user?.name || '',
+    studio_email: session?.user?.email || '',
+    photo: session?.user?.image || '',
   };
   const [studioInfo, setStudioInfo] = useState<StudioInfo>(starterData);
 
   useEffect(() => {
     fetchStudioData(studioID, setStudioInfo);
   }, []);
-
-  useEffect(() => {
-    // console.log('studio info state: ', studioInfo)
-  }, [studioInfo]);
 
   return (
     // <main className="flex flex-col items-center justify-center min-h-screen">
@@ -58,15 +59,15 @@ export default async function StudioPage() {
         <h5 className={styles.infoHeader}>Preferred Email:</h5>
         <p className={styles.info}>{studioInfo.studio_email}</p>
         <br />
-        <AddLocation />
+        <Link href={`/studio/${studioID}/add-location`} className={styles.links}>Add A Location</Link>
         <br />
-        <Link href="/studio/1234/addclass" className={styles.links}>Add A Class</Link>
+        <Link href={`/studio/${studioID}/addclass`} className={styles.links}>Add A Class</Link>
         <br />
-        <Link href="/studio/1234/metrics" className={styles.links}>View Metrics</Link>
+        <Link href={`/studio/${studioID}/metrics`} className={styles.links}>View Metrics</Link>
         <br />
-        <Link href="/studio/1234/view-classes" className={styles.links}>View All Classes</Link>
+        <Link href={`/studio/${studioID}/view-classes`} className={styles.links}>View All Classes</Link>
         <br />
-        <Link href="/studio/1234/view-locations" className={styles.links}> View All Locations</Link>
+        <Link href={`/studio/${studioID}/view-locations`} className={styles.links}> View All Locations</Link>
       </div>
 
     </main>

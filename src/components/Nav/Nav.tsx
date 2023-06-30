@@ -2,9 +2,19 @@
 
 import Link from 'next/link';
 import { useSession, signOut } from 'next-auth/react';
+import { Session } from 'next-auth';
+
+interface CustomSession extends Session {
+  user: {
+    id: string;
+    name?: string;
+    email?: string;
+    image?: string;
+  } & Session['user'];
+}
 
 export default function Nav() {
-  const { data: session } = useSession();
+  const { data: session } = useSession() as { data: CustomSession | null };
 
   const handleLogout = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -23,7 +33,7 @@ export default function Nav() {
         {!session && renderLink('/login', 'Log In')}
         {session && (
         <>
-          {renderLink('/studio/1234', 'Studios')}
+          {renderLink(`/studio/${session.user?.id}`, 'Studios')}
           {renderLink('/user/1/profile', 'My Profile (user)')}
           <button
             type="button"
