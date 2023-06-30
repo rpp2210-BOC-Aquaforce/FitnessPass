@@ -31,8 +31,8 @@ type ScheduleViewProps = {
   // setUserClasses: React.Dispatch<React.SetStateAction<UserClass[]>>;
 }
 
-const initialSlide = 5;
-const totalSlides = 10;
+const initialSlide = 26;
+const totalSlides = 52;
 const today = new Date();
 const weeks = [...Array(totalSlides)];
 // export default function ScheduleView({ userClasses, setUserClasses }: ScheduleViewProps) {

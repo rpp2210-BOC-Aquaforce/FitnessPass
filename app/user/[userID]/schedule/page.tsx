@@ -27,7 +27,7 @@ export default async function Page() {
         throw error;
       }
 
-      console.log('schedule data', data);
+      console.log('schedule data & userId', data, userId);
 
       return data.sort(
         (a: UserClass, b: UserClass) => a.classes.date.localeCompare(b.classes.date),
