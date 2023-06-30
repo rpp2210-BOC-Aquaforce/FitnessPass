@@ -4,3 +4,5 @@ export * from './Schedule';
 export * from './FitnessClasses';
 export * from './Search';
 export * from './AddClass';
+export * from './ui/Button';
+export * from './ui/Popover';
