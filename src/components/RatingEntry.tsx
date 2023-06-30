@@ -1,20 +1,25 @@
 'use client';
 
-import React from 'react';
-import supabase from '@/lib/supabase';
+import React, { useState, useEffect } from 'react';
+import { faStar } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import supabase from '../lib/supabase';
 
 type RatingEntryProps = {
   rating: any;
+  classRating: any;
+
 };
 
-export default function RatingEntry({ rating }: RatingEntryProps) {
-  async function updateRating(element: number) {
+export default function RatingEntry({ rating, classRating }: RatingEntryProps) {
+  const [ratingValues, setRatingValues] = useState(0);
+  // on initial render, should select from user_classes and render star rating
+  async function updateRating(element: number, classId: number) {
     try {
       const { error } = await supabase
         .from('user_classes')
         .update({ class_rating: element })
-        .eq('class_id', 4);
-      console.log('were here');
+        .eq('class_id', classId);
       if (error) {
         console.error('Supabase Error: ', error);
       }
@@ -28,10 +33,37 @@ export default function RatingEntry({ rating }: RatingEntryProps) {
     for (let i = 0; i < elements.length; i += 1) {
       if (elements[i].checked) {
         const ratingValue = parseInt(elements[i].value, 10);
-        updateRating(ratingValue);
+        updateRating(ratingValue, rating.class_id);
       }
     }
   }
+
+  const handleRatingChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const ratingValue = parseInt(event.target.value, 10);
+    setRatingValues(ratingValue);
+    updateRating(ratingValue, rating.class_id);
+  };
+
+  useEffect(() => {
+    // eslint-disable-next-line max-len
+    const currentStarRating = classRating.find((item: { class_id: any; }) => item.class_id === rating.class_id);
+    if (currentStarRating) {
+      setRatingValues(currentStarRating.rating);
+    } else {
+      setRatingValues(0);
+    }
+  }, []);
+
+  const generateStarIcons = () => {
+    const stars = [];
+    for (let i = 1; i <= 5; i += 1) {
+      const starClass = i <= ratingValues ? 'text-yellow-500' : 'text-gray-300';
+      stars.push(
+        <FontAwesomeIcon key={i} icon={faStar} className={`text-m ${starClass}`} />,
+      );
+    }
+    return stars;
+  };
 
   return (
     <div>
@@ -62,6 +94,12 @@ export default function RatingEntry({ rating }: RatingEntryProps) {
                 <p className="font-bold text-seafoam mr-4 mb-2">Instructor:</p>
                 <p className="text-orange">{rating.instructor}</p>
               </div>
+              <div className="flex flex-wrap">
+                <p className="font-bold text-seafoam mr-4 mb-2">Current Rating:</p>
+                {/* <p className="text-orange">{ratingValues}</p> */}
+                <div className="star-rating">{generateStarIcons()}</div>
+              </div>
+              <p className="font-bold text-orange mb-4">Update or submit your rating below:</p>
             </div>
           </div>
           <form className="inline-flex">
@@ -75,6 +113,9 @@ export default function RatingEntry({ rating }: RatingEntryProps) {
                     type="radio"
                     value={value}
                     className="ml-1 text-seafoam"
+                    checked={value === ratingValues}
+                    onChange={handleRatingChange}
+
                   />
                 </label>
               ))}
