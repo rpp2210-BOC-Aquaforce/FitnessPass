@@ -1,30 +1,73 @@
+'use client';
+
+import { redirect } from 'next/navigation';
+
+import React, { useState, useEffect } from 'react';
+import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
-import AddLocation from '../../../components/AddLocation';
+import AddLocation from '@/components/AddLocation';
+import fetchStudioData from '../../../pages/api/studioProfile';
 import styles from './page.module.css';
+// import supabase from '../../../lib/supabase';
 
-export default function StudioPage() {
+interface StudioInfo {
+  studio_name: string;
+  studio_email: string;
+  photo: string;
+}
+
+export default async function StudioPage() {
+  useSession({
+    required: true,
+    onUnauthenticated() {
+      redirect('/login');
+    },
+  });
+  const studioID = 1;
+  const starterData: StudioInfo = {
+    studio_name: 'Globogym',
+    studio_email: 'whiteGoodman@bullByTheHorns.com',
+    photo: '/images/placeholder2.png',
+  };
+  const [studioInfo, setStudioInfo] = useState<StudioInfo>(starterData);
+
+  useEffect(() => {
+    fetchStudioData(studioID, setStudioInfo);
+  }, []);
+
+  useEffect(() => {
+    // console.log('studio info state: ', studioInfo)
+  }, [studioInfo]);
+
   return (
-    <main className="flex flex-col items-center justify-center min-h-screen">
-      <p className="text-3xl font-bold mb-4">
-        <h1 className="mainHeader">Studio Profile</h1>
-        <Image src="/images/studioPlaceholder.png" alt="gym placeholder" width={400} height={300} />
+    // <main className="flex flex-col items-center justify-center min-h-screen">
+    <main className={styles.container}>
+      {/* <div className="text-3xl font-bold mb-4"> */}
+      <div className="text-3xl font-bold mb-4">
+        <h1 className={styles.header}>Studio Profile</h1>
+        <Image
+          src="/images/placeholder1.png"
+          alt="gym placeholder"
+          width={250}
+          height={250}
+          className={styles.centeredImage}
+        />
         <h5 className={styles.infoHeader}>Studio Name:</h5>
-        <p>(Name Here)</p>
+        <p className={styles.info}>{studioInfo.studio_name}</p>
         <h5 className={styles.infoHeader}>Preferred Email:</h5>
-        <p>(Email Here)</p>
-        <h5 className={styles.infoHeader}>Phone Number:</h5>
-        <p>(Phone Here)</p>
-        <h5 className={styles.infoHeader}>Address:</h5>
-        <p>(Address Here)</p>
-      </p>
-
-      <AddLocation />
-      <Link href="/studio/1234/addclass"> Add A Class</Link>
-      <Link href="/studio/1234/metrics"> View Metrics (linked to /studio/1234/metrics)</Link>
-
-      <Link href="/studio/1234/view-classes"> View All Classes</Link>
-      <Link href="/studio/1234/view-locations"> View All Locations</Link>
+        <p className={styles.info}>{studioInfo.studio_email}</p>
+        <br />
+        <AddLocation />
+        <br />
+        <Link href="/studio/1234/addclass" className={styles.links}>Add A Class</Link>
+        <br />
+        <Link href="/studio/1234/metrics" className={styles.links}>View Metrics</Link>
+        <br />
+        <Link href="/studio/1234/view-classes" className={styles.links}>View All Classes</Link>
+        <br />
+        <Link href="/studio/1234/view-locations" className={styles.links}> View All Locations</Link>
+      </div>
 
     </main>
   );

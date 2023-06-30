@@ -1,8 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { supabase } from '../../lib';
-import { UserClass } from '../../types';
+import { supabase } from '@/lib';
+import { UserClass } from '@/lib/types';
 import ScheduleView from './ScheduleView';
 
 export default function Schedule({ userId }: { userId: number}) {
