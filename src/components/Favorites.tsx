@@ -45,7 +45,7 @@ export default function MyFavorites() {
   const carouselSettings = {
     dots: false,
     arrows: true,
-    infinite: true,
+    infinite: false,
     slidesToShow: 1,
     slidesToScroll: 2,
     vertical: true,

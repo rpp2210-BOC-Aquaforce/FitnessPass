@@ -47,7 +47,7 @@ interface FetchClass{
  const carouselSettings = {
    dots: false,
    arrows: true,
-   infinite: true,
+   infinite: false,
    slidesToShow: 2,
    slidesToScroll: 2,
    vertical: true,

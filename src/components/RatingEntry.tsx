@@ -13,6 +13,7 @@ type RatingEntryProps = {
 
 export default function RatingEntry({ rating, classRating }: RatingEntryProps) {
   const [ratingValues, setRatingValues] = useState(0);
+  // on initial render, should select from user_classes and render star rating
   async function updateRating(element: number, classId: number) {
     try {
       const { error } = await supabase
@@ -37,30 +38,21 @@ export default function RatingEntry({ rating, classRating }: RatingEntryProps) {
     }
   }
 
-  const currentRating = () => {
+  const handleRatingChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const ratingValue = parseInt(event.target.value, 10);
+    setRatingValues(ratingValue);
+    updateRating(ratingValue, rating.class_id);
+  };
+
+  useEffect(() => {
     // eslint-disable-next-line max-len
     const currentStarRating = classRating.find((item: { class_id: any; }) => item.class_id === rating.class_id);
     if (currentStarRating) {
       setRatingValues(currentStarRating.rating);
+    } else {
+      setRatingValues(0);
     }
-  };
-
-  useEffect(() => {
-    currentRating();
-  });
-
-  const calculateFilledStars = () => {
-    // eslint-disable-next-line max-len
-    const currentStarRating = classRating.find((item: { class_id: any; }) => item.class_id === rating.class_id);
-    if (currentStarRating) {
-      const filledStars = Math.round(currentStarRating.rating);
-      setRatingValues(filledStars);
-    }
-  };
-
-  useEffect(() => {
-    calculateFilledStars();
-  }, [classRating, rating.class_id]);
+  }, []);
 
   const generateStarIcons = () => {
     const stars = [];
@@ -121,6 +113,9 @@ export default function RatingEntry({ rating, classRating }: RatingEntryProps) {
                     type="radio"
                     value={value}
                     className="ml-1 text-seafoam"
+                    checked={value === ratingValues}
+                    onChange={handleRatingChange}
+
                   />
                 </label>
               ))}
