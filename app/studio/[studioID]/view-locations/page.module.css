@@ -1,6 +1,10 @@
 .locationList {
   text-align: center;
-  margin-top: 30px
+  margin-top: 30px;
+}
+.locationContainer{
+  background: white;
+  border-radius: 5px;
 }
 
 .header {

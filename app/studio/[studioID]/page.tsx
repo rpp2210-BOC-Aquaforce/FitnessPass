@@ -1,7 +1,6 @@
 'use client';
 
 import { redirect } from 'next/navigation';
-
 import React, { useState, useEffect } from 'react';
 import { Session, User } from 'next-auth';
 import { useSession } from 'next-auth/react';
@@ -39,7 +38,7 @@ export default async function StudioPage() {
 
   useEffect(() => {
     fetchStudioData(studioID, setStudioInfo);
-  }, []);
+  }, [studioID]);
 
   return (
     // <main className="flex flex-col items-center justify-center min-h-screen">
@@ -63,8 +62,8 @@ export default async function StudioPage() {
         <br />
         <Link href={`/studio/${studioID}/addclass`} className={styles.links}>Add A Class</Link>
         <br />
-        <Link href={`/studio/${studioID}/metrics`} className={styles.links}>View Metrics</Link>
-        <br />
+        {/* <Link href={`/studio/${studioID}/metrics`} className={styles.links}>View Metrics</Link>
+        <br /> */}
         <Link href={`/studio/${studioID}/view-classes`} className={styles.links}>View All Classes</Link>
         <br />
         <Link href={`/studio/${studioID}/view-locations`} className={styles.links}> View All Locations</Link>
