@@ -6,8 +6,8 @@ import React, {
   ChangeEvent,
   FormEvent,
 } from 'react';
-import { addClass } from '../../lib/api';
-import { StudioAddClass } from '../../types';
+import { addClass } from '@/lib/api';
+import { StudioAddClass } from '@/lib/types';
 
 // To-Do:
 // Refactor tags section to be more user-friendly
