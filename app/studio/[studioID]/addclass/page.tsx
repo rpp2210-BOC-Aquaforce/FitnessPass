@@ -2,7 +2,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { getLocations } from '@/lib/api';
-import AddClassForm from '../../../../components/AddClass/AddClassForm';
+// import AddClassForm from '../../../../src/components/AddClass/AddClassForm';
+import { AddClassForm } from '@/components/index';
 
 export default function AddClass() {
   const [studioLocs, setStudioLocs] = useState([{ location_id: '', name: '' }]);
