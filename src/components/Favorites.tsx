@@ -7,10 +7,10 @@ import Link from 'next/link';
 // eslint-disable-next-line import/order, import/no-duplicates
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
-// import Slider from 'react-slick';
+import Slider from 'react-slick';
 import FavoriteEntry from './FavoriteEntry';
-// import 'slick-carousel/slick/slick.css';
-// import 'slick-carousel/slick/slick-theme.css';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 import supabase from '../lib/supabase';
 
 export default function MyFavorites() {
@@ -42,15 +42,16 @@ export default function MyFavorites() {
     created_at: string,
  }
 
-  // const carouselSettings = {
-  //   dots: false,
-  //   arrows: true,
-  //   infinite: false,
-  //   slidesToShow: 1,
-  //   slidesToScroll: 2,
-  //   vertical: true,
-  //   verticalSwiping: true,
-  // };
+  const carouselSettings = {
+    dots: false,
+    arrows: true,
+    infinite: true,
+    slidesToShow: 1,
+    slidesToScroll: 2,
+    vertical: true,
+    verticalSwiping: true,
+  };
+
   const [classListAgain, setClassListAgain] = useState<ClassListAgain[]>([]);
   const [favorites, setFavorites] = useState<ClassList[]>([]);
 
@@ -84,7 +85,7 @@ export default function MyFavorites() {
         const { data: allClasses, error } = await supabase
           .from('user_classes')
           .select('*')
-          .eq('user_id', 1)
+          .eq('user_id', 5)
           .eq('favorite', true);
         if (error) {
           console.error('Supabase Error: ', error);
@@ -116,17 +117,26 @@ export default function MyFavorites() {
         </Link>
       </div>
       <h1 className="relative mx-auto text-center text-2xl text-seafoam mb-8">My Favorites</h1>
-      {/* <Slider {...carouselSettings}> */}
-      {favorites.map((favorite: ClassListAgain) => (
-        <FavoriteEntry
-          favorite={favorite}
-          key={favorite.class_id}
-          onRemove={removeFavorite}
+      {favorites.length > 2
 
-        />
-      ))}
-      {/* </Slider> */}
-
+        ? (
+          <Slider {...carouselSettings}>
+            {favorites.map((favorite: ClassListAgain) => (
+              <FavoriteEntry
+                favorite={favorite}
+                key={favorite.class_id}
+                onRemove={removeFavorite}
+              />
+            ))}
+          </Slider>
+        )
+        : favorites.map((favorite: ClassListAgain) => (
+          <FavoriteEntry
+            favorite={favorite}
+            key={favorite.class_id}
+            onRemove={removeFavorite}
+          />
+        ))}
     </div>
   );
 }

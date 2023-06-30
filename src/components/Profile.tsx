@@ -47,7 +47,7 @@ export default function Profile() {
       const { data: users, error } = await supabase
         .from('users')
         .select('*')
-        .limit(1);
+        .eq('user_id', 5);
       if (error) {
         console.error('Supabase Error: ', error);
       } else {

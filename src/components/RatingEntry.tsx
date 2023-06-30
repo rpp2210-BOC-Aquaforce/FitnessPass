@@ -13,12 +13,12 @@ type RatingEntryProps = {
 
 export default function RatingEntry({ rating, classRating }: RatingEntryProps) {
   const [ratingValues, setRatingValues] = useState(0);
-  async function updateRating(element: number) {
+  async function updateRating(element: number, classId: number) {
     try {
       const { error } = await supabase
         .from('user_classes')
         .update({ class_rating: element })
-        .eq('class_id', 4);
+        .eq('class_id', classId);
       if (error) {
         console.error('Supabase Error: ', error);
       }
@@ -32,7 +32,7 @@ export default function RatingEntry({ rating, classRating }: RatingEntryProps) {
     for (let i = 0; i < elements.length; i += 1) {
       if (elements[i].checked) {
         const ratingValue = parseInt(elements[i].value, 10);
-        updateRating(ratingValue);
+        updateRating(ratingValue, rating.class_id);
       }
     }
   }

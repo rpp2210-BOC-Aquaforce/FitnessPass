@@ -47,7 +47,7 @@ interface FetchClass{
  const carouselSettings = {
    dots: false,
    arrows: true,
-   infinite: false,
+   infinite: true,
    slidesToShow: 2,
    slidesToScroll: 2,
    vertical: true,
@@ -97,7 +97,7 @@ interface FetchClass{
        const { data: userClasses, error } = await supabase
          .from('user_classes')
          .select('*')
-         .eq('user_id', 1);
+         .eq('user_id', 5);
        if (error) {
          console.error('Supabase Error: ', error);
        } else {
@@ -136,12 +136,19 @@ interface FetchClass{
           />
         ))}
       </div> */}
-     <Slider {...carouselSettings}>
-       {classRatings.length > 0
+     {classList.length > 2
+       ? (
+         <Slider {...carouselSettings}>
+           {classRatings.length > 0
           && classList.map((rating: ClassList) => (
             <RatingEntry rating={rating} key={rating.class_id} classRating={classRatings} />
           ))}
-     </Slider>
+         </Slider>
+       )
+       : classRatings.length > 0
+&& classList.map((rating: ClassList) => (
+  <RatingEntry rating={rating} key={rating.class_id} classRating={classRatings} />
+))}
    </div>
  );
 }
