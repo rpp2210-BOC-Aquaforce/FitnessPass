@@ -37,10 +37,10 @@ export default function StudioClasses() {
   const studioID = (session?.user as any)?.id;
   const [classes, setClasses] = useState<Class[]>([]);
 
-  // useEffect(() => {
-  //   console.log('ran useEffect block');
-  //   fetchClasses(studioID, setClasses);
-  // }, []);
+  useEffect(() => {
+    console.log('ran useEffect block');
+    fetchClasses(studioID, setClasses);
+  }, []);
 
   useEffect(() => {
     console.log('classes: ', classes);
@@ -49,7 +49,7 @@ export default function StudioClasses() {
   return (
     <div className={styles.classesList}>
       <h1 className={styles.header}>All Classes</h1>
-      {classes.map((location) => (
+      {classes.map((classObj) => (
         <Class classObj={classObj} key={classObj.class_id} />
       ),
       )}

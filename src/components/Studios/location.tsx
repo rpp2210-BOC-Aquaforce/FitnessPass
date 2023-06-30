@@ -23,6 +23,7 @@ export default function Location({ location }: LocationProps) {
       <p>
         {location.total_rating || 'No ratings yet!'}
       </p>
+      <button type="button">Delete Location</button>
     </div>
   );
 }
