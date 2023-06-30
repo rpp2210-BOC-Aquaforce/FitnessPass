@@ -1,4 +1,4 @@
-import { StudioAddClass } from '../types';
+import { StudioAddClass } from '@/lib/types';
 
 /* eslint-disable consistent-return */
 export const fetcher = async ({

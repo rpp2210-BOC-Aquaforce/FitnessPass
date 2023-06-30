@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import AddClassForm from '../../../../components/AddClass/AddClassForm';
 import { getLocations } from '@/lib/api';
+import AddClassForm from '../../../../components/AddClass/AddClassForm';
 
 export default function AddClass() {
   const [studioLocs, setStudioLocs] = useState([{ location_id: '', name: '' }]);
