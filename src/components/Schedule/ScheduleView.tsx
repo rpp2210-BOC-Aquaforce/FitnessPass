@@ -4,19 +4,21 @@ import { FitnessClasses } from '@/components/FitnessClasses';
 import React, {
   useState, useEffect, useRef,
 } from 'react';
-import { Swiper } from 'swiper/react';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Virtual, Navigation } from 'swiper';
 import 'swiper/css';
 import 'swiper/css/free-mode';
 import 'swiper/css/pagination';
 import {
-  addDays, isSameDay, differenceInWeeks,
+  addDays, isSameDay, differenceInWeeks, startOfWeek,
 } from 'date-fns';
 import { UserClass } from '@/lib/types';
 import {
   parseLocalDate,
   getScheduledDates,
   getNextScheduledClass,
-  renderWeekSlides,
+  // renderWeekSlides,
+  WeekDays,
   getWeekTitle,
 } from './DateFunctions';
 
@@ -28,6 +30,7 @@ type ScheduleViewProps = {
 const initialSlide = 5;
 const totalSlides = 10;
 const today = new Date();
+const weeks = [...Array(totalSlides)];
 // export default function ScheduleView({ userClasses, setUserClasses }: ScheduleViewProps) {
 export default function ScheduleView({ userClasses }: ScheduleViewProps) {
   const [activeSlide, setActiveSlide] = useState<number>(initialSlide);
@@ -67,7 +70,7 @@ export default function ScheduleView({ userClasses }: ScheduleViewProps) {
   };
 
   return (
-    <div className="flex flex-col items-start p-2 mt-2 bg-white shadow-md rounded-lg w-full min-h-[148px] h-full">
+    <div className="flex flex-col items-start p-2 mt-2 bg-white shadow-md rounded-lg w-full min-h-[250px] h-full">
       <div className="flex w-full justify-between">
         <h2 className="text-sm font-bold mb-5 p-2">{weekTitle}</h2>
         <button
@@ -80,26 +83,36 @@ export default function ScheduleView({ userClasses }: ScheduleViewProps) {
 
         </button>
       </div>
+      <p>{`State is ${activeSlide}`}</p>
       <Swiper
+        modules={[Virtual, Navigation]}
         initialSlide={initialSlide} // Start from the current week
+        navigation={true}
         slidesPerView={1}
-        spaceBetween={16}
-        freeMode
+        spaceBetween={1}
+        loop={false}
         ref={swiperRef}
-        pagination={{
-          clickable: true,
-        }}
+        virtual
         onSlideChange={(swiper) => {
           console.log('activeSlide:', activeSlide);
           console.log('swiper.activeIndex:', swiper.activeIndex);
+          if (swiper.activeIndex === activeSlide) return;
           setActiveSlide(swiper.activeIndex);
           setActiveDay(addDays(today, swiper.activeIndex - initialSlide));
         }}
         className="w-full h-full"
       >
-        {renderWeekSlides(totalSlides, activeDay, setActiveDay, scheduledDates)}
+        {/* {renderWeekSlides(totalSlides, activeDay, setActiveDay, scheduledDates)} */}
+        {weeks.map((_, index) => {
+            const startOfWeekDate = startOfWeek(addDays(new Date(), (index - totalSlides / 2) * 7));
+            return (
+              <SwiperSlide key={index} virtualIndex={index} className="flex w-full h-full">
+                <WeekDays startOfWeekDate={startOfWeekDate} activeDay={activeDay} setActiveDay={setActiveDay} scheduledDates={scheduledDates}/>
+              </SwiperSlide>
+            );
+        })
+        }
         {' '}
-        {/* Display 52 weeks */}
         <FitnessClasses userClasses={viewAll ? userClasses : classesForActiveDay} />
       </Swiper>
     </div>
