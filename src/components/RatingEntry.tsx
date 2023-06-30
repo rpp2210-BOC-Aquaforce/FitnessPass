@@ -5,9 +5,10 @@ import supabase from '@/lib/supabase';
 
 type RatingEntryProps = {
   rating: any;
+  classRating: any
 };
 
-export default function RatingEntry({ rating }: RatingEntryProps) {
+export default function RatingEntry({ rating, classRating }: RatingEntryProps) {
   async function updateRating(element: number) {
     try {
       const { error } = await supabase
@@ -32,6 +33,44 @@ export default function RatingEntry({ rating }: RatingEntryProps) {
       }
     }
   }
+
+  const currentRating = () => {
+    // eslint-disable-next-line max-len
+    const currentStarRating = classRating.find((item: { class_id: any; }) => item.class_id === rating.class_id);
+    if (currentStarRating) {
+      setRatingValues(currentStarRating.rating);
+    }
+  };
+
+  useEffect(() => {
+    currentRating();
+  });
+
+
+
+  const calculateFilledStars = () => {
+    // eslint-disable-next-line max-len
+    const currentStarRating = classRating.find((item: { class_id: any; }) => item.class_id === rating.class_id);
+    if (currentStarRating) {
+      const filledStars = Math.round(currentStarRating.rating);
+      setRatingValues(filledStars);
+    }
+  };
+
+  useEffect(() => {
+    calculateFilledStars();
+  }, [classRating, rating.class_id]);
+
+  const generateStarIcons = () => {
+    const stars = [];
+    for (let i = 1; i <= 5; i += 1) {
+      const starClass = i <= ratingValues ? 'text-yellow-500' : 'text-gray-300';
+      stars.push(
+        <FontAwesomeIcon key={i} icon={faStar} className={`text-m ${starClass}`} />,
+      );
+    }
+    return stars;
+  };
 
   return (
     <div>
