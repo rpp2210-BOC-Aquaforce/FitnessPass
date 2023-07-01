@@ -1,16 +1,25 @@
 /* eslint-disable @next/next/no-img-element */
 import { UserClass, ReactChildren } from '@/lib/types';
+import { parseLocalDate } from '@/components/Schedule/DateFunctions';
 
 function TextDiv({ children }: ReactChildren) {
   return <div className="text-seafoam text-[10px] pt-1 font-black uppercase tracking-wide">{children}</div>;
 }
 
-export default function ClassCard({ userClass }: { userClass: UserClass }) {
+export default function ClassCard(
+  { userClass, gotoDate }: { userClass: UserClass, gotoDate: (date: Date) => void },
+) {
   const { classes } = userClass;
 
   if (!classes) {
     return null;
   }
+
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (event.key === 'Enter') {
+      gotoDate(parseLocalDate(classes.date));
+    }
+  };
 
   return (
     <div className="flex items-start mt-4 bg-white w-full h-[104px]">
@@ -19,7 +28,13 @@ export default function ClassCard({ userClass }: { userClass: UserClass }) {
         src={classes.locations.photo_url ?? 'https://via.placeholder.com/117x104'}
         alt="Placeholder"
       />
-      <div className="flex flex-col justify-between ml-4 flex-grow">
+      <div
+        className="flex flex-col justify-between ml-4 flex-grow pointer-cursor"
+        onClick={() => gotoDate(parseLocalDate(classes.date))}
+        onKeyDown={handleKeyDown}
+        tabIndex={0}
+        role="button"
+      >
         <TextDiv>{classes.name}</TextDiv>
         <TextDiv>
           {classes.time}

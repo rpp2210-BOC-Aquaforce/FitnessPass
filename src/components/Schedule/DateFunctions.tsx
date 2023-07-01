@@ -15,6 +15,17 @@ export const parseLocalDate = (dateString: string) => {
   return new Date(year, month - 1, day);
 };
 
+export const getLocalDate = (date: Date, locale = 'en-US') => {
+  const dateString = date.toLocaleDateString(locale, {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  });
+
+  const [month, day, year] = dateString.split('/').map(Number);
+  return new Date(year, month - 1, day);
+};
+
 export const getScheduledDates = (userClasses: UserClass[]) => {
   const scheduledDates = new Set();
   userClasses.forEach((userClass) => {

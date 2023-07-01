@@ -46,9 +46,13 @@ export default function ScheduleView({ userClasses }: ScheduleViewProps) {
   const gotoClassDate = React.useCallback((date: Date) => {
     if (!swiperRef.current) return;
     let offset = differenceInWeeks(date, today);
-    if (offset > 0) {
+    const startOfWeekDate = startOfWeek(date).toLocaleString();
+    const startOfWeekToday = startOfWeek(today).toLocaleString();
+    if (offset > 0 && startOfWeekDate === startOfWeekToday) {
+      offset = 0;
+    } else if (offset > 0) {
       offset += 1;
-    } else if (offset === 0 && startOfWeek(date) !== startOfWeek(today)) {
+    } else if (offset === 0 && startOfWeekDate !== startOfWeekToday) {
       offset += 1;
     }
     const initialSlideIndex = initialSlide + offset;
@@ -129,7 +133,10 @@ export default function ScheduleView({ userClasses }: ScheduleViewProps) {
           );
         })}
         {' '}
-        <FitnessClasses userClasses={viewAll ? userClasses : classesForActiveDay} />
+        <FitnessClasses
+          userClasses={viewAll ? userClasses : classesForActiveDay}
+          gotoDate={gotoClassDate}
+        />
       </Swiper>
     </div>
   );

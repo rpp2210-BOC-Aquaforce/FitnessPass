@@ -1,11 +1,13 @@
-import { UserClasses } from '@/lib/types';
+import { UserClass } from '@/lib/types';
 import ClassCard from './ClassCard';
 
-export default function FitnessClasses({ userClasses }: UserClasses) {
+export default function FitnessClasses(
+  { userClasses, gotoDate }: { userClasses: UserClass[], gotoDate: (date: Date) => void},
+) {
   return (
     <>
       {userClasses.map((userClass) => (
-        <ClassCard key={userClass.id} userClass={userClass} />
+        <ClassCard key={userClass.id} userClass={userClass} gotoDate={gotoDate} />
       ))}
     </>
   );
