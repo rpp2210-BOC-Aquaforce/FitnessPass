@@ -16,6 +16,7 @@ function UserInfo() {
   const [signUpMessage, setSignUpMessage] = useState('');
   const [loadingMessage, setLoadingMessage] = useState('');
   const { data: session, status } = useSession();
+  const userID = (session?.user as any)?.id;
   const router = useRouter();
 
   console.log('session =>', session);
@@ -119,7 +120,7 @@ function UserInfo() {
       setLoadingMessage('');
       console.log('result signup!!', result);
       if (result.message === 'Your profile has been updated!') {
-        router.push('/');
+        router.push(`/user/${userID}/profile`);
       }
     } catch (error) {
       console.log(error);

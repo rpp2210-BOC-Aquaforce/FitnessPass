@@ -18,6 +18,7 @@ function AuthForm() {
   const [signInMessage, setSignInMessage] = useState<string>('');
   const [loadingMessage, setLoadingMessage] = useState('');
   const { data: session, status } = useSession();
+  const userIdfentifier = (session?.user as any)?.id;
   const router = useRouter();
   const callbackUrl = `${process.env.NEXT_PUBLIC_URL}`;
 
@@ -109,8 +110,11 @@ function AuthForm() {
         setSignInMessage(result.error);
       }
 
-      if (result && !result.error) {
-        router.replace('/');
+      if (result && !result.error && isStudio) {
+        router.replace(`/studio/${userIdfentifier}`);
+      }
+      if (result && !result.error && !isStudio) {
+        router.replace(`/user/${userIdfentifier}/profile`);
       }
     } else {
       const result = await createUser(
@@ -141,7 +145,7 @@ function AuthForm() {
           setSignInMessage(signInResult.error);
         }
         if (signInResult && !signInResult.error && isStudio) {
-          router.replace('/');
+          router.replace(`/studio/${userIdfentifier}`);
         }
         if (signInResult && !signInResult.error && !isStudio) {
           router.replace('/login/userInfoUpdate'); // ======================>route to user_info form letting user fill out their info
@@ -216,9 +220,11 @@ function AuthForm() {
           <div className={classes.message}>
             {loadingMessage !== '' ? <p>{loadingMessage}</p> : '' }
           </div>
-          <Link href="/" className={classes.guest}>
+          { !isStudio && (
+          <Link href="/user/1/search" className={classes.guest}>
             Continue as Guest
           </Link>
+          )}
         </div>
       </form>
     </section>
