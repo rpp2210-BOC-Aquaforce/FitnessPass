@@ -1,3 +1,5 @@
+import styles from '../../../app/studio/[studioID]/view-locations/page.module.css';
+
 interface LocationProps {
   location: {
   name: string;
@@ -14,16 +16,16 @@ export default function Location({ location }: LocationProps) {
   // Generate and return a location component based on the data inside the location prop
 
   return (
-    <div>
-      <h5>{location.name}</h5>
-      <p>{location.street}</p>
-      <p>{`${location.city}, ${location.state} ${location.zip}`}</p>
-      <p>{location.phone}</p>
-      <p>Total Rating:</p>
-      <p>
+    <div className={styles.container}>
+      <h5 className={styles.title}>{location.name}</h5>
+      <p className={styles.address}>{location.street}</p>
+      <p className={styles.address}>{`${location.city}, ${location.state} ${location.zip}`}</p>
+      <p className={styles.phone}>{location.phone}</p>
+      <p className={styles.ratingTitle}>Total Rating:</p>
+      <p className={styles.rating}>
         {location.total_rating || 'No ratings yet!'}
       </p>
-      <button type="button">Delete Location</button>
+      <button className={styles.deleteButton} type="button">Delete Location</button>
     </div>
   );
 }

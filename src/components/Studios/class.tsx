@@ -1,4 +1,5 @@
 import styles from '../../../app/studio/[studioID]/view-classes/page.module.css';
+import deleteClass from '../../../pages/api/deleteClass';
 
 interface ClassProps {
   classObj: {
@@ -38,7 +39,7 @@ export default function Location({ classObj }: ClassProps) {
       <p className={styles.time}>{formattedTime}</p>
       <p className={styles.duration}>{`Duration: ${classObj.duration} mins`}</p>
       <p className={styles.rating}>{classObj.total_rating}</p>
-      <button className={styles.deleteButton} type="button">
+      <button className={styles.deleteButton} onClick={() => { deleteClass(classObj.class_id); }} type="button">
         Delete Class
       </button>
     </div>
