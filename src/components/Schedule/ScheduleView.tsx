@@ -16,7 +16,7 @@ import {
   differenceInWeeks,
   startOfWeek,
 } from 'date-fns';
-import { UserClass } from '@/lib/types';
+import { Class } from '@/lib/types';
 import {
   parseLocalDate,
   getScheduledDates,
@@ -27,8 +27,8 @@ import {
 import DatePicker from './DatePicker';
 
 type ScheduleViewProps = {
-  userClasses: UserClass[];
-  // setUserClasses: React.Dispatch<React.SetStateAction<UserClass[]>>;
+  fitnessClasses: Class[];
+  // setfitnessClasses: React.Dispatch<React.SetStateAction<UserClass[]>>;
 }
 
 const initialSlide = 26;
@@ -36,7 +36,7 @@ const totalSlides = 52;
 const today = new Date();
 const weeks = [...Array(totalSlides)];
 
-export default function ScheduleView({ userClasses }: ScheduleViewProps) {
+export default function ScheduleView({ fitnessClasses }: ScheduleViewProps) {
   const [activeSlide, setActiveSlide] = useState<number>(initialSlide);
   const [activeDay, setActiveDay] = useState<Date>(today);
   const [viewAll, setViewAll] = useState<boolean>(false);
@@ -66,18 +66,18 @@ export default function ScheduleView({ userClasses }: ScheduleViewProps) {
       return;
     }
 
-    const nextScheduledClass = getNextScheduledClass(userClasses);
+    const nextScheduledClass = getNextScheduledClass(fitnessClasses);
     gotoClassDate(nextScheduledClass);
-  }, [userClasses, viewAll, gotoClassDate]);
+  }, [fitnessClasses, viewAll, gotoClassDate]);
 
   const weekTitle = getWeekTitle(activeSlide, initialSlide);
 
-  const classesForActiveDay = userClasses.filter((userClass) => {
-    const classDate = parseLocalDate(userClass.classes.date);
+  const classesForActiveDay = fitnessClasses.filter((userClass) => {
+    const classDate = parseLocalDate(userClass.date);
     return isSameDay(activeDay, classDate);
   });
 
-  const scheduledDates = getScheduledDates(userClasses);
+  const scheduledDates = getScheduledDates(fitnessClasses);
 
   const handleViewAllClick = async () => {
     setIsButtonDisabled(true);
@@ -134,7 +134,7 @@ export default function ScheduleView({ userClasses }: ScheduleViewProps) {
         })}
         {' '}
         <FitnessClasses
-          userClasses={viewAll ? userClasses : classesForActiveDay}
+          classes={viewAll ? fitnessClasses : classesForActiveDay}
           gotoDate={gotoClassDate}
         />
       </Swiper>

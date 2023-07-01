@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { UserClass } from '@/lib/types';
+import { Class } from '@/lib/types';
 import {
   format, addDays, isSameDay,
 } from 'date-fns';
@@ -26,19 +26,19 @@ export const getLocalDate = (date: Date, locale = 'en-US') => {
   return new Date(year, month - 1, day);
 };
 
-export const getScheduledDates = (userClasses: UserClass[]) => {
+export const getScheduledDates = (classes: Class[]) => {
   const scheduledDates = new Set();
-  userClasses.forEach((userClass) => {
-    const classDate = parseLocalDate(userClass.classes.date);
+  classes.forEach((userClass) => {
+    const classDate = parseLocalDate(userClass.date);
     scheduledDates.add(format(classDate, 'yyyy-MM-dd'));
   });
   return scheduledDates;
 };
 
-export const getNextScheduledClass = (userClasses: UserClass[]) => {
+export const getNextScheduledClass = (classes: Class[]) => {
   const currentDate = new Date();
-  for (let i = 0; i < userClasses.length; i += 1) {
-    const classDate = parseLocalDate(userClasses[i].classes.date);
+  for (let i = 0; i < classes.length; i += 1) {
+    const classDate = parseLocalDate(classes[i].date);
     if (classDate >= currentDate) {
       return classDate;
     }
