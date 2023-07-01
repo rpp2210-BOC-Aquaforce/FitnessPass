@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 import React from 'react';
 import {
   Chart as ChartJS,
@@ -20,7 +21,7 @@ ChartJS.register(
   Title,
   Tooltip,
   Filler,
-  Legend
+  Legend,
 );
 
 export const options = {
