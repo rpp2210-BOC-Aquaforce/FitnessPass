@@ -8,7 +8,7 @@ function TextDiv({ children }: ReactChildren) {
 }
 
 export default function ClassCard(
-  { fitnessClass, gotoDate }: { fitnessClass: Class, gotoDate?: (date: Date) => void },
+  { fitnessClass, gotoDate }: { fitnessClass: Class, gotoDate?: null | ((date: Date) => void) },
 ) {
   if (!fitnessClass) {
     return null;
@@ -63,7 +63,3 @@ export default function ClassCard(
     </div>
   );
 }
-
-ClassCard.defaultProps = {
-  gotoDate: undefined,
-};

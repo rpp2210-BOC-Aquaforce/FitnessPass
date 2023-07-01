@@ -4,7 +4,7 @@ import { Class } from '@/lib/types';
 import ClassCard from './ClassCard';
 
 export default function FitnessClasses(
-  { classes, gotoDate }: { classes: Class[], gotoDate?: (date: Date) => void},
+  { classes, gotoDate = null }: { classes: Class[], gotoDate?: null | ((date: Date) => void) },
 ) {
   return (
     <>
@@ -18,7 +18,3 @@ export default function FitnessClasses(
     </>
   );
 }
-
-FitnessClasses.defaultProps = {
-  gotoDate: undefined,
-};
