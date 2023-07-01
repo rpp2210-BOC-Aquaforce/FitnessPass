@@ -1,5 +1,7 @@
 import { Session } from 'next-auth';
 
+export * from './ratings';
+
 export type ReactChildren = {
   children: React.ReactNode;
 }
@@ -11,6 +13,7 @@ export interface Location {
 
 export interface Class {
   class_id: number;
+  classRating?: number | null,
   location_id: number | null;
   name: string | null;
   description: string | null;

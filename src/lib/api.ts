@@ -34,3 +34,5 @@ export const fetcher = async ({
 export const getLocations = (studio: string) => fetcher({ url: '/api/fetch-studio-locs', method: 'post', body: { studioId: studio } });
 
 export const addClass = (classData: StudioAddClass) => fetcher({ url: '/api/add-class', method: 'post', body: classData });
+
+export const updateRating = (classId: number, rating: number) => fetcher({ url: '/api/ratings', method: 'put', body: { classId, rating } });
