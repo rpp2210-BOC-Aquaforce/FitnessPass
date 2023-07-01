@@ -38,23 +38,21 @@ export default function StudioClasses() {
   const [classes, setClasses] = useState<Class[]>([]);
 
   useEffect(() => {
-    console.log('ran useEffect block');
+    // console.log('ran useEffect block');
     fetchClasses(studioID, setClasses);
-  }, []);
+  }, [studioID]);
 
-  useEffect(() => {
-    console.log('classes: ', classes);
-  }, [classes]);
+  // useEffect(() => {
+  //   console.log('classes: ', classes);
+  // }, [classes]);
 
   return (
     <div className={styles.classesList}>
       <h1 className={styles.header}>All Classes</h1>
       {classes.map((classObj) => (
         <Class classObj={classObj} key={classObj.class_id} />
-      ),
-      )}
+      ))}
       <Link href={`/studio/${studioID}/addclass`} className={styles.links}>Add A Class</Link>
-
     </div>
   );
 }

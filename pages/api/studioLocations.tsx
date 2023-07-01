@@ -13,16 +13,16 @@ interface StudioLocation {
 type SetterFunction = (data: StudioLocation[]) => void;
 
 const fetchLocations = async (studioID: number, setter: SetterFunction) => {
-  console.log('ran fetchLocations');
+  // console.log('ran fetchLocations');
   const { data, error } = await supabase
     .from('locations')
     .select('name, street, city, state, zip, phone, total_rating, location_id')
     .eq('studio_id', studioID);
   if (error) {
-    console.error(error);
+    // console.error(error);
   } else {
     // Do something with data
-    console.log('data received from query: ', data);
+    // console.log('data received from query: ', data);
     setter(data);
   }
   return -1;

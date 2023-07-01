@@ -1,3 +1,5 @@
+import styles from '../../../app/studio/[studioID]/view-classes/page.module.css';
+
 interface ClassProps {
   classObj: {
     class_id: number;
@@ -14,30 +16,31 @@ interface ClassProps {
 }
 
 export default function Location({ classObj }: ClassProps) {
-  // Generate and return a location component based on the data inside the location prop
+  // Format date in a readable way
+  const formattedDate = new Date(classObj.date).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
 
+  // Format time in a readable way
+  const formattedTime = new Date(`1970-01-01T${classObj.time}`).toLocaleTimeString('en-US', {
+    hour: 'numeric',
+    minute: 'numeric',
+    hour12: true,
+  });
   return (
-    <div>
-      <h5>{classObj.name}</h5>
-      <p>{classObj.description}</p>
-      <p>{classObj.instructor}</p>
-      <p>{classObj.date}</p>
-      <p>{classObj.time}</p>
-      <p>{classObj.duration}</p>
-      <p>Rating:</p>
-      <p>{classObj.total_rating}</p>
-      <button type="button">Delete Class</button>
+    <div className={styles.container}>
+      <h5 className={styles.title}>{classObj.name}</h5>
+      <p className={styles.instructor}>{`with ${classObj.instructor}`}</p>
+      <p className={styles.description}>{classObj.description}</p>
+      <p className={styles.date}>{formattedDate}</p>
+      <p className={styles.time}>{formattedTime}</p>
+      <p className={styles.duration}>{`Duration: ${classObj.duration} mins`}</p>
+      <p className={styles.rating}>{classObj.total_rating}</p>
+      <button className={styles.deleteButton} type="button">
+        Delete Class
+      </button>
     </div>
   );
 }
-
-
-// export default function Class() {
-//   // Generate and return a location component based on the data inside the location props
-
-//   return (
-//     <div>
-//       <h1>Name</h1>
-//     </div>
-//   );
-// }

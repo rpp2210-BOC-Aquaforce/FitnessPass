@@ -38,7 +38,7 @@ export default function StudioLocations() {
   useEffect(() => {
     // console.log('ran useEffect block');
     fetchLocations(studioID, setLocations);
-  }, []);
+  }, [studioID]);
 
   useEffect(() => {
     // console.log('locations: ', locations);
