@@ -15,6 +15,7 @@
     "react/jsx-filename-extension": [2, { "extensions": [".js", ".jsx", ".ts", ".tsx"] }],
     "import/no-unresolved": "off",
     "@typescript-eslint/no-unused-vars": ["error"],
+    "optionalDependencies": 0,
     "linebreak-style": "off",
     "import/extensions": [
       "error",
@@ -27,6 +28,14 @@
       }
    ]
   },
+  "overrides": [
+    {
+      "files": ["test.{ts,tsx}"],
+      "rules": {
+        "devDependencies": 2
+      }
+    }
+  ],
   "settings": {
     "react": {
       "version": "detect"

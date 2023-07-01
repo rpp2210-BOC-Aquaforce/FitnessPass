@@ -2,8 +2,9 @@
 
 import React, { useState, ChangeEvent, FormEvent } from 'react';
 import { supabase } from '@/lib';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
-// NEEDS DYNAMIC STUDIO ID
 type FormData = {
   studioName: string;
   street: string;
@@ -11,10 +12,13 @@ type FormData = {
   state: string;
   zip: string;
   phone: string;
-  photo: File | null;
 };
 
 function StudioLocationForm() {
+  const { data: session } = useSession();
+  const studioID = (session?.user as any)?.id;
+  const router = useRouter();
+
   const [formData, setFormData] = useState<FormData>({
     studioName: '',
     street: '',
@@ -22,7 +26,6 @@ function StudioLocationForm() {
     state: '',
     zip: '',
     phone: '',
-    photo: null,
   });
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -33,47 +36,32 @@ function StudioLocationForm() {
     }));
   };
 
-  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files && e.target.files[0];
-    setFormData((prevData) => ({
-      ...prevData,
-      photo: file || null,
-    }));
-  };
-
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {
-    // need to change to dynamic ID - cannot insert if studio_id is not in table
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { data: newStudio, error } = await supabase
         .from('locations')
         .insert([
           {
-            studio_id: 1,
+            studio_id: studioID,
             name: formData.studioName,
             street: formData.street,
             city: formData.city,
             state: formData.state,
             zip: formData.zip,
             phone: formData.phone,
-            photo_url: null,
           },
         ]);
       if (error) {
-        // console.error('Supabase Error: ', error);
+        console.error('Supabase Error: ', error);
       } else {
-        // Temporary Submit Routing for MVP
-        window.location.href = '/studio/1234/';
+        router.push(`/studio/${studioID}`);
       }
     } catch (err) {
-      // console.error('Unexpected error: ', err);
+      console.error('Unexpected error: ', err);
     }
-
-    // Photo Insert is stretch goal
-    // issues with policy access when uploading photo to bucket
-    // need to have access to specific Studio ID
   };
 
   return (
@@ -138,18 +126,9 @@ function StudioLocationForm() {
           onChange={handleInputChange}
         />
       </label>
-      <label htmlFor="photo-upload" className="block mb-2">
-        Upload Photo:
-        <input
-          id="photo-upload"
-          type="file"
-          accept="image/*"
-          onChange={handleFileChange}
-        />
-      </label>
       <button
         type="submit"
-        className="bg-orange-500 text-white px-4 py-2 rounded-md mt-4"
+        className="bg-orange-500 text-orange px-4 py-2 rounded-md mt-4"
       >
         {' '}
         Submit

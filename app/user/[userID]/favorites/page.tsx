@@ -4,7 +4,7 @@ import Link from 'next/link';
 
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCalendar, faHeart, faDumbbell } from '@fortawesome/free-solid-svg-icons';
+import { faCalendar, faStar, faDumbbell } from '@fortawesome/free-solid-svg-icons';
 import Favorites from '@/components/Favorites';
 
 export default async function FavoritesPage() {
@@ -31,7 +31,7 @@ export default async function FavoritesPage() {
           className="text-white hover:text-orangeLight border rounded-full border-white py-1 px-2 md:py-1.5 md:px-3 bg-orange text-sm md:text-base"
         >
           My Ratings
-          <FontAwesomeIcon icon={faHeart} className="mr-1 ml-1.5 md:mr-1 md:ml-2" />
+          <FontAwesomeIcon icon={faStar} className="mr-1 ml-1.5 md:mr-1 md:ml-2" />
         </Link>
       </div>
     </div>
