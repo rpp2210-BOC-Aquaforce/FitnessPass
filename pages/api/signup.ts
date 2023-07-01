@@ -61,6 +61,6 @@ async function handler(
     .from(`${userTable}`)
     .insert([{ [userEmail]: email, password: hashedPassword }]);
 
-  res.status(201).json({ message: 'new user account created!' });
+  res.status(201).json({ message: 'New user account created! Please wait while we redirect you ...' });
 }
 export default handler;

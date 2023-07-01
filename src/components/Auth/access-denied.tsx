@@ -21,7 +21,7 @@ function AccessDenied() {
           <p>You have not registered with us yet.</p>
         </div>
         <div className={classes.control}>
-          <p>Please sign up or user a different email to sign in. </p>
+          <p>Please sign up or use a different email to sign in. </p>
         </div>
         <div className={classes.actions}>
           <button type="button">

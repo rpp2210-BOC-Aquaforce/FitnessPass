@@ -6,36 +6,10 @@ const errorHandler: NextApiHandler = async (req, res) => {
   // Customize the error handling based on the error value
   if (error === 'AccessDenied') {
     // Redirect the user to the custom error page
-    const redirectUrl = '/login/accessHandler';
+    const redirectUrl = '/login/accessError';
     res.writeHead(302, { Location: redirectUrl });
     res.end();
     return;
-    //   // Handle the "AccessDenied" error
-    //   const loginLink = "<a href='/login'>here</a>";
-    //   const errorMessage = `You have not registered with us.
-    // <br> <br>Please click ${loginLink} to sign up or use a different email to sign in :)`;
-    //   const htmlResponse = `
-    //   <!DOCTYPE html>
-    //   <style>
-    //       body {
-    //         font-family: Arial, sans-serif;
-    //         background-color: #f1f1f1;
-    //       }
-
-  //       .error-message {
-  //         color: red;
-  //         font-size: 50px;
-  //         font-weight: bold;
-  //       }
-  //     </style>
-  //   <html>
-  //   <body>
-  //  <p class=error-message> ${errorMessage} </p>
-  //   </body>
-  //   </html>`;
-  //   res.setHeader('Content-Type', 'text/html');
-  //   res.status(403).send(htmlResponse);
-  //   return;
   }
 
   // Handle other errors or provide a default response

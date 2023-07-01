@@ -22,6 +22,7 @@ function AuthForm() {
   const callbackUrl = `${process.env.NEXT_PUBLIC_URL}`;
 
   console.log('session =>', session);
+  console.log('status =>', status);
 
   // useEffect(() => {
   //   if (status === 'loading') {
@@ -92,11 +93,31 @@ function AuthForm() {
         router.replace('/');
       }
     } else {
-      try {
-        const result = await createUser(enteredEmail, enteredPassword);
+      const result = await createUser(enteredEmail, enteredPassword);
+      setLoadingMessage('');
+      console.log('result signup!!', result);
+      if (result.message === 'New user account created! Please wait while we redirect you ...') {
+        const signInResult = await signIn('credentials', {
+          redirect: false,
+          email: enteredEmail,
+          password: enteredPassword,
+          isStudio,
+          callbackUrl,
+        });
         setLoadingMessage('');
-      } catch (error) {
-        console.log(error);
+        if (status === 'loading') {
+          setLoadingMessage('loading...');
+        } else {
+          setLoadingMessage('');
+        }
+        // the second argument as a whole is received in [...nextauth].js
+        // is the 'credentials' arg for authorize function
+        if (signInResult && signInResult.error) {
+          setSignInMessage(signInResult.error);
+        }
+        if (signInResult && !signInResult.error) {
+          router.replace('/login/userInfoUpdate'); // ======================>route to user_info form letting user fill out their info
+        }
       }
     }
   }
@@ -104,7 +125,7 @@ function AuthForm() {
   async function googleSignInHandler(event: { preventDefault: () => void; }) {
     event.preventDefault();
     try {
-      const result = await signIn('google', { isStudio });
+      const result = await signIn('google', { callbackUrl });
       // const result = await signIn('google', { callbackUrl });
     } catch (error) {
       console.error('Sign-in error:', error);
