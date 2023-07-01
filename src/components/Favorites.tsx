@@ -3,10 +3,6 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import Link from 'next/link';
-// eslint-disable-next-line import/order, import/no-duplicates
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser } from '@fortawesome/free-solid-svg-icons';
 import Slider from 'react-slick';
 import FavoriteEntry from './FavoriteEntry';
 import 'slick-carousel/slick/slick.css';
@@ -110,12 +106,6 @@ export default function MyFavorites() {
 
   return (
     <div className="text-m">
-      <div className="flex justify-end md:w-1/3 mt-5 text-seafoam">
-        <Link href="/user/123/profile">
-          My Profile
-          <FontAwesomeIcon icon={faUser} className="pl-2 pr-3" />
-        </Link>
-      </div>
       <h1 className="relative mx-auto text-center text-2xl text-seafoam mb-8">My Favorites</h1>
       {favorites.length > 2
 

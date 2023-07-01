@@ -3,15 +3,9 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import Link from 'next/link';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser } from '@fortawesome/free-solid-svg-icons';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import Slider from 'react-slick';
 import supabase from '../lib/supabase';
 import RatingEntry from './RatingEntry';
-// eslint-disable-next-line import/no-extraneous-dependencies
-
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
@@ -121,12 +115,6 @@ interface FetchClass{
 
  return (
    <div>
-     <div className="flex justify-end md:w-1/3 mt-5 text-seafoam">
-       <Link href="/user/123/profile">
-         My Profile
-         <FontAwesomeIcon icon={faUser} className="pl-2 pr-3" />
-       </Link>
-     </div>
      <div className="relative mx-auto text-center text-2xl text-seafoam mb-8">My Ratings</div>
      {/* <div>
         {classList.map((rating: ClassList) => (
