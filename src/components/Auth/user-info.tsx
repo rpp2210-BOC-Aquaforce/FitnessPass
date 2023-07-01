@@ -8,9 +8,8 @@
 
 import { useState, useRef, useEffect } from 'react';
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { signOut, useSession, signIn } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { redirect } from 'next/navigation';
 import classes from './info-form.module.css';
 
 function UserInfo() {
@@ -78,7 +77,6 @@ function UserInfo() {
         },
       });
       const result = await response.json();
-      console.log('result in user-inso form',result);
       setSignUpMessage(result.message);
       return result;
     } catch (error) {

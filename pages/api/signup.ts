@@ -14,20 +14,26 @@ async function handler(
   }
 
   const data = req.body;
-  const { email, password, isStudio } = data;
+  const {
+    email,
+    password,
+    isStudio,
+    studioName,
+    studioPhoto,
+  } = data;
 
   if (!email || !email.includes('@') || !password || password.trim().length < 7) {
     res.status(422).json({ message: 'Invalid Input, please re-enter your email or password' });
     return;
   }
 
-  const userTable = isStudio ? 'studio_users' : 'users';
-  const userEmail = isStudio ? 'studio_email' : 'email';
+  // const userTable = isStudio ? 'studio_users' : 'users';
+  // const userEmail = isStudio ? 'studio_email' : 'email';
   // console.log('userTable', userTable);
   // change the sign up logic here -> scen both studio_user and users table;
   const { data: users, error } = await supabase
     .from('users')
-    .select('email, password')
+    .select('email')
     .eq('email', email);
 
   if (error) {
@@ -40,9 +46,24 @@ async function handler(
     return;
   }
 
+  const { data: studio, error: errorStudio } = await supabase
+    .from('studio_users')
+    .select('studio_name')
+    .eq('studio_name', studioName);
+
+  if (errorStudio) {
+    // Handle error here
+    console.error(errorStudio);
+  }
+
+  if (studio && studio.length !== 0) {
+    res.status(422).json({ message: 'Studio is already exist' });
+    return;
+  }
+
   const { data: studioUsers, error: errorStudioUsers } = await supabase
     .from('studio_users')
-    .select('studio_email, password')
+    .select('studio_email')
     .eq('studio_email', email);
 
   if (errorStudioUsers) {
@@ -57,10 +78,20 @@ async function handler(
 
   const hashedPassword = await hashPassword(password);
 
-  await supabase
-    .from(`${userTable}`)
-    .insert([{ [userEmail]: email, password: hashedPassword }]);
-
+  if (!isStudio) {
+    await supabase
+      .from('users')
+      .insert([{ email, password: hashedPassword }]);
+  } else {
+    await supabase
+      .from('studio_users')
+      .insert([{
+        studio_email: email,
+        password: hashedPassword,
+        studio_name: studioName,
+        photo: studioPhoto,
+      }]);
+  }
   res.status(201).json({ message: 'New user account created! Please wait while we redirect you ...' });
 }
 export default handler;

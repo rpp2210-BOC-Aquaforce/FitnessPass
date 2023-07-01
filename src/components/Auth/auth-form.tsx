@@ -5,10 +5,10 @@
 
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef } from 'react';
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { signOut, useSession, signIn } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
+import { useSession, signIn } from 'next-auth/react';
+import { useRouter, redirect } from 'next/navigation';
 import Link from 'next/link';
 import classes from './auth-form.module.css';
 
@@ -21,6 +21,13 @@ function AuthForm() {
   const router = useRouter();
   const callbackUrl = `${process.env.NEXT_PUBLIC_URL}`;
 
+  // useSession({
+  //   required: true,
+  //   onUnauthenticated() {
+  //     redirect('/');
+  //   },
+  // });
+
   console.log('session =>', session);
   console.log('status =>', status);
 
@@ -32,25 +39,36 @@ function AuthForm() {
 
   const emailInputRef = useRef<HTMLInputElement>(null);
   const passwordInputRef = useRef<HTMLInputElement>(null);
-  const firstNameInputRef = useRef<HTMLInputElement>(null);
-  const lastNameInputRef = useRef<HTMLInputElement>(null);
-  const phoneInputRef = useRef<HTMLInputElement>(null);
+  const studioNameInputRef = useRef<HTMLInputElement>(null);
+  const studioPhotoInputRef = useRef<HTMLInputElement>(null);
+
   // const entererdEmail = emailInputRef.current.value;
   // const entererdPassword = passwordInputRef.current.value;
 
   function switchAuthModeHandler() {
     setIsLogin((prevState) => !prevState);
+    setSignInMessage('');
+    setLoadingMessage('');
   }
 
   function studioSwitchAuthModeHandler() {
     setIsStudio((prevState) => !prevState);
+    setSignInMessage('');
+    setLoadingMessage('');
   }
 
-  async function createUser(email: any, password: any): Promise<any> {
+  async function createUser(
+    email: any,
+    password: any,
+    studioName: any,
+    studioPhoto: any,
+  ): Promise<any> {
     try {
       const response = await fetch('/api/signup', {
         method: 'POST',
-        body: JSON.stringify({ email, password, isStudio }),
+        body: JSON.stringify({
+          email, password, isStudio, studioName, studioPhoto,
+        }),
         headers: {
           'Content-Type': 'application/json',
         },
@@ -73,6 +91,8 @@ function AuthForm() {
 
     const enteredEmail = emailInputRef.current?.value;
     const enteredPassword = passwordInputRef.current?.value;
+    const enteredStudioName = studioNameInputRef.current?.value;
+    const enteredStudioPhoto = studioPhotoInputRef.current?.value;
 
     if (isLogin) {
       const result = await signIn('credentials', {
@@ -93,7 +113,12 @@ function AuthForm() {
         router.replace('/');
       }
     } else {
-      const result = await createUser(enteredEmail, enteredPassword);
+      const result = await createUser(
+        enteredEmail,
+        enteredPassword,
+        enteredStudioName,
+        enteredStudioPhoto,
+      );
       setLoadingMessage('');
       console.log('result signup!!', result);
       if (result.message === 'New user account created! Please wait while we redirect you ...') {
@@ -115,7 +140,10 @@ function AuthForm() {
         if (signInResult && signInResult.error) {
           setSignInMessage(signInResult.error);
         }
-        if (signInResult && !signInResult.error) {
+        if (signInResult && !signInResult.error && isStudio) {
+          router.replace('/');
+        }
+        if (signInResult && !signInResult.error && !isStudio) {
           router.replace('/login/userInfoUpdate'); // ======================>route to user_info form letting user fill out their info
         }
       }
@@ -145,6 +173,20 @@ function AuthForm() {
           <label htmlFor="password">Your Password</label>
           <input type="password" id="password" required ref={passwordInputRef} placeholder="Enter your password (at least 7 characters)" />
         </div>
+        {isStudio && !isLogin
+        && (
+        <div className={classes.control}>
+          <label htmlFor="studioName">Studio Name</label>
+          <input type="text" id="studioName" required ref={studioNameInputRef} placeholder="Enter studio name" />
+        </div>
+        )}
+        {isStudio && !isLogin
+        && (
+        <div className={classes.control}>
+          <label htmlFor="studioPhoto">Photo</label>
+          <input type="text" id="studioPhoto" required ref={studioPhotoInputRef} placeholder="Enter studio photo" />
+        </div>
+        )}
         <div className={classes.actions}>
           <button type="submit">{isLogin ? 'Login' : 'Create Account'}</button>
           <button
