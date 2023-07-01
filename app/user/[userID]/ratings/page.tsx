@@ -1,6 +1,7 @@
 'use client';
 
 import { redirect } from 'next/navigation';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import React from 'react';

@@ -4,9 +4,14 @@ import React from 'react';
 
 type FavoriteEntryProps = {
   favorite: any;
+  onRemove: (id: number) => void;
 };
 
-export default function FavoriteEntry({ favorite }: FavoriteEntryProps) {
+export default function FavoriteEntry({ favorite, onRemove }: FavoriteEntryProps) {
+  const handleRemove = () => {
+    onRemove(favorite.class_id);
+  };
+
   return (
     <div className="w-full flex justify-center">
       <div className="w-5/6 bg-white p-4 mb-4 text-xs justify-center h-25 mb-5 h-full rounded-lg shadow">
@@ -42,6 +47,7 @@ export default function FavoriteEntry({ favorite }: FavoriteEntryProps) {
             <button
               type="button"
               className="rounded-lg border border-black py-2 px-4 text-white hover:text-orangeLight border rounded-full border-white bg-orange"
+              onClick={handleRemove}
             >
               Remove
             </button>
