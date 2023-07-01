@@ -3,15 +3,13 @@ import { redirect } from 'next/navigation';
 import { authOptions } from '@/lib/auth';
 import { supabase } from '@/lib';
 import { FitnessClasses } from '@/components/FitnessClasses';
-import { Class, CustomSession } from '@/lib/types';
+import { Class } from '@/lib/types';
 
 export default async function Page() {
   const session = await getServerSession(authOptions);
   if (!session) {
     redirect('/login');
   }
-
-  const { id: userId } = session.user as CustomSession['user'];
 
   const getClasses = async () => {
     try {
@@ -23,13 +21,10 @@ export default async function Page() {
         throw error;
       }
 
-      console.log('classes data & userId', data, userId);
-
       return data.sort(
         (a: Class, b: Class) => a.date.localeCompare(b.date),
       );
     } catch (error) {
-      // console.error('Error fetching user classes:', error);
       return null;
     }
   };
