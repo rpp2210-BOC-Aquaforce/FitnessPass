@@ -17,29 +17,34 @@ export default function Metrics() {
   const getMetrics = async () => {
     await getStudioClasses(studioID)
       .then((data) => {
-        console.log('Client-side starting metrics data: ', data);
-        const metrics = [];
-        data.forEach((item) => {
-          getClassPopularity(item.class_id)
+        // console.log('Client-side starting metrics data: ', data);
+        const metrics: any[] | PromiseLike<any[]> = [];
+        data.forEach(async (item: { class_id: string; name: string; }) => {
+          await getClassPopularity(item.class_id)
             .then((popularity) => {
-              console.log(`Popularity for ${item.class_id}: `, popularity);
-              console.log({ class_id: item.class_id, name: item.name, popularity });
+              // console.log(`Popularity for ${item.class_id}: `, popularity);
+              // console.log({ class_id: item.class_id, name: item.name, popularity });
               metrics.push({ class_id: item.class_id, name: item.name, popularity });
-              setStudioMetrics(metrics);
+              // console.log('Metrics: ', metrics);
+              // setStudioMetrics(metrics);
             })
             .catch((err) => {
               console.error(err);
             });
         });
+        return metrics;
+      })
+      .then((metricsData) => {
+        setStudioMetrics(metricsData);
       })
       .catch((err) => {
         console.error(err);
       });
-  }
+    console.log('Studio Metrics: ', studioMetrics);
+  };
 
   useEffect(() => {
-    console.log('****');
-    getMetrics(studioID);
+    getMetrics();
   }, []);
 
   return (

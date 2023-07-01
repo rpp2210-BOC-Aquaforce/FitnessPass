@@ -1,6 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import supabase from '@/lib/supabase';
-// import { getLocations } from '@/lib/api';
 
 // Get location IDs for studio from locations
 // Get class IDs & class name for each location from classes
