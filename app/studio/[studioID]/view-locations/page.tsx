@@ -5,7 +5,7 @@ import { Session, User } from 'next-auth';
 import { useSession } from 'next-auth/react';
 import React, { useEffect, useState } from 'react';
 import AddLocation from '@/components/AddLocation';
-import Location from '../../../../src/components/Studios/location';
+import Location from '@/components/Studios/location';
 import fetchLocations from '../../../../pages/api/studioLocations';
 import deleteLocation from '../../../../pages/api/deleteLocation';
 import styles from './page.module.css';
