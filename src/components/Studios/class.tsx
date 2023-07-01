@@ -1,5 +1,4 @@
 import styles from '../../../app/studio/[studioID]/view-classes/page.module.css';
-import deleteClass from '../../../pages/api/deleteClass';
 
 interface ClassProps {
   classObj: {

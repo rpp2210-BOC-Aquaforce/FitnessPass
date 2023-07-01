@@ -41,9 +41,7 @@ export default async function StudioPage() {
   }, [studioID]);
 
   return (
-    // <main className="flex flex-col items-center justify-center min-h-screen">
     <main className={styles.container}>
-      {/* <div className="text-3xl font-bold mb-4"> */}
       <div className="text-3xl font-bold mb-4">
         <h1 className={styles.header}>Studio Profile</h1>
         <Image

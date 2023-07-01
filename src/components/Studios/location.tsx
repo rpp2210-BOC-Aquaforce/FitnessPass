@@ -1,5 +1,4 @@
 import styles from '../../../app/studio/[studioID]/view-locations/page.module.css';
-import deleteLocation from '../../../pages/api/deleteLocation';
 
 interface LocationProps {
   location: {
