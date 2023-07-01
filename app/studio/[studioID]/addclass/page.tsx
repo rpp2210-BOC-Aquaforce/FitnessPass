@@ -1,18 +1,18 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { useSession } from 'next-auth/react';
 import { getLocations } from '@/lib/api';
-// import AddClassForm from '../../../../src/components/AddClass/AddClassForm';
 import { AddClassForm } from '@/components/index';
 
 export default function AddClass() {
+  const { data: session } = useSession();
+  const studioID = (session?.user as any)?.id;
   const [studioLocs, setStudioLocs] = useState([{ location_id: '', name: '' }]);
 
-  // To be refactored to fetch studio locations on form load (need studio id from auth)
   // To be refactored -- if no studio locations, give curtosey message to add studio location
   const fetchStudioLocations = async () => {
-    const studioId = '10'; // Temporarily hard-coded until auth merged in *
-    await getLocations(studioId)
+    await getLocations(studioID)
       .then((data) => {
         setStudioLocs(data);
       })
@@ -27,7 +27,7 @@ export default function AddClass() {
 
   return (
     <div>
-      <AddClassForm studioLocs={studioLocs} />
+      <AddClassForm studioLocs={studioLocs} studioID={studioID} />
     </div>
   );
 }
