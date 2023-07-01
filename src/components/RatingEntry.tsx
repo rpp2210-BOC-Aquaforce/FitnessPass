@@ -68,7 +68,7 @@ export default function RatingEntry({ rating, classRating }: RatingEntryProps) {
   return (
     <div>
       <div className="w-full flex justify-center">
-        <div id="white background" className="w-5/6 bg-white p-4 mb-4 text-xs justify-center h-25 mb-5 h-full rounded-lg">
+        <div id="white background" className="w-full bg-white p-4 mb-4 text-xs justify-center h-25 mb-5 h-full rounded-lg">
           <div className="flex">
             <div className="w-1/3 p-2 h-full flex items-start">
               <img

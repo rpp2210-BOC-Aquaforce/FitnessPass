@@ -14,7 +14,7 @@ export default function FavoriteEntry({ favorite, onRemove }: FavoriteEntryProps
 
   return (
     <div className="w-full flex justify-center">
-      <div className="w-5/6 bg-white p-4 mb-4 text-xs justify-center h-25 mb-5 h-full rounded-lg shadow">
+      <div className="w-full bg-white p-4 mb-4 text-xs justify-center h-25 mb-5 h-full rounded-lg shadow">
         <div className="flex mb-4">
           <div className="w-1/3 p-2 h-full flex items-start">
             <img

@@ -1,3 +1,5 @@
+'use client';
+
 import { UserClass } from '@/lib/types';
 import ClassCard from './ClassCard';
 
