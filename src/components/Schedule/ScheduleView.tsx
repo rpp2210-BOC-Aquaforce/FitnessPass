@@ -48,6 +48,8 @@ export default function ScheduleView({ userClasses }: ScheduleViewProps) {
     let offset = differenceInWeeks(date, today);
     if (offset > 0) {
       offset += 1;
+    } else if (offset === 0 && startOfWeek(date) !== startOfWeek(today)) {
+      offset += 1;
     }
     const initialSlideIndex = initialSlide + offset;
     setActiveSlide(initialSlideIndex);
