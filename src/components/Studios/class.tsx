@@ -14,9 +14,10 @@ interface ClassProps {
     total_rating: number;
     num_ratings: number;
   };
+  onDelete: () => Promise<void>;
 }
 
-export default function Location({ classObj }: ClassProps) {
+export default function Location({ classObj, onDelete }: ClassProps) {
   // Format date in a readable way
   const formattedDate = new Date(classObj.date).toLocaleDateString('en-US', {
     year: 'numeric',
@@ -39,7 +40,7 @@ export default function Location({ classObj }: ClassProps) {
       <p className={styles.time}>{formattedTime}</p>
       <p className={styles.duration}>{`Duration: ${classObj.duration} mins`}</p>
       <p className={styles.rating}>{classObj.total_rating}</p>
-      <button className={styles.deleteButton} onClick={() => { deleteClass(classObj.class_id); }} type="button">
+      <button className={styles.deleteButton} onClick={onDelete} type="button">
         Delete Class
       </button>
     </div>

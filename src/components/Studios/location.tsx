@@ -1,4 +1,5 @@
 import styles from '../../../app/studio/[studioID]/view-locations/page.module.css';
+import deleteLocation from '../../../pages/api/deleteLocation';
 
 interface LocationProps {
   location: {
@@ -9,10 +10,12 @@ interface LocationProps {
   zip: string;
   phone: string;
   total_rating: number;
+  location_id: number;
   };
+  onDelete: () => Promise<void>;
 }
 
-export default function Location({ location }: LocationProps) {
+export default function Location({ location, onDelete }: LocationProps) {
   // Generate and return a location component based on the data inside the location prop
 
   return (
@@ -25,7 +28,7 @@ export default function Location({ location }: LocationProps) {
       <p className={styles.rating}>
         {location.total_rating || 'No ratings yet!'}
       </p>
-      <button className={styles.deleteButton} type="button">Delete Location</button>
+      <button className={styles.deleteButton} onClick={onDelete} type="button">Delete Location</button>
     </div>
   );
 }

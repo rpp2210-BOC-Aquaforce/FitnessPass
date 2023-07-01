@@ -7,6 +7,7 @@ import React, { useEffect, useState } from 'react';
 import AddLocation from '@/components/AddLocation';
 import Location from '../../../../src/components/Studios/location';
 import fetchLocations from '../../../../pages/api/studioLocations';
+import deleteLocation from '../../../../pages/api/deleteLocation';
 import styles from './page.module.css';
 
 interface MyUser extends User {
@@ -36,21 +37,27 @@ export default function StudioLocations() {
   const [locations, setLocations] = useState<StudioLocation[]>([]);
 
   useEffect(() => {
-    // console.log('ran useEffect block');
     fetchLocations(studioID, setLocations);
   }, [studioID]);
 
-  useEffect(() => {
-    // console.log('locations: ', locations);
-  }, [locations]);
+  const handleLocationDelete = async (locationID: number) => {
+    await deleteLocation(locationID);
+    // Remove the deleted location from the state
+    setLocations(locations.filter((location) => location.location_id !== locationID));
+  };
 
   return (
     <div className={styles.locationList}>
       <h1 className={styles.header}>All Locations</h1>
       {locations.map((location) => (
-        <Location location={location} key={location.location_id} />
+        <Location
+          location={location}
+          key={location.location_id}
+          onDelete={() => handleLocationDelete(location.location_id)}
+        />
       ))}
       <AddLocation />
     </div>
   );
 }
+

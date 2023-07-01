@@ -7,13 +7,14 @@ import { useSession } from 'next-auth/react';
 import React, { useEffect, useState } from 'react';
 import Class from '../../../../src/components/Studios/class';
 import fetchClasses from '../../../../pages/api/studioClasses';
+import deleteClass from '../../../../pages/api/deleteClass';
 import styles from './page.module.css';
 
 interface MyUser extends User {
   id: string;
 }
 
-interface Class {
+interface StudioClass {
   class_id: number;
   location_id: number;
   name: string;
@@ -35,24 +36,31 @@ export default function StudioClasses() {
   }) as { data: Session & { user?: MyUser | null }};
 
   const studioID = (session?.user as any)?.id;
-  const [classes, setClasses] = useState<Class[]>([]);
+  const [classes, setClasses] = useState<StudioClass[]>([]);
 
   useEffect(() => {
-    // console.log('ran useEffect block');
     fetchClasses(studioID, setClasses);
   }, [studioID]);
 
-  // useEffect(() => {
-  //   console.log('classes: ', classes);
-  // }, [classes]);
+  const handleClassDelete = async (classID: number) => {
+    await deleteClass(classID);
+    // Remove the deleted class from the state
+    setClasses(classes.filter((classObj) => classObj.class_id !== classID));
+  };
 
   return (
     <div className={styles.classesList}>
       <h1 className={styles.header}>All Classes</h1>
       {classes.map((classObj) => (
-        <Class classObj={classObj} key={classObj.class_id} />
+        <Class
+          classObj={classObj}
+          key={classObj.class_id}
+          onDelete={() => handleClassDelete(classObj.class_id)}
+        />
       ))}
-      <Link href={`/studio/${studioID}/addclass`} className={styles.links}>Add A Class</Link>
+      <Link href={`/studio/${studioID}/addclass`} className={styles.links}>
+        Add A Class
+      </Link>
     </div>
   );
 }
