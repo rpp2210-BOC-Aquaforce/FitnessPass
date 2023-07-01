@@ -31,6 +31,11 @@ export const options = {
       position: 'top' as const,
     },
   },
+  scales: {
+    y: {
+      min: 0,
+    },
+  },
 };
 
 const labels = ['4 Weeks Ago', '3 Weeks Ago', '2 Weeks Ago', '1 Week Ago', 'This Week'];

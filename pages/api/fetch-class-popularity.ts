@@ -9,25 +9,17 @@ export default async function getClassPopularity(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  console.log('Function Activated!');
-  const { data, error } = await supabase
-    // .from('user_classes')
-    // .select('id, classes!inner(class_id, name, locations!inner(location_id, studio_id))')
-    // .eq('locations.studio_id', '11');
-
-    .from('classes')
-    .select('class_id, name, locations!inner(location_id)')
-    .eq('locations.studio_id', '11');
-
-    // .filter('location_id', 'in', 'studios ("11")');
-    // .select('class_id, name, location_id')
-    // .select('class_id, name, location_id, location_id!inner (location_id)')
-    // .filter('location_id', 'in', `${test}`);
+  console.log('getClassPopularity Activated!');
+  // Gets count of users for given class_id
+  const { count, error } = await supabase
+    .from('user_classes')
+    .select('*', { count: 'exact', head: true })
+    .eq('class_id', `${req.body.classId}`);
 
   if (error) {
     res.status(400).send(error);
   } else {
-    console.log('Data from Popularity: ', data);
-    // res.status(200).json({ data });
+    console.log(`Data from getClassPopularity: for classID ${req.body.classId}`, count);
+    res.status(200).json({ data: count });
   }
 }

@@ -35,4 +35,6 @@ export const getLocations = (studio: string) => fetcher({ url: '/api/fetch-studi
 
 export const addClass = (classData: StudioAddClass) => fetcher({ url: '/api/add-class', method: 'post', body: classData });
 
-export const getClassPopularity = (studio: string) => fetcher({ url: '/api/fetch-class-popularity', method: 'post', body: { studioId: studio } });
+export const getClassPopularity = (classId: string) => fetcher({ url: '/api/fetch-class-popularity', method: 'post', body: { classId: classId } });
+
+export const getStudioClasses = (studio: string) => fetcher({ url: '/api/fetch-studio-classes', method: 'post', body: { studioId: studio } });

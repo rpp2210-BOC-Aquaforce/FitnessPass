@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import PopularityMetrics from './PopularityMetrics';
 import EngagementMetrics from './EngagementMetrics';
 
-export default function MetricsView() {
+export default function MetricsView( { studioMetrics }) {
   const [view, setView] = useState('popularity');
 
   const handleClick = (e: { preventDefault: () => void; }) => {
@@ -14,6 +14,7 @@ export default function MetricsView() {
 
   useEffect(() => {
     setView(view);
+    console.log('Metrics in metrics view component: ', studioMetrics);
   }, [view]);
   return (
     <div>
