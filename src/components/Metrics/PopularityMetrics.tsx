@@ -27,5 +27,9 @@ export const data = {
 };
 
 export default function PopularityMetrics() {
-  return <Doughnut data={data} />;
+  return (
+    <div className="relative h-5/6">
+      <Doughnut data={data} />
+    </div>
+  );
 }

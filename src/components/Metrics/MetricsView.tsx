@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import PopularityMetrics from './PopularityMetrics';
+import EngagementMetrics from './EngagementMetrics';
 
 export default function MetricsView() {
   const [view, setView] = useState('popularity');
@@ -16,18 +17,18 @@ export default function MetricsView() {
   }, [view]);
   return (
     <div>
-      <h4>Hi I am the metrics view component</h4>
+      {/* <h4>Hi I am the metrics view component</h4> */}
       {view === 'popularity' ? (
         <div>
-          <h5>Class Popularity</h5>
+          <h2>Class Popularity</h2>
           <PopularityMetrics />
           <button type="button" onClick={handleClick}>View Class Engagement</button>
         </div>
       ) : null}
       {view === 'engagement' ? (
         <div>
-          <h5>Class Engagement</h5>
-          {/* <EngagementMetrics /> */}
+          <h2>Class Engagement</h2>
+          <EngagementMetrics />
           <button type="button" onClick={handleClick}>View Class Popularity</button>
         </div>
       ) : null}
