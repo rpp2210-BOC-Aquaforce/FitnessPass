@@ -12,7 +12,6 @@ import { StudioAddClass } from '@/lib/types';
 // To-Do:
 // Refactor tags section to be more user-friendly
 // Handle UTC timezome consistency for class start time
-// Route based on studio id, not hard-coded studio id
 
 type propsTypes = {
   studioID: number,
@@ -25,7 +24,6 @@ type propsTypes = {
 export default function AddClassForm({ studioLocs, studioID }:propsTypes) {
   const router = useRouter();
 
-  // const [studioLocs, setStudioLocs] = useState([{ location_id: '', name: '' }]);
   const [formData, setFormData] = useState<StudioAddClass>({
     loc_id: '',
     location: '',
