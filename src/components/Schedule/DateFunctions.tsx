@@ -58,7 +58,7 @@ export function WeekDays({
             key={format(date, 'yyyy-MM-dd')}
             data-testid={`day-${day}`}
             type="button"
-            className={`flex flex-col m-2 items-center w-auto p-1 rounded-lg min-w-[38px] min-h-[76px] ${isActiveDay ? 'bg-seafoam text-white' : 'bg-gray-200'}`}
+            className={`flex flex-col m-1 items-center w-auto p-1 rounded-lg min-w-[38px] min-h-[76px] ${isActiveDay ? 'bg-seafoam text-white' : 'bg-gray-200'}`}
             onClick={() => setActiveDay(date)}
           >
             <span className="flex text-sm font-semibold">{day}</span>
