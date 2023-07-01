@@ -2,7 +2,7 @@ import { UserClass } from '@/lib/types';
 import ClassCard from './ClassCard';
 
 export default function FitnessClasses(
-  { userClasses, gotoDate }: { userClasses: UserClass[], gotoDate: (date: Date) => void},
+  { userClasses, gotoDate }: { userClasses: UserClass[], gotoDate?: (date: Date) => void},
 ) {
   return (
     <>
@@ -12,3 +12,7 @@ export default function FitnessClasses(
     </>
   );
 }
+
+FitnessClasses.defaultProps = {
+  gotoDate: undefined,
+};

@@ -7,7 +7,7 @@ function TextDiv({ children }: ReactChildren) {
 }
 
 export default function ClassCard(
-  { userClass, gotoDate }: { userClass: UserClass, gotoDate: (date: Date) => void },
+  { userClass, gotoDate }: { userClass: UserClass, gotoDate?: (date: Date) => void },
 ) {
   const { classes } = userClass;
 
@@ -16,7 +16,7 @@ export default function ClassCard(
   }
 
   const handleKeyDown = (event: React.KeyboardEvent) => {
-    if (event.key === 'Enter') {
+    if (event.key === 'Enter' && gotoDate) {
       gotoDate(parseLocalDate(classes.date));
     }
   };
@@ -30,7 +30,7 @@ export default function ClassCard(
       />
       <div
         className="flex flex-col justify-between ml-4 flex-grow pointer-cursor"
-        onClick={() => gotoDate(parseLocalDate(classes.date))}
+        onClick={() => gotoDate && gotoDate(parseLocalDate(classes.date))}
         onKeyDown={handleKeyDown}
         tabIndex={0}
         role="button"
@@ -64,3 +64,7 @@ export default function ClassCard(
     </div>
   );
 }
+
+ClassCard.defaultProps = {
+  gotoDate: undefined,
+};
