@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
-import { getClassPopularity, getStudioClasses } from '@/lib/api';
+import { getClassPopularity, getStudioClasses, getClassesByDate } from '@/lib/api';
 import { MetricsView } from '@/components/index';
 import { useRouter } from 'next/navigation';
 
@@ -44,7 +44,9 @@ export default function Metrics() {
   };
 
   useEffect(() => {
-    getMetrics();
+    // getMetrics();
+    console.log('Metrics STUDIO ID: ', studioID);
+    getClassesByDate(studioID);
   }, []);
 
   return (

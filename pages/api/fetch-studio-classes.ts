@@ -8,7 +8,7 @@ export default async function getStudioClasses(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  console.log('getStudioClasses Activated!');
+  console.log('getStudioClasses Activated for studio_id: ', req.body.studioId);
   // Gets class_id and name for all classes for a given studio
   const { data, error } = await supabase
     .from('classes')
