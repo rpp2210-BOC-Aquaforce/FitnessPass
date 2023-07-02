@@ -1,6 +1,7 @@
 import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
 import { authOptions } from '@/lib/auth';
+import { updateUserClass } from '@/lib/actions';
 import { supabase } from '@/lib';
 import { ScheduleView, Favorites, Ratings } from '@/components';
 import { UserClass, Class, CustomSession } from '@/lib/types';
@@ -49,8 +50,18 @@ export default async function Page({ params }: { params: { pages: string[] } }) 
   const renderPage = () => {
     const favorites = fitnessClasses?.filter((fitnessClass) => fitnessClass.favorite);
     const pageComponents: { [key: string]: JSX.Element } = {
-      favorites: <Favorites fitnessClasses={favorites || []} />,
-      ratings: <Ratings fitnessClasses={fitnessClasses || []} />,
+      favorites: (
+        <Favorites
+          userId={userId}
+          updateUserClass={updateUserClass}
+          fitnessClasses={favorites || []}
+        />),
+      ratings: (
+        <Ratings
+          userId={userId}
+          updateUserClass={updateUserClass}
+          fitnessClasses={fitnessClasses || []}
+        />),
       default: <ScheduleView fitnessClasses={fitnessClasses || []} />,
     };
 

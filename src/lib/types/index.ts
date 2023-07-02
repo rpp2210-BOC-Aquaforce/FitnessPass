@@ -6,6 +6,19 @@ export type ReactChildren = {
   children: React.ReactNode;
 }
 
+export type UpdateRatingArgs = {
+  userId: string,
+  rating: number,
+  classId: number,
+}
+
+export type UpdateUserClassArgs = {
+  userId: string,
+  classId: number,
+  key: string,
+  value: boolean | number | string | null,
+}
+
 export interface Location {
   name: string | null;
   photo_url?: string | null;

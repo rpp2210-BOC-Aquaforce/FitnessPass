@@ -5,7 +5,8 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  const { classId, rating } = req.body;
+  const { classId } = req.query;
+  const { rating } = req.body;
 
   if (req.method === 'PUT') {
     try {

@@ -19,7 +19,7 @@ interface CustomSession extends Session {
 export default function Nav() {
   const { data: session } = useSession() as { data: CustomSession | null };
 
-  console.log('session', session);
+  // console.log('session', session);
 
   const handleLogout = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();

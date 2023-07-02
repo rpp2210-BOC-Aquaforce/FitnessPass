@@ -1,18 +1,28 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Class } from '@/lib/types';
+import { Class, UpdateUserClassArgs } from '@/lib/types';
 import FavoriteEntry from './FavoriteEntry';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
-export default function Favorites({ fitnessClasses } : { fitnessClasses: Class[]}) {
+export default function Favorites({ userId, updateUserClass, fitnessClasses } :
+  {
+    userId: string,
+    updateUserClass: (args: UpdateUserClassArgs) => void,
+    fitnessClasses: Class[] }) {
   const [favorites, setFavorites] = useState<Class[]>(fitnessClasses);
 
   const removeFavorite = (classId: number) => {
     setFavorites((prevFavorites) => (
       prevFavorites.filter((favorite) => favorite.class_id !== classId)
     ));
+    updateUserClass({
+      userId,
+      classId,
+      key: 'favorite',
+      value: false,
+    });
   };
 
   return (

@@ -3,19 +3,27 @@
 import React, { useState } from 'react';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Class } from '@/lib/types';
-import { updateRating } from '@/lib/api';
+import { Class, UpdateUserClassArgs } from '@/lib/types';
+// import { updateRating } from '@/lib/api';
 
 type RatingEntryProps = {
+  userId: string,
+  updateUserClass: (args: UpdateUserClassArgs) => void,
   fitnessClass: Class;
 };
 
-export default function RatingEntry({ fitnessClass }: RatingEntryProps) {
+export default function RatingEntry({ userId, updateUserClass, fitnessClass }: RatingEntryProps) {
   const [ratingValues, setRatingValues] = useState(fitnessClass.classRating ?? 0);
 
   const handleRatingChange = async (ratingValue: number) => {
     setRatingValues(ratingValue);
-    await updateRating(ratingValue, fitnessClass.class_id);
+    // await updateRating(ratingValue, fitnessClass.class_id);
+    await updateUserClass({
+      userId,
+      key: 'class_rating',
+      value: ratingValue,
+      classId: fitnessClass.class_id,
+    });
   };
 
   const generateStarIcons = () => {

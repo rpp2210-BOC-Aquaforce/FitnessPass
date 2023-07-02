@@ -35,4 +35,4 @@ export const getLocations = (studio: string) => fetcher({ url: '/api/fetch-studi
 
 export const addClass = (classData: StudioAddClass) => fetcher({ url: '/api/add-class', method: 'post', body: classData });
 
-export const updateRating = (classId: number, rating: number) => fetcher({ url: '/api/ratings', method: 'put', body: { classId, rating } });
+export const updateRating = (classId: number, rating: number) => fetcher({ url: `/api/classes/${classId}/ratings`, method: 'put', body: { rating } });
