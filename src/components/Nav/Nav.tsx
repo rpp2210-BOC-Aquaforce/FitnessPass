@@ -2,6 +2,8 @@
 
 import Link from 'next/link';
 import { useSession, signOut } from 'next-auth/react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { Session } from 'next-auth';
 
 interface CustomSession extends Session {
@@ -10,11 +12,14 @@ interface CustomSession extends Session {
     name?: string;
     email?: string;
     image?: string;
+    studio_user?: boolean;
   } & Session['user'];
 }
 
 export default function Nav() {
   const { data: session } = useSession() as { data: CustomSession | null };
+
+  // console.log('session', session);
 
   const handleLogout = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -27,14 +32,14 @@ export default function Nav() {
     </Link>
   );
 
+  const userId = session?.user?.id;
+
   return (
     <>
-      <nav className="flex flex-wrap min-h-[56px]">
+      <nav className="flex flex-wrap min-h-[56px] justify-between ">
         {!session && renderLink('/login', 'Log In')}
         {session && (
         <>
-          {renderLink(`/studio/${session.user?.id}`, 'Studios')}
-          {renderLink('/user/1/profile', 'My Profile (user)')}
           <button
             type="button"
             onClick={handleLogout}
@@ -42,6 +47,10 @@ export default function Nav() {
           >
             Logout
           </button>
+          <Link href={`/${session.user?.studio_user ? `studio/${userId ?? '1'}` : `user/${userId ?? '1'}/profile`}`} className="m-2 text-seafoam">
+            My Profile
+            <FontAwesomeIcon icon={faUser} className="pl-2 pr-3" />
+          </Link>
         </>
         )}
       </nav>

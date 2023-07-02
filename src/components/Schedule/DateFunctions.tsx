@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { UserClass } from '@/lib/types';
+import { Class } from '@/lib/types';
 import {
   format, addDays, isSameDay,
 } from 'date-fns';
@@ -15,19 +15,30 @@ export const parseLocalDate = (dateString: string) => {
   return new Date(year, month - 1, day);
 };
 
-export const getScheduledDates = (userClasses: UserClass[]) => {
+export const getLocalDate = (date: Date, locale = 'en-US') => {
+  const dateString = date.toLocaleDateString(locale, {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  });
+
+  const [month, day, year] = dateString.split('/').map(Number);
+  return new Date(year, month - 1, day);
+};
+
+export const getScheduledDates = (classes: Class[]) => {
   const scheduledDates = new Set();
-  userClasses.forEach((userClass) => {
-    const classDate = parseLocalDate(userClass.classes.date);
+  classes.forEach((userClass) => {
+    const classDate = parseLocalDate(userClass.date);
     scheduledDates.add(format(classDate, 'yyyy-MM-dd'));
   });
   return scheduledDates;
 };
 
-export const getNextScheduledClass = (userClasses: UserClass[]) => {
+export const getNextScheduledClass = (classes: Class[]) => {
   const currentDate = new Date();
-  for (let i = 0; i < userClasses.length; i += 1) {
-    const classDate = parseLocalDate(userClasses[i].classes.date);
+  for (let i = 0; i < classes.length; i += 1) {
+    const classDate = parseLocalDate(classes[i].date);
     if (classDate >= currentDate) {
       return classDate;
     }
@@ -58,7 +69,7 @@ export function WeekDays({
             key={format(date, 'yyyy-MM-dd')}
             data-testid={`day-${day}`}
             type="button"
-            className={`flex flex-col m-2 items-center w-auto p-1 rounded-lg min-w-[38px] min-h-[76px] ${isActiveDay ? 'bg-seafoam text-white' : 'bg-gray-200'}`}
+            className={`flex flex-col m-1 items-center w-auto p-1 rounded-lg min-w-[38px] min-h-[76px] ${isActiveDay ? 'bg-seafoam text-white' : 'bg-gray-200'}`}
             onClick={() => setActiveDay(date)}
           >
             <span className="flex text-sm font-semibold">{day}</span>
