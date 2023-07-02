@@ -35,7 +35,7 @@ export const authOptions: NextAuthOptions = {
         const userEmail = credentials.email;
         const studioUser = JSON.parse(credentials.isStudio);
 
-        console.log('credentials.isStudio', credentials.isStudio);
+        // console.log('credentials.isStudio', credentials.isStudio);
 
         if (studioUser === true) {
           const { data: users, error } = await supabase
@@ -99,8 +99,8 @@ export const authOptions: NextAuthOptions = {
   ],
   pages: {
     error: '/api/auth/error',
+    // signOut: '/api/auth/signout',
   },
-
   callbacks: {
     async signIn({
       account, profile,

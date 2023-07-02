@@ -12,7 +12,7 @@
 .auth h1 {
   text-align: center;
   color: #FF9F1C;
-  padding-bottom: 3rem;
+  padding-bottom: 4rem;
   font-weight: bold;
   size: 10rem;
   font-size: 2rem;
@@ -91,7 +91,6 @@
   color: #da1818;
   border: none;
   padding: 0.15rem 1.5rem;
-  font-size: 0.8rem;
 }
 
 .actions .guest {
