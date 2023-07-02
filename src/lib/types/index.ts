@@ -27,6 +27,7 @@ export interface Location {
 export interface Class {
   class_id: number;
   classRating?: number | null,
+  favorite?: boolean | null,
   location_id: number | null;
   name: string | null;
   description: string | null;
