@@ -2,11 +2,14 @@
 
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { useSession, signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import '@fortawesome/fontawesome-svg-core/styles.css';
 import classes from './auth-form.module.css';
 
 function AuthForm() {
@@ -14,6 +17,7 @@ function AuthForm() {
   const [isStudio, setIsStudio] = useState(false);
   const [signInMessage, setSignInMessage] = useState<string>('');
   const [loadingMessage, setLoadingMessage] = useState('');
+  const [spin, setSpin] = useState(false);
   const { data: session, status } = useSession();
   const userIdentifier = (session?.user as any)?.id;
   const router = useRouter();
@@ -161,6 +165,14 @@ function AuthForm() {
     }
   }
 
+  useEffect(() => {
+    if (loadingMessage !== '' || signInMessage === 'New user account created! Please wait while we redirect you ...') {
+      setSpin(true);
+    } else {
+      setSpin(false);
+    }
+  }, [loadingMessage, signInMessage]);
+
   return (
     <section className={classes.auth}>
       { !isStudio && <h1>{isLogin ? 'Member Login' : 'Member Sign Up'}</h1>}
@@ -211,6 +223,7 @@ function AuthForm() {
               {isStudio ? 'Switch to Member Login' : 'Switch to Studio Login'}
             </button>
           </div>
+          { spin && <FontAwesomeIcon icon={faSpinner} spin style={{ color: '#2EC4B6' }} /> }
           <div className={classes.message}>
             {signInMessage && <p>{signInMessage}</p>}
           </div>
@@ -224,6 +237,7 @@ function AuthForm() {
           )}
         </div>
       </form>
+
     </section>
   );
 }

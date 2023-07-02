@@ -10,11 +10,15 @@ import { useState, useRef, useEffect } from 'react';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import '@fortawesome/fontawesome-svg-core/styles.css';
 import classes from './info-form.module.css';
 
 function UserInfo() {
   const [signUpMessage, setSignUpMessage] = useState('');
   const [loadingMessage, setLoadingMessage] = useState('');
+  const [spin, setSpin] = useState(false);
   const { data: session, status } = useSession();
   const userID = (session?.user as any)?.id;
   const router = useRouter();
@@ -89,6 +93,7 @@ function UserInfo() {
   async function signUpInfoSubmitHandler(event: { preventDefault: () => void; }) {
     event.preventDefault();
     setSignUpMessage('');
+    setSpin(true);
     setLoadingMessage('Please wait...');
 
     const enteredFirstName = firstNameInputRef.current?.value;
@@ -118,7 +123,6 @@ function UserInfo() {
         enteredPhoto,
       );
       setLoadingMessage('');
-      console.log('result signup!!', result);
       if (result.message === 'Your profile has been updated!') {
         router.push(`/user/${userID}/profile`);
       }
@@ -128,7 +132,7 @@ function UserInfo() {
   }
 
   return (
-    <section>
+    <section className={classes.auth}>
       <h4>Please provide the following user information to complete the sign-up process.</h4>
       <form onSubmit={signUpInfoSubmitHandler}>
         <div className={classes.control}>
@@ -175,11 +179,12 @@ function UserInfo() {
           <label htmlFor="photo">Photo</label>
           <input type="text" id="photo" ref={photoInputRef} placeholder="Upload your photo" />
         </div>
-        <div className={classes.control}>
-          <div>
+        { spin && <FontAwesomeIcon icon={faSpinner} spin style={{ color: '#2EC4B6' }} /> }
+        <div className={classes.actions}>
+          <div className={classes.message}>
             {signUpMessage && <p>{signUpMessage}</p>}
           </div>
-          <div>
+          <div className={classes.message}>
             {loadingMessage !== '' ? <p>{loadingMessage}</p> : '' }
           </div>
         </div>

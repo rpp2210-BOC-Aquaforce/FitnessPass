@@ -1,5 +1,5 @@
 .auth {
-  margin: 2rem auto;
+  margin: 0.5rem auto;
   width: 95%;
   max-width: 25rem;
   border-radius: 6px;
@@ -12,7 +12,7 @@
 .auth h1 {
   text-align: center;
   color: #FF9F1C;
-  padding-bottom: 4rem;
+  padding-bottom: 3rem;
   font-weight: bold;
   size: 10rem;
   font-size: 2rem;
@@ -91,6 +91,7 @@
   color: #da1818;
   border: none;
   padding: 0.15rem 1.5rem;
+  font-size: 0.8rem;
 }
 
 .actions .guest {
