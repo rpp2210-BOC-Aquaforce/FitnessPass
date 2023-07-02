@@ -39,4 +39,4 @@ export const getClassPopularity = (classId: string) => fetcher({ url: '/api/fetc
 
 export const getStudioClasses = (studio: string) => fetcher({ url: '/api/fetch-studio-classes', method: 'post', body: { studioId: studio } });
 
-export const getClassesByDate = (studio: string) => fetcher({ url: '/api/fetch-classes-by-date', method: 'post', body: { studioId: studio } });
+export const getClassesByDate = (studioID: string, startDate: string, endDate: string) => fetcher({ url: '/api/fetch-classes-by-date', method: 'post', body: { studioID, startDate, endDate } });

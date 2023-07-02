@@ -10,9 +10,9 @@ import { Doughnut } from 'react-chartjs-2';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-export default function PopularityMetrics({ studioMetrics }) {
-  const classNames = studioMetrics.map((studio: { name: string; }) => studio.name);
-  const classAttendees = studioMetrics.map((studio: { popularity: number; }) => studio.popularity);
+export default function PopularityMetrics({ studioPopMetrics }) {
+  const classNames = studioPopMetrics.map((studio: { name: string; }) => studio.name);
+  const classAttendees = studioPopMetrics.map((studio: { popularity: number; }) => studio.popularity);
 
   const data = {
     labels: classNames,

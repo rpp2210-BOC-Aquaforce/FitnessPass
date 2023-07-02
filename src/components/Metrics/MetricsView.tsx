@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import PopularityMetrics from './PopularityMetrics';
 import EngagementMetrics from './EngagementMetrics';
 
-export default function MetricsView({ studioMetrics }) {
+export default function MetricsView({ studioPopMetrics }) {
   const [view, setView] = useState('popularity');
 
   const handleClick = (e: { preventDefault: () => void; }) => {
@@ -14,15 +14,15 @@ export default function MetricsView({ studioMetrics }) {
 
   useEffect(() => {
     setView(view);
-    console.log('Metrics in metrics view component: ', studioMetrics);
-  }, [view, studioMetrics]);
+    console.log('Metrics in metrics view component: ', studioPopMetrics);
+  }, [view, studioPopMetrics]);
   return (
     <div>
       {/* <h4>Hi I am the metrics view component</h4> */}
       {view === 'popularity' ? (
         <div>
           <h2>Class Popularity</h2>
-          <PopularityMetrics studioMetrics={studioMetrics} />
+          <PopularityMetrics studioPopMetrics={studioPopMetrics} />
           <button type="button" onClick={handleClick}>View Class Engagement</button>
         </div>
       ) : null}
