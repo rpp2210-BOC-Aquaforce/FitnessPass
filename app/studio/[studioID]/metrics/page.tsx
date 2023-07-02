@@ -7,38 +7,48 @@ import { MetricsView } from '@/components/index';
 import { useRouter } from 'next/navigation';
 import { format, subWeeks } from 'date-fns';
 
+type studioPopMetric = {
+  name: string;
+  popularity: number;
+};
+
+type studioEngMetric = {
+  week: string;
+  attendance: number;
+};
+
 export default function Metrics() {
   const router = useRouter();
 
   const { data: session } = useSession();
   const studioID = (session?.user as any)?.id;
 
-  const [studioPopMetrics, setStudioPopMetrics] = useState([]);
-  const [studioEngMetrics, setStudioEngMetrics] = useState([]);
+  const [studioPopMetrics, setStudioPopMetrics] = useState<studioPopMetric[]>([]);
+  const [studioEngMetrics, setStudioEngMetrics] = useState<studioEngMetric[]>([]);
 
   const getPopMetrics = async () => {
-    await getStudioClasses(studioID)
-      .then((data) => {
-        // console.log('Client-side starting metrics data: ', data);
-        const metrics: any[] | PromiseLike<any[]> = [];
-        data.forEach(async (item: { class_id: string; name: string; }) => {
-          await getClassPopularity(item.class_id)
-            .then((popularity) => {
-              metrics.push({ class_id: item.class_id, name: item.name, popularity });
-            })
-            .catch((err) => {
-              console.error(err);
-            });
-        });
-        return metrics;
-      })
-      .then((metricsData) => {
-        setStudioPopMetrics(metricsData);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-    console.log('Studio Metrics: ', studioPopMetrics);
+    try {
+      const data = await getStudioClasses(studioID);
+      const metricsMap = new Map();
+
+      await Promise.all(data.map(async (item: { class_id: string; name: string; }) => {
+        const popularity = await getClassPopularity(item.class_id);
+        if (metricsMap.has(item.name)) {
+          metricsMap.set(item.name, metricsMap.get(item.name) + popularity);
+        } else {
+          metricsMap.set(item.name, popularity);
+        }
+      }));
+
+      const combinedMetrics = Array.from(metricsMap.entries()).map(([name, popularity]) => ({
+        name,
+        popularity,
+      }));
+
+      setStudioPopMetrics(combinedMetrics);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const getEngMetrics = async () => {
@@ -50,11 +60,11 @@ export default function Metrics() {
     const fiveWeeksAgo = format(subWeeks(new Date(), 5), 'yyyy-MM-dd');
 
     const weeks = [
+      { label: '4 weeks ago', start: fiveWeeksAgo, end: fourWeeksAgo },
+      { label: '3 weeks ago', start: fourWeeksAgo, end: threeWeeksAgo },
+      { label: '2 weeks ago', start: threeWeeksAgo, end: twoWeeksAgo },
+      { label: 'Last week', start: twoWeeksAgo, end: lastWeek },
       { label: 'This week', start: lastWeek, end: today },
-      { label: 'One week ago', start: twoWeeksAgo, end: lastWeek },
-      { label: 'Two weeks ago', start: threeWeeksAgo, end: twoWeeksAgo },
-      { label: 'Three weeks ago', start: fourWeeksAgo, end: threeWeeksAgo },
-      { label: 'Four weeks ago', start: fiveWeeksAgo, end: fourWeeksAgo },
     ];
 
     const attendancePromises = weeks.map(async (week) => {
@@ -73,7 +83,6 @@ export default function Metrics() {
 
     try {
       const attendanceData = await Promise.all(attendancePromises);
-      console.log('Attendance data:', attendanceData);
       setStudioEngMetrics(attendanceData);
     } catch (err) {
       console.error(err);
@@ -81,7 +90,6 @@ export default function Metrics() {
   };
 
   useEffect(() => {
-    console.log('Metrics STUDIO ID: ', studioID);
     getPopMetrics();
     getEngMetrics();
   }, []);
