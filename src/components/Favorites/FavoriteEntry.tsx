@@ -1,15 +1,18 @@
+/* eslint-disable @next/next/no-img-element */
+
 'use client';
 
 import React from 'react';
+import { Class } from '@/lib/types';
 
 type FavoriteEntryProps = {
-  favorite: any;
+  fitnessClass: Class;
   onRemove: (id: number) => void;
 };
 
-export default function FavoriteEntry({ favorite, onRemove }: FavoriteEntryProps) {
+export default function FavoriteEntry({ fitnessClass, onRemove }: FavoriteEntryProps) {
   const handleRemove = () => {
-    onRemove(favorite.class_id);
+    onRemove(fitnessClass.class_id);
   };
 
   return (
@@ -26,23 +29,23 @@ export default function FavoriteEntry({ favorite, onRemove }: FavoriteEntryProps
           <div className="w-2/3">
             <div className="flex flex-wrap">
               <p className="font-bold text-seafoam mr-4">Class Name:</p>
-              <p className="text-orange">{favorite.name}</p>
+              <p className="text-orange">{fitnessClass.name}</p>
             </div>
             <div className="flex flex-wrap">
               <p className="font-bold text-seafoam mr-4">Class Description:</p>
-              <p className="text-orange">{favorite.description}</p>
+              <p className="text-orange">{fitnessClass.description}</p>
             </div>
             <div className="flex flex-wrap">
               <p className="font-bold text-seafoam mr-4">Class Date:</p>
-              <p className="text-orange">{favorite.date}</p>
+              <p className="text-orange">{fitnessClass.date}</p>
             </div>
             <div className="flex flex-wrap">
               <p className="font-bold text-seafoam mr-4 mb-2">Time:</p>
-              <p className="text-orange">{favorite.time}</p>
+              <p className="text-orange">{fitnessClass.time}</p>
             </div>
             <div className="flex flex-wrap">
               <p className="font-bold text-seafoam mr-4 mb-2">Instructor:</p>
-              <p className="text-orange">{favorite.instructor}</p>
+              <p className="text-orange">{fitnessClass.instructor}</p>
             </div>
             <button
               type="button"

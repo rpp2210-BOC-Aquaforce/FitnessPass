@@ -1,4 +1,5 @@
 export { default as Ratings } from './Ratings/Ratings';
+export { default as Favorites } from './Favorites/Favorites';
 export { default as Ping } from './Ping';
 export * from './Nav';
 export * from './Schedule';
