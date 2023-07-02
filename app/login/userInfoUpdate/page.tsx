@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import UserInfo from '../../../src/components/Auth/user-info';
+import UserInfo from '@/components/Auth/user-info';
 
 function UserInfoUpdatePage() {
   return (

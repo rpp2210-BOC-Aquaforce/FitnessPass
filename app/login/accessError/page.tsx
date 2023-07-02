@@ -1,7 +1,6 @@
 'use client';
 
-// import Link from 'next/link';
-import AccessDenied from '../../../src/components/Auth/access-denied';
+import AccessDenied from '@/components/Auth/access-denied';
 
 export default function ErrorPage() {
   return (

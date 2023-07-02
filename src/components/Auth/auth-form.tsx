@@ -1,6 +1,3 @@
-/* eslint-disable no-console */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 
 'use client';
@@ -8,7 +5,7 @@
 import { useState, useRef } from 'react';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { useSession, signIn } from 'next-auth/react';
-import { useRouter, redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import classes from './auth-form.module.css';
 
@@ -18,7 +15,7 @@ function AuthForm() {
   const [signInMessage, setSignInMessage] = useState<string>('');
   const [loadingMessage, setLoadingMessage] = useState('');
   const { data: session, status } = useSession();
-  const userIdfentifier = (session?.user as any)?.id;
+  const userIdentifier = (session?.user as any)?.id;
   const router = useRouter();
   const callbackUrl = `${process.env.NEXT_PUBLIC_URL}`;
 
@@ -111,10 +108,10 @@ function AuthForm() {
       }
 
       if (result && !result.error && isStudio) {
-        router.replace(`/studio/${userIdfentifier}`);
+        router.replace(`/studio/${userIdentifier}`);
       }
       if (result && !result.error && !isStudio) {
-        router.replace(`/user/${userIdfentifier}/profile`);
+        router.replace(`/user/${userIdentifier}/profile`);
       }
     } else {
       const result = await createUser(
@@ -145,7 +142,7 @@ function AuthForm() {
           setSignInMessage(signInResult.error);
         }
         if (signInResult && !signInResult.error && isStudio) {
-          router.replace(`/studio/${userIdfentifier}`);
+          router.replace(`/studio/${userIdentifier}`);
         }
         if (signInResult && !signInResult.error && !isStudio) {
           router.replace('/login/userInfoUpdate'); // ======================>route to user_info form letting user fill out their info
@@ -157,8 +154,8 @@ function AuthForm() {
   async function googleSignInHandler(event: { preventDefault: () => void; }) {
     event.preventDefault();
     try {
-      const result = await signIn('google', { callbackUrl });
-      // const result = await signIn('google', { callbackUrl });
+      await signIn('google', { callbackUrl });
+      // const result = await signIn('google',  { callbackUrl });
     } catch (error) {
       console.error('Sign-in error:', error);
     }
