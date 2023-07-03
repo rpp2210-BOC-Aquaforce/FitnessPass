@@ -35,7 +35,7 @@ export default function ClassSignUp({ class_id, user_id } : { class_id: number, 
   }, []);
 
   const signUp = async () => {
-    if (user_id === 'guestUser') {
+    if (!user_id) {
       console.log('guest user');
       router.push('/login');
     } else {
