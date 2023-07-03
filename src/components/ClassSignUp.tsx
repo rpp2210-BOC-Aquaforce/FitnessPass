@@ -35,26 +35,25 @@ export default function ClassSignUp({ class_id, user_id } : { class_id: number, 
   }, []);
 
   const signUp = async () => {
-    if (!user_id) {
+    if (user_id === 'undefined') {
       console.log('guest user');
       router.push('/login');
-    } else {
-      try {
-        const { data, error } = await supabase
-          .from('user_classes')
-          .insert([{ user_id, class_id },
-          ])
-          .select();
-        if (error) {
-          console.error(error);
-        }
-        setSigned(true);
-        console.log(`signed up user ${user_id} in class ${class_id}`, data);
-      } catch (err) {
-        console.error('Unexpected error: ', err);
-      }
+      return;
     }
-    return null;
+    try {
+      const { data, error } = await supabase
+        .from('user_classes')
+        .insert([{ user_id, class_id },
+        ])
+        .select();
+      if (error) {
+        console.error(error);
+      }
+      setSigned(true);
+      console.log(`signed up user ${user_id} in class ${class_id}`, data);
+    } catch (err) {
+      console.error('Unexpected error: ', err);
+    }
   };
 
   const cancelSignUp = async () => {
