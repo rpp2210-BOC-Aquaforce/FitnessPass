@@ -9,7 +9,7 @@ export default async function getStudioClasses(
   const { data, error } = await supabase
     .from('classes')
     .select('class_id, name, locations!inner(location_id)')
-    .eq('locations.studio_id', `${req.body.studioId}`);
+    .eq('locations.studio_id', req.body.studioID);
   if (error) {
     res.status(400).send(error);
   } else {

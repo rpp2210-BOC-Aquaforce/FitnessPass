@@ -9,7 +9,7 @@ export default async function getClassPopularity(
   const { count, error } = await supabase
     .from('user_classes')
     .select('*', { count: 'exact', head: true })
-    .eq('class_id', `${req.body.classId}`);
+    .eq('class_id', req.body.classID);
 
   if (error) {
     res.status(400).send(error);

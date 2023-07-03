@@ -4,15 +4,20 @@ import {
   Chart as ChartJS,
   ArcElement,
   Tooltip,
-  Legend
+  Legend,
 } from 'chart.js';
 import { Doughnut } from 'react-chartjs-2';
+import { studioPopMetric } from '@/lib/types';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-export default function PopularityMetrics({ studioPopMetrics }) {
-  const classNames = studioPopMetrics.map((studio: { name: string; }) => studio.name);
-  const classAttendees = studioPopMetrics.map((studio: { popularity: number; }) => studio.popularity);
+export default function PopularityMetrics({
+  studioPopMetrics,
+}: {
+  studioPopMetrics: studioPopMetric[];
+}) {
+  const classNames = studioPopMetrics.map((studio) => studio.name);
+  const classAttendees = studioPopMetrics.map((studio) => studio.popularity);
 
   const data = {
     labels: classNames,

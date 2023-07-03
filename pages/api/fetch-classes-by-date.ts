@@ -9,7 +9,7 @@ export default async function getClassesByDate(
   const { data, error } = await supabase
     .from('classes')
     .select('class_id, date, locations!inner(location_id)')
-    .eq('locations.studio_id', '11')
+    .eq('locations.studio_id', req.body.studioID)
     .gt('date', req.body.startDate)
     .lte('date', req.body.endDate);
 

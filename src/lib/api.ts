@@ -31,12 +31,12 @@ export const fetcher = async ({
 };
 
 // Would like to refactor to a get method, requires more research on Fetch API
-export const getLocations = (studio: string) => fetcher({ url: '/api/fetch-studio-locs', method: 'post', body: { studioId: studio } });
+export const getLocations = (studioID: string) => fetcher({ url: '/api/fetch-studio-locs', method: 'post', body: { studioID } });
 
 export const addClass = (classData: StudioAddClass) => fetcher({ url: '/api/add-class', method: 'post', body: classData });
 
-export const getClassPopularity = (classId: string) => fetcher({ url: '/api/fetch-class-popularity', method: 'post', body: { classId: classId } });
+export const getClassPopularity = (classID: string) => fetcher({ url: '/api/fetch-class-popularity', method: 'post', body: { classID } });
 
-export const getStudioClasses = (studio: string) => fetcher({ url: '/api/fetch-studio-classes', method: 'post', body: { studioId: studio } });
+export const getStudioClasses = (studioID: string) => fetcher({ url: '/api/fetch-studio-classes', method: 'post', body: { studioID } });
 
 export const getClassesByDate = (studioID: string, startDate: string, endDate: string) => fetcher({ url: '/api/fetch-classes-by-date', method: 'post', body: { studioID, startDate, endDate } });

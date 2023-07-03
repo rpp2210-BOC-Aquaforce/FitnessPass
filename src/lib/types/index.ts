@@ -60,3 +60,13 @@ export interface StudioAddClass {
   class_tags: string;
   instructor: string;
 }
+
+export interface studioPopMetric {
+  name: string | null;
+  popularity: number | null;
+}
+
+export interface studioEngMetric {
+  week: string | null;
+  attendance: number | null;
+}

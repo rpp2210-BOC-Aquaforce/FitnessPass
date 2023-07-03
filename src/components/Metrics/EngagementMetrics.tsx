@@ -12,6 +12,7 @@ import {
   Legend,
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
+import { studioEngMetric } from '@/lib/types';
 
 ChartJS.register(
   CategoryScale,
@@ -24,10 +25,14 @@ ChartJS.register(
   Legend,
 );
 
-export default function EngagementMetrics({ studioEngMetrics }) {
-  const labels = studioEngMetrics.map((studio: { week: string; }) => studio.week);
+export default function EngagementMetrics({
+  studioEngMetrics,
+}: {
+  studioEngMetrics: studioEngMetric[];
+}) {
+  const labels = studioEngMetrics.map((studio) => studio.week);
   const classAttendees = studioEngMetrics.map(
-    (studio: { attendance: number; }) => studio.attendance,
+    (studio) => studio.attendance,
   );
 
   const options = {

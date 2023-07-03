@@ -1,24 +1,29 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { studioPopMetric, studioEngMetric } from '@/lib/types';
 import PopularityMetrics from './PopularityMetrics';
 import EngagementMetrics from './EngagementMetrics';
 
-export default function MetricsView({ studioPopMetrics, studioEngMetrics }) {
+export default function MetricsView({
+  studioPopMetrics,
+  studioEngMetrics,
+}: {
+  studioPopMetrics: studioPopMetric[];
+  studioEngMetrics: studioEngMetric[];
+}) {
   const [view, setView] = useState('popularity');
 
   const handleClick = (e: { preventDefault: () => void; }) => {
     e.preventDefault();
-    view === 'popularity' ? setView('engagement') : setView('popularity');
+    setView(view === 'popularity' ? 'engagement' : 'popularity');
   };
 
   useEffect(() => {
     setView(view);
-    console.log('Metrics in metrics view component: ', studioPopMetrics);
-  }, [view, studioPopMetrics, studioEngMetrics]);
+  }, [view]);
   return (
     <div>
-      {/* <h4>Hi I am the metrics view component</h4> */}
       {view === 'popularity' ? (
         <div>
           <h2>Class Popularity</h2>
@@ -35,4 +40,4 @@ export default function MetricsView({ studioPopMetrics, studioEngMetrics }) {
       ) : null}
     </div>
   );
-};
+}
