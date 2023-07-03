@@ -7,7 +7,6 @@ import { useRouter } from 'next/navigation';
 import supabase from '../lib/supabase';
 
 export default function ClassSignUp({ class_id, user_id } : { class_id: number, user_id: any }) {
-
   const router = useRouter();
 
   const [signed, setSigned] = useState<boolean>(false);
@@ -36,23 +35,24 @@ export default function ClassSignUp({ class_id, user_id } : { class_id: number, 
   }, []);
 
   const signUp = async () => {
-    if (!user_id) {
+    if (user_id === 'guestUser') {
       console.log('guest user');
       router.push('/login');
-    }
-    try {
-      const { data, error } = await supabase
-        .from('user_classes')
-        .insert([{ user_id, class_id },
-        ])
-        .select();
-      if (error) {
-        console.error(error);
+    } else {
+      try {
+        const { data, error } = await supabase
+          .from('user_classes')
+          .insert([{ user_id, class_id },
+          ])
+          .select();
+        if (error) {
+          console.error(error);
+        }
+        setSigned(true);
+        console.log(`signed up user ${user_id} in class ${class_id}`, data);
+      } catch (err) {
+        console.error('Unexpected error: ', err);
       }
-      setSigned(true);
-      console.log(`signed up user ${user_id} in class ${class_id}`, data);
-    } catch (err) {
-      console.error('Unexpected error: ', err);
     }
     return null;
   };

@@ -131,7 +131,7 @@ export default function Map({ center, classes, user_id }: MapProps) {
           onLoad={(map) => {
             mapInstanceRef.current = map;
           }}
-          mapContainerStyle={{ width: '100vw', height: '70vh' }}
+          mapContainerStyle={{ width: '100vw', height: '80vh' }}
         >
           <Marker
             key={0}

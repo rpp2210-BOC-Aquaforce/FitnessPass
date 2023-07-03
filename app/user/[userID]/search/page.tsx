@@ -6,11 +6,8 @@
 import { Search } from '@/components/index';
 
 export default function Page(props: { params: { userID: any; }; }) {
-  // useEffect(() => {
-  //   const { data } = getQueryParams(window.location.search);
-  // }, []);
   const user_id = props.params.userID;
-
+console.log('user_id', user_id)
   return (
     <div>
       <Search user_id={user_id} />
