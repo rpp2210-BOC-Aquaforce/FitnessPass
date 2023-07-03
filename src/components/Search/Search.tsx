@@ -1,3 +1,5 @@
+/* eslint-disable no-nested-ternary */
+
 'use client';
 
 import { useEffect, useState } from 'react';
@@ -138,21 +140,42 @@ export default function Search() {
           placeholder="Yoga, Pilates, Zumba..."
           onChange={(e) => setSearchByClass(e.target.value)}
         />
-        <div className="flex items-center font-normal bg-seafoam"><MapPin className="h-5 w-5" /></div>
+        <div className="flex items-center text-white font-normal bg-seafoam"><MapPin className="h-5 w-5" /></div>
         <input
           className="w-[100px] text-center font-normal text-xs"
           placeholder={searchByLocation}
           value={searchByLocation}
           onChange={(e) => setSearchByLocation(e.target.value)}
         />
-        <button type="button" className="w-[30px] justify-center font-normal text-xs bg-seafoam rounded-e-md" onClick={search}>GO</button>
+        <button type="button" className="w-[30px] text-white justify-center font-normal text-xs bg-seafoam rounded-e-md" onClick={search}>GO</button>
       </div>
       <div>
+        {searched && Classes.length <= 1 ? (
+          <div className="text-orange mt-2 px-2 py-1 font-black">
+            {Classes.length}
+            {' '}
+            class
+          </div>
+        )
+          : Classes.length > 1 ? (
+            <div className="text-orange mt-2 px-2 py-1 font-black">
+              {Classes.length}
+              {' '}
+              classes
+            </div>
+          )
+            : ''}
         {searched && (
           list ? (
-            <List classes={Classes} setList={setList} />
+            <div>
+              <button type="button" className="text-center text-white text-xs font-black uppercase tracking-wide rounded-md bg-seafoam px-2 py-1 mt-2 ml-2" onClick={() => setList(false)}>Map</button>
+              <List classes={Classes} />
+            </div>
           ) : (
-            <Map center={myLocation} classes={Classes} setList={setList} />
+            <div>
+              <button type="button" className="text-center text-white text-xs font-black uppercase tracking-wide rounded-md bg-seafoam px-2 py-1 mt-2 mb-2" onClick={() => setList(true)}>List</button>
+              <Map center={myLocation} classes={Classes} />
+            </div>
           )
         )}
       </div>

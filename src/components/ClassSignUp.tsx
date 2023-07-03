@@ -87,7 +87,7 @@ export default function ClassSignUp({ class_id } : { class_id: number }) {
             <button type="button" className="text-center text-white text-xs font-black uppercase tracking-wide rounded-md bg-slate-300 px-2 py-1 mt-2" onClick={cancelSignUp}>Cancel</button>
           </>
         )
-        : <button type="button" className="text-center text-white text-xs font-black uppercase tracking-wide rounded-md bg-orange px-2 py-1 mt-2" onClick={signUp}>Sign Up</button>}
+        : <button type="button" className="text-center text-white text-xs font-black uppercase tracking-wide rounded-md bg-orange px-2 py-1 mt-2 mr-2" onClick={signUp}>Sign Up</button>}
     </div>
   );
 }

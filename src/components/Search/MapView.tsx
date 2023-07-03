@@ -3,7 +3,7 @@
 'use client';
 
 import {
-  Dispatch, SetStateAction, useEffect, useRef, useState,
+  useEffect, useRef, useState,
 } from 'react';
 import {
   useLoadScript, GoogleMap, Marker, InfoWindow,
@@ -50,10 +50,9 @@ type Class = {
 interface MapProps {
   center: LatLngLiteral | undefined;
   classes: Class[];
-  setList: Dispatch<SetStateAction<boolean>>;
 }
 
-export default function Map({ center, classes, setList }: MapProps) {
+export default function Map({ center, classes }: MapProps) {
   const [activeMarker, setActiveMarker] = useState<number | null>(null);
   const [markers, setMarkers] = useState<marker[]>([]);
 
@@ -123,16 +122,9 @@ export default function Map({ center, classes, setList }: MapProps) {
     }
   }, []);
 
-  if (!Array.isArray(classes) || classes.length === 0) return <div>0 result</div>;
   if (!isLoaded) return <div>loading...</div>;
   return (
     <div>
-      <div className="text-mint-orange mt-2">
-        {classes.length}
-        {' '}
-        results
-      </div>
-      <button type="button" className="text-center text-white text-xs font-black uppercase tracking-wide rounded-md bg-seafoam px-2 py-1 mt-2 mb-2" onClick={() => setList(true)}>List</button>
       <div className="items-center relative">
         <GoogleMap
           onLoad={(map) => {

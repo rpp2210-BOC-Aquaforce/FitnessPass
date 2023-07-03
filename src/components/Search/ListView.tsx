@@ -29,17 +29,10 @@ function TextDiv({ children }: ReactChildren) {
 }
 
 export default function List(
-  { classes, setList } : {classes: Class[], setList: React.Dispatch<React.SetStateAction<boolean>>},
+  { classes } : {classes: Class[]},
 ) {
-  if (classes.length === 0) return <div>0 result</div>;
   return (
     <div>
-      <div className="text-mint-orange mt-2">
-        {classes.length}
-        {' '}
-        results
-      </div>
-      <button type="button" className="text-center text-white text-xs font-black uppercase tracking-wide rounded-md bg-seafoam px-2 py-1 mt-2" onClick={() => setList(false)}>Map</button>
       <div>
         {classes.map(({
           class_id, name, time, duration, total_rating, locations,
