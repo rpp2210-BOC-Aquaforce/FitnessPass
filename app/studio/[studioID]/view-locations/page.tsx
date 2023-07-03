@@ -1,40 +1,61 @@
 'use client';
 
-// import Location from './location';
-// import React, { useEffect, useState } from 'react';
+import { redirect } from 'next/navigation';
+import { Session, User } from 'next-auth';
+import { useSession } from 'next-auth/react';
+import React, { useEffect, useState } from 'react';
 import AddLocation from '@/components/AddLocation';
+import Location from '@/components/Studios/location';
+import fetchLocations from '../../../../pages/api/studioLocations';
+import deleteLocation from '../../../../pages/api/deleteLocation';
 import styles from './page.module.css';
 
+interface MyUser extends User {
+  id: string;
+}
+
+interface StudioLocation {
+  location_id: number;
+  name: string;
+  street: string;
+  city: string;
+  state: string;
+  zip: string;
+  phone: string;
+  total_rating: number;
+}
+
 export default function StudioLocations() {
-  // const studioID = 1;
-  // const [locations, setLocations] = useState([]);
+  const { data: session } = useSession({
+    required: true,
+    onUnauthenticated() {
+      redirect('/login');
+    },
+  }) as { data: Session & { user?: MyUser | null }};
 
-  // const fetchStudioLocations = async () => {
-  //   const { data, error } = await supabase
-  //     .from('locations')
-  //     .select('*')
-  //     .eq('studio_id', studioID);
-  //   if (error) {
-  //     // console.log('error in fetchStudioLocations', error);
-  //   } else {
-  //     // Data
-  //     // console.log('Fetched Data: ', data);
-  //     // setLocations(data);
-  //   }
-  //   // console.log('Studio Locations: ', locations);
-  // };
+  const studioID = (session?.user as any)?.id;
+  const [locations, setLocations] = useState<StudioLocation[]>([]);
 
-  // useEffect(() => {
-  //   fetchStudioLocations();
-  // }, []);
+  useEffect(() => {
+    fetchLocations(studioID, setLocations);
+  }, [studioID]);
+
+  const handleLocationDelete = async (locationID: number) => {
+    await deleteLocation(locationID);
+    // Remove the deleted location from the state
+    setLocations(locations.filter((location) => location.location_id !== locationID));
+  };
 
   return (
     <div className={styles.locationList}>
       <h1 className={styles.header}>All Locations</h1>
-      <div>A location</div>
-      <div>Look, another one</div>
-      <div>Yep, one more</div>
-      <div>Nope, this is just text.</div>
+      {locations.map((location) => (
+        <Location
+          location={location}
+          key={location.location_id}
+          onDelete={() => handleLocationDelete(location.location_id)}
+        />
+      ))}
       <AddLocation />
     </div>
   );

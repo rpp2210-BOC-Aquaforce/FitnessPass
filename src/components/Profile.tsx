@@ -1,3 +1,5 @@
+/* eslint-disable @next/next/no-img-element */
+
 'use client';
 
 import { useEffect, useState } from 'react';
@@ -64,9 +66,6 @@ export default function Profile() {
     getUserInfo();
   }, []);
 
-  // useEffect(() => {
-  // }, [user]);
-
   return (
     <div className="text-m mt-4 md:mt-8">
       <h1 id="profile-title" className="relative mx-auto text-center text-m text-seafoam mb-8">
@@ -76,7 +75,7 @@ export default function Profile() {
       </h1>
 
       <div className="w-full flex justify-center">
-        <div className="w-5/6 bg-white p-4 mb-4 text-xs justify-center h-25 mb-5 h-full rounded-lg shadow">
+        <div className="ml-2 mr-2 w-full bg-white p-4 mb-4 text-xs justify-center h-25 mb-5 h-full rounded-lg shadow">
           <div className="flex mb-4">
             <div className="w-1/3 p-2 h-full flex items-start">
               <img

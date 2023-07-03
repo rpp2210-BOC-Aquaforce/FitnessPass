@@ -1,10 +1,61 @@
 .locationList {
   text-align: center;
-  margin-top: 30px
+  margin-top: 30px;
+}
+.locationContainer{
+  background: white;
+  border-radius: 5px;
 }
 
 .header {
   font-size: 24px;
   font-weight: 600;
   margin-bottom: 30px;
+}
+
+/* ----------------------------------------------
+Locations
+---------------------------------------------- */
+
+.container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 30px;
+  width:60%;
+  background-color: white;
+  border: solid 2px;
+}
+
+.container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 30px;
+  width:60%;
+  background-color: white;
+  border: solid 2px;
+}
+.title {
+font-weight: bold;
+font-size: large;
+}
+.phone{
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+.ratingTitle{
+  font-style: underline;
+}
+.deleteButton{
+  background-color: red;
+  color: white;
+  border-radius: 5px;
+  border: none;
+  padding: 5px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+
 }

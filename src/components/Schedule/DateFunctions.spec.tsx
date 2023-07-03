@@ -1,6 +1,6 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import { format, addDays } from 'date-fns';
-import userClasses from './mockUserClasses';
+import { classes } from './mockUserClasses';
 import {
   parseLocalDate,
   getScheduledDates,
@@ -21,7 +21,7 @@ describe('parseLocalDate', () => {
 
 describe('getScheduledDates', () => {
   it('should return a set of scheduled dates', () => {
-    const scheduledDates = getScheduledDates(userClasses);
+    const scheduledDates = getScheduledDates(classes);
     expect(scheduledDates.size).toBe(3);
     expect(scheduledDates.has('2023-06-30')).toBe(true);
     expect(scheduledDates.has('2023-12-01')).toBe(true);
@@ -31,17 +31,14 @@ describe('getScheduledDates', () => {
 
 describe('getNextScheduledClass', () => {
   it('should return the date of the next scheduled class', () => {
-    const nextClass = getNextScheduledClass(userClasses);
+    const nextClass = getNextScheduledClass(classes);
     expect(format(nextClass, 'yyyy-MM-dd')).toBe('2023-12-01');
   });
 
   it('should return the current date if no future classes are found', () => {
-    const pastUserClasses = userClasses.map((userClass) => ({
+    const pastUserClasses = classes.map((userClass) => ({
       ...userClass,
-      classes: {
-        ...userClass.classes,
-        date: '2022-06-30', // set all classes to a past date
-      },
+      date: '2022-06-30', // set all classes to a past date
     }));
     const nextClass = getNextScheduledClass(pastUserClasses);
     expect(format(nextClass, 'yyyy-MM-dd')).toBe(format(new Date(), 'yyyy-MM-dd'));
