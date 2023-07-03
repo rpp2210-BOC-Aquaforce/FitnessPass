@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 /* eslint-disable no-nested-ternary */
 
 'use client';
@@ -31,7 +32,7 @@ type CLASS = {
   {name: string, street: string, city: string, state: string, zip: string, photo_url: string},
 }
 
-export default function Search() {
+export default function Search({ user_id }:{user_id: any}) {
   const [searchByClass, setSearchByClass] = useState('');
   const [searchByLocation, setSearchByLocation] = useState('');
   const [activeDay, setActiveDay] = useState<Date>(new Date());
@@ -115,7 +116,8 @@ export default function Search() {
           .order('time', { ascending: false });
         if (classes) {
           classes.forEach((Class) => {
-            if (!searchByClass || (searchByClass && Class.name === searchByClass)) {
+            if (!searchByClass
+              || (searchByClass && Class.name.toLowerCase() === searchByClass.toLowerCase())) {
               setClasses((prevClasses) => [...prevClasses, Class]);
             }
           });
@@ -169,12 +171,12 @@ export default function Search() {
           list ? (
             <div>
               <button type="button" className="text-center text-white text-xs font-black uppercase tracking-wide rounded-md bg-seafoam px-2 py-1 mt-2 ml-2" onClick={() => setList(false)}>Map</button>
-              <List classes={Classes} />
+              <List user_id={user_id} classes={Classes} />
             </div>
           ) : (
             <div>
               <button type="button" className="text-center text-white text-xs font-black uppercase tracking-wide rounded-md bg-seafoam px-2 py-1 mt-2 mb-2" onClick={() => setList(true)}>List</button>
-              <Map center={myLocation} classes={Classes} />
+              <Map user_id={user_id} center={myLocation} classes={Classes} />
             </div>
           )
         )}

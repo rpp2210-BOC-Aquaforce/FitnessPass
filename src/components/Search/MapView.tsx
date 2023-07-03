@@ -50,9 +50,10 @@ type Class = {
 interface MapProps {
   center: LatLngLiteral | undefined;
   classes: Class[];
+  user_id: any;
 }
 
-export default function Map({ center, classes }: MapProps) {
+export default function Map({ center, classes, user_id }: MapProps) {
   const [activeMarker, setActiveMarker] = useState<number | null>(null);
   const [markers, setMarkers] = useState<marker[]>([]);
 
@@ -191,7 +192,7 @@ export default function Map({ center, classes }: MapProps) {
                         <div className="w-2 h-2 bg-gray-400" />
                         <div className="w-2 h-2 bg-gray-400" />
                       </div>
-                      <ClassSignUp class_id={class_id} />
+                      <ClassSignUp user_id={user_id} class_id={class_id} />
                     </div>
                   </div>
                 </InfoWindow>

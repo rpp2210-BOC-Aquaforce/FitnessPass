@@ -6,9 +6,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import supabase from '../lib/supabase';
 
-export default function ClassSignUp({ class_id } : { class_id: number }) {
-  // const user_id = null; // fake user_id for testing
-  const user_id = 10; // fake user_id for testing
+export default function ClassSignUp({ class_id, user_id } : { class_id: number, user_id: any }) {
 
   const router = useRouter();
 

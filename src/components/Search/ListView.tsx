@@ -29,7 +29,7 @@ function TextDiv({ children }: ReactChildren) {
 }
 
 export default function List(
-  { classes } : {classes: Class[]},
+  { classes, user_id } : {classes: Class[], user_id: any},
 ) {
   return (
     <div>
@@ -75,7 +75,7 @@ export default function List(
                 <div className="w-2 h-2 bg-gray-400" />
                 <div className="w-2 h-2 bg-gray-400" />
               </div>
-              <ClassSignUp class_id={class_id} />
+              <ClassSignUp user_id={user_id} class_id={class_id} />
             </div>
           </div>
         ))}
