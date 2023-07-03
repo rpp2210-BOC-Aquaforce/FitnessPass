@@ -6,9 +6,9 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import supabase from '../lib/supabase';
 
-export default function ClassSignUp({ user_id, class_id } : { user_id:any, class_id: number }) {
+export default function ClassSignUp({ class_id } : { class_id: number }) {
   // const user_id = null; // fake user_id for testing
-  // const user_id = 1; // fake user_id for testing
+  const user_id = 10; // fake user_id for testing
 
   const router = useRouter();
 
@@ -45,11 +45,11 @@ export default function ClassSignUp({ user_id, class_id } : { user_id:any, class
     try {
       const { data, error } = await supabase
         .from('user_classes')
-        .insert([
-          { user_id, class_id },
-        ]);
+        .insert([{ user_id, class_id },
+        ])
+        .select();
       if (error) {
-        return error;
+        console.error(error);
       }
       setSigned(true);
       console.log(`signed up user ${user_id} in class ${class_id}`, data);
@@ -83,11 +83,11 @@ export default function ClassSignUp({ user_id, class_id } : { user_id:any, class
       {signed
         ? (
           <>
-            <button type="button" className="text-center text-white text-xs font-black uppercase tracking-wide rounded-md bg-slate-300 px-2 py-1 mt-2" disabled>Signed Up</button>
-            <button type="button" className="text-center text-white text-xs font-black uppercase tracking-wide rounded-md bg-mint-orange px-2 py-1 mt-2" onClick={cancelSignUp}>Cancel</button>
+            <button type="button" className="text-center text-white text-xs font-black uppercase tracking-wide rounded-md bg-mint-orange px-2 py-1 mt-2" disabled>Signed Up</button>
+            <button type="button" className="text-center text-white text-xs font-black uppercase tracking-wide rounded-md bg-slate-300 px-2 py-1 mt-2" onClick={cancelSignUp}>Cancel</button>
           </>
         )
-        : <button type="button" className="text-center text-white text-xs font-black uppercase tracking-wide rounded-md bg-mint-orange px-2 py-1 mt-2" onClick={signUp}>Sign Up</button>}
+        : <button type="button" className="text-center text-white text-xs font-black uppercase tracking-wide rounded-md bg-orange px-2 py-1 mt-2" onClick={signUp}>Sign Up</button>}
     </div>
   );
 }

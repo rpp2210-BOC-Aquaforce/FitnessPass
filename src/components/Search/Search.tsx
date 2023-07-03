@@ -1,16 +1,15 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-
-import Calendar from 'react-calendar';
-import 'react-calendar/dist/Calendar.css';
 import Geocode from 'react-geocode';
 import supabase from '@/lib/supabase';
 
 import List from '@/components/Search/ListView';
 import Map from '@/components/Search/MapView';
+import { MapPin } from 'lucide-react';
+import DatePicker from '../Schedule/DatePicker';
 
-type ValuePiece = Date | null;
+  <MapPin />;
 type LatLngLiteral = google.maps.LatLngLiteral;
 
 type CLASS = {
@@ -33,9 +32,8 @@ type CLASS = {
 export default function Search() {
   const [searchByClass, setSearchByClass] = useState('');
   const [searchByLocation, setSearchByLocation] = useState('');
-  const [selectedDate, setSelectedDate] = useState<ValuePiece|[ValuePiece, ValuePiece]>(new Date());
+  const [activeDay, setActiveDay] = useState<Date>(new Date());
 
-  const [showCalendar, setShowCalendar] = useState<boolean>(false);
   const [myLocation, setMyLocation] = useState<LatLngLiteral>();
 
   const [list, setList] = useState(false);
@@ -74,9 +72,8 @@ export default function Search() {
     }
   }, []);
 
-  const handleDateChange = (date: ValuePiece|[ValuePiece, ValuePiece]) => {
-    setSelectedDate(date);
-    setShowCalendar(false);
+  const gotoClassDate = (date: Date) => {
+    setActiveDay(date);
   };
 
   const formattedDate = (date:any) => {
@@ -87,7 +84,7 @@ export default function Search() {
   };
 
   const search = async () => {
-    const searchByDate = formattedDate(selectedDate);
+    const searchByDate = formattedDate(activeDay);
     setClasses([]);
     setSearched(true);
     setList(true);
@@ -112,7 +109,8 @@ export default function Search() {
           .from('classes')
           .select('*, locations(*)')
           .eq('location_id', location.location_id)
-          .eq('date', searchByDate);
+          .eq('date', searchByDate)
+          .order('time', { ascending: false });
         if (classes) {
           classes.forEach((Class) => {
             if (!searchByClass || (searchByClass && Class.name === searchByClass)) {
@@ -131,41 +129,23 @@ export default function Search() {
   return (
     <div className="text-black mt-10">
       <div className="flex">
-        <input
-          placeholder="Yoga, Pilates, Zumba..."
-          onChange={(e) => setSearchByClass(e.target.value)}
-          onFocus={() => setShowCalendar(false)}
+        <DatePicker
+          activeDay={activeDay}
+          gotoClassDate={gotoClassDate}
         />
         <input
+          className="w-[140px] text-centerfont-normal text-xs rounded-s-md"
+          placeholder="Yoga, Pilates, Zumba..."
+          onChange={(e) => setSearchByClass(e.target.value)}
+        />
+        <div className="flex items-center font-normal bg-seafoam"><MapPin className="h-5 w-5" /></div>
+        <input
+          className="w-[100px] text-center font-normal text-xs"
           placeholder={searchByLocation}
           value={searchByLocation}
           onChange={(e) => setSearchByLocation(e.target.value)}
-          onFocus={() => setShowCalendar(false)}
         />
-      </div>
-      <div className="flex">
-        <input
-          className="text-black text-center"
-          value={selectedDate instanceof Date
-            ? selectedDate.toISOString().split('T')[0]
-            : ''}
-          onFocus={() => setShowCalendar(true)}
-          onChange={() => setShowCalendar(false)}
-        />
-        <button type="button" className="bg-blue-500 text-white" onClick={search}>GO</button>
-      </div>
-      <div>
-        {showCalendar ? (
-          <div>
-            <Calendar
-              className="fixed"
-              calendarType="US"
-              minDate={new Date()}
-              value={selectedDate}
-              onChange={handleDateChange}
-            />
-          </div>
-        ) : ''}
+        <button type="button" className="w-[30px] justify-center font-normal text-xs bg-seafoam rounded-e-md" onClick={search}>GO</button>
       </div>
       <div>
         {searched && (

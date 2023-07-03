@@ -7,7 +7,7 @@ import { ReactChildren } from '@/lib/types';
 
 import ClassSignUp from '@/components/ClassSignUp';
 
-type CLASS = {
+type Class = {
   class_id: number;
   location_id: number;
   name: string;
@@ -29,7 +29,7 @@ function TextDiv({ children }: ReactChildren) {
 }
 
 export default function List(
-  { classes, setList } : {classes: CLASS[], setList: React.Dispatch<React.SetStateAction<boolean>>},
+  { classes, setList } : {classes: Class[], setList: React.Dispatch<React.SetStateAction<boolean>>},
 ) {
   if (classes.length === 0) return <div>0 result</div>;
   return (
@@ -39,7 +39,7 @@ export default function List(
         {' '}
         results
       </div>
-      <button type="button" className="text-center text-white text-xs font-black uppercase tracking-wide rounded-md bg-green-400 px-2 py-1 mt-2" onClick={() => setList(false)}>Map</button>
+      <button type="button" className="text-center text-white text-xs font-black uppercase tracking-wide rounded-md bg-seafoam px-2 py-1 mt-2" onClick={() => setList(false)}>Map</button>
       <div>
         {classes.map(({
           class_id, name, time, duration, total_rating, locations,
@@ -82,7 +82,7 @@ export default function List(
                 <div className="w-2 h-2 bg-gray-400" />
                 <div className="w-2 h-2 bg-gray-400" />
               </div>
-              <ClassSignUp user_id={1} class_id={class_id} />
+              <ClassSignUp class_id={class_id} />
             </div>
           </div>
         ))}
