@@ -38,7 +38,6 @@ export default function ClassSignUp({ class_id, user_id } : { class_id: number, 
     if (user_id === 'undefined') {
       console.log('guest user');
       router.push('/login');
-      return;
     }
     try {
       const { data, error } = await supabase
@@ -54,6 +53,7 @@ export default function ClassSignUp({ class_id, user_id } : { class_id: number, 
     } catch (err) {
       console.error('Unexpected error: ', err);
     }
+    return null;
   };
 
   const cancelSignUp = async () => {
