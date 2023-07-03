@@ -7,7 +7,6 @@ import { useRouter } from 'next/navigation';
 import supabase from '../lib/supabase';
 
 export default function ClassSignUp({ class_id, user_id } : { class_id: number, user_id: any }) {
-
   const router = useRouter();
 
   const [signed, setSigned] = useState<boolean>(false);
