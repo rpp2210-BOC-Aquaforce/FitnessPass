@@ -21,10 +21,7 @@ export default async function getEngMetrics(studioID: string) {
     const data = await getClassesByDate(studioID, week.start, week.end);
 
     const attendance = await Promise.all(
-      data.map(async (item: { class_id: string; date: string }) => {
-        const attendees = await getClassPopularity(item.class_id);
-        return attendees;
-      }),
+      data.map((item: { class_id: string; date: string }) => getClassPopularity(item.class_id)),
     );
 
     const totalAttendance = attendance.reduce((acc, curr) => acc + curr, 0);
