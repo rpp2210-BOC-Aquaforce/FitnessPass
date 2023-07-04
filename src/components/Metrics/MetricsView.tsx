@@ -28,14 +28,14 @@ export default function MetricsView({
         <div>
           <h2>Class Popularity</h2>
           <PopularityMetrics studioPopMetrics={studioPopMetrics} />
-          <button type="button" onClick={handleClick}>View Class Engagement</button>
+          <button type="button" data-testid="metric_pop_toggle" onClick={handleClick}>View Class Engagement</button>
         </div>
       ) : null}
       {view === 'engagement' ? (
         <div>
           <h2>Class Engagement</h2>
           <EngagementMetrics studioEngMetrics={studioEngMetrics} />
-          <button type="button" onClick={handleClick}>View Class Popularity</button>
+          <button type="button" data-testid="metric_eng_toggle" onClick={handleClick}>View Class Popularity</button>
         </div>
       ) : null}
     </div>
