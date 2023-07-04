@@ -8,7 +8,7 @@ export default async function getStudioLocations(
   const { data, error } = await supabase
     .from('locations')
     .select('location_id, name')
-    .eq('studio_id', req.body.studioId);
+    .eq('studio_id', req.body.studioID);
   if (error) {
     res.status(400).send(error);
   } else {
