@@ -19,7 +19,7 @@ interface MyUser extends User {
   id: string;
 }
 
-export default async function StudioPage() {
+export default function StudioPage() {
   const { data: session } = useSession({
     required: true,
     onUnauthenticated() {
@@ -60,8 +60,8 @@ export default async function StudioPage() {
         <br />
         <Link href={`/studio/${studioID}/addclass`} className={styles.links}>Add A Class</Link>
         <br />
-        {/* <Link href={`/studio/${studioID}/metrics`} className={styles.links}>View Metrics</Link>
-        <br /> */}
+        <Link href={`/studio/${studioID}/metrics`} className={styles.links}>View Metrics</Link>
+        <br />
         <Link href={`/studio/${studioID}/view-classes`} className={styles.links}>View All Classes</Link>
         <br />
         <Link href={`/studio/${studioID}/view-locations`} className={styles.links}> View All Locations</Link>
