@@ -165,6 +165,11 @@ function AuthForm() {
     }
   }
 
+  function forgotPasswordHandler(event: { preventDefault: () => void; }) {
+    event.preventDefault();
+    router.push('/login/passwordRecover');
+  }
+
   useEffect(() => {
     if (loadingMessage !== '' || signInMessage === 'New user account created! Please wait while we redirect you ...') {
       setSpin(true);
@@ -208,6 +213,13 @@ function AuthForm() {
             onClick={switchAuthModeHandler}
           >
             {isLogin ? 'Create new account' : 'Login with existing account'}
+          </button>
+          <button
+            type="button"
+            className={classes.toggle}
+            onClick={forgotPasswordHandler}
+          >
+            Forgot Password
           </button>
           <div>
             <button type="button" onClick={googleSignInHandler}>
