@@ -12,8 +12,9 @@ type RatingEntryProps = {
 };
 
 export default function RatingEntry({ rating, classRating }: RatingEntryProps) {
+// console.log('rating', rating)
   const [ratingValues, setRatingValues] = useState(0);
-  // on initial render, should select from user_classes and render star rating
+
   async function updateRating(element: number, classId: number) {
     try {
       const { error } = await supabase
@@ -38,12 +39,14 @@ export default function RatingEntry({ rating, classRating }: RatingEntryProps) {
     }
   }
 
+  // update here
   const handleRatingChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const ratingValue = parseInt(event.target.value, 10);
     setRatingValues(ratingValue);
     updateRating(ratingValue, rating.class_id);
   };
 
+  // update here
   useEffect(() => {
     // eslint-disable-next-line max-len
     const currentStarRating = classRating.find((item: { class_id: any; }) => item.class_id === rating.class_id);
@@ -54,6 +57,7 @@ export default function RatingEntry({ rating, classRating }: RatingEntryProps) {
     }
   }, []);
 
+  // update here
   const generateStarIcons = () => {
     const stars = [];
     for (let i = 1; i <= 5; i += 1) {
@@ -65,6 +69,10 @@ export default function RatingEntry({ rating, classRating }: RatingEntryProps) {
     return stars;
   };
 
+  useEffect(() => {
+    generateStarIcons();
+  }, [ratingValues]);
+
   return (
     <div>
       <div className="w-full flex justify-center">
@@ -72,7 +80,8 @@ export default function RatingEntry({ rating, classRating }: RatingEntryProps) {
           <div className="flex">
             <div className="w-1/3 p-2 h-full flex items-start">
               <img
-                src="https://images.pexels.com/photos/1954524/pexels-photo-1954524.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                // src={rating.studio_photo ? rating.studio_photo : 'https://images.pexels.com/photos/1954524/pexels-photo-1954524.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'}
+                src={rating.studio_photo}
                 alt="gym"
                 className="w-full h-full object-cover"
               />
@@ -96,7 +105,6 @@ export default function RatingEntry({ rating, classRating }: RatingEntryProps) {
               </div>
               <div className="flex flex-wrap">
                 <p className="font-bold text-seafoam mr-4 mb-2">Current Rating:</p>
-                {/* <p className="text-orange">{ratingValues}</p> */}
                 <div className="star-rating">{generateStarIcons()}</div>
               </div>
               <p className="font-bold text-orange mb-4">Update or submit your rating below:</p>
@@ -113,6 +121,7 @@ export default function RatingEntry({ rating, classRating }: RatingEntryProps) {
                     type="radio"
                     value={value}
                     className="ml-1 text-seafoam"
+                    // update here
                     checked={value === ratingValues}
                     onChange={handleRatingChange}
 
@@ -128,6 +137,7 @@ export default function RatingEntry({ rating, classRating }: RatingEntryProps) {
               Submit
             </button>
           </form>
+
         </div>
       </div>
     </div>

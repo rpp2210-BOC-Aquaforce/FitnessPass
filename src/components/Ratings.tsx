@@ -37,6 +37,8 @@ interface FetchClass{
     total_rating: number,
     num_ratings: number,
     created_at: string,
+    studio_id?: number,
+    studio_photo?: string,
  }
 
  interface ClassRatings{
@@ -58,6 +60,66 @@ interface FetchClass{
  const [classList, setClassList] = useState<ClassList[]>([]);
  const [classRatings, setClassRatings] = useState<ClassRatings[]>([]);
 
+ // push photo to location
+ async function getPhotos(id: number) {
+   try {
+     const { data: locationsPhotos, error } = await supabase
+       .from('studio_users')
+       .select('*')
+       .eq('studio_id', id);
+     if (error) {
+       console.error('Supabase Error: ', error);
+     } else {
+       const updatePhotos = classList.map((item) => {
+         console.log('item', item);
+         if (item.studio_id === id) {
+           return { ...item, studio_photo: locationsPhotos[0].photo };
+         }
+         return item;
+       });
+       setClassList(updatePhotos);
+     }
+   } catch (err) {
+     console.error('Unexpected error: ', err);
+   }
+ }
+
+ // push location ID to class Ratings
+ async function getLocation(id: number) {
+   try {
+     const { data: locations, error } = await supabase
+       .from('locations')
+       .select('*')
+       .eq('location_id', id);
+     if (error) {
+       console.error('Supabase Error: ', error);
+     }
+     if (locations !== null && locations.length > 0 && locations[0].studio_id) {
+       const updatedClassList = classList.map((item) => {
+         if (item.location_id === id) {
+           return { ...item, studio_id: locations[0].studio_id };
+         }
+         return item;
+       });
+       setClassList(updatedClassList);
+       console.log('rating', classList);
+       //  getPhotos(locations[0].studio_id);
+     }
+   } catch (err) {
+     console.error('Unexpected error: ', err);
+   }
+ }
+
+ useEffect(() => {
+   if (classList.length > 0) {
+     classList.forEach((item) => {
+       if (item.studio_id) {
+         getPhotos(item.studio_id);
+       }
+     });
+   }
+ }, [classList]);
+
  async function getClasses(id: number) {
    try {
      const { data: allClasses, error } = await supabase
@@ -71,6 +133,9 @@ interface FetchClass{
        if (!classExists) {
          setClassList((prevList) => [...prevList, ...allClasses]);
        }
+       classList.forEach((item) => {
+         getLocation(item.location_id);
+       });
      }
    } catch (err) {
      console.error('Unexpected error: ', err);
@@ -78,12 +143,6 @@ interface FetchClass{
  }
 
  const fetchRatings = (allRatings: Array<any> | any[]) => {
-   // const obj: Record<string, number> = {};
-   //  for (let i = 0; i < allRatings.length; i += 1) {
-   //    const key = allRatings[i].id;
-   //    obj[key] = allRatings[i].class_rating;
-   //  }
-   //  setClassRatings(obj as ClassRatings[]);
    const ratings: ClassRatings[] = allRatings.map((rating: any) => ({
      class_id: rating.id,
      rating: rating.class_rating,
@@ -101,7 +160,6 @@ interface FetchClass{
        if (error) {
          console.error('Supabase Error: ', error);
        } else {
-         // console.log('sers', userClasses);
          setClasses(userClasses);
          fetchRatings(userClasses);
        }
@@ -119,6 +177,8 @@ interface FetchClass{
    });
  }, [classes]);
 
+ // console.log(classList)
+
  return (
    <div>
      <div className="flex justify-end md:w-1/3 mt-5 text-seafoam">
@@ -128,15 +188,7 @@ interface FetchClass{
        </Link>
      </div>
      <div className="relative mx-auto text-center text-2xl text-seafoam mb-8">My Ratings</div>
-     {/* <div>
-        {classList.map((rating: ClassList) => (
-          <RatingEntry
-            rating={rating}
-            key={rating.class_id}
-          />
-        ))}
-      </div> */}
-     {classList.length > 2
+     { classList !== undefined && classList.length > 2
        ? (
          <Slider {...carouselSettings}>
            {classRatings.length > 0
@@ -145,7 +197,7 @@ interface FetchClass{
           ))}
          </Slider>
        )
-       : classRatings.length > 0
+       : classList !== undefined && classRatings.length > 0
 && classList.map((rating: ClassList) => (
   <RatingEntry rating={rating} key={rating.class_id} classRating={classRatings} />
 ))}

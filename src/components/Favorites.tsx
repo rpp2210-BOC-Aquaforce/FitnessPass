@@ -15,17 +15,13 @@ import supabase from '../lib/supabase';
 
 export default function MyFavorites() {
   interface ClassListAgain {
-    class_id: number;
-    location_id: number;
-    name: string;
-    description: string;
-    date: string;
-    time: string;
-    duration: number;
-    instructor: string;
-    total_rating: number;
-    num_ratings: number;
-    created_at: string;
+  class_id: number,
+  location_id: number,
+  user_id: number,
+  class_rating: number,
+  favorite: boolean
+  created_at: string,
+
   }
 
   interface ClassList {
@@ -40,13 +36,16 @@ export default function MyFavorites() {
     total_rating: number,
     num_ratings: number,
     created_at: string,
+    studio_id?: number,
+    studio_photo?: string,
+
  }
 
   const carouselSettings = {
     dots: false,
     arrows: true,
     infinite: false,
-    slidesToShow: 1,
+    slidesToShow: 2,
     slidesToScroll: 2,
     vertical: true,
     verticalSwiping: true,
@@ -59,6 +58,57 @@ export default function MyFavorites() {
     // eslint-disable-next-line max-len
     setFavorites((prevFavorites) => prevFavorites.filter((favorite) => favorite.class_id !== classId));
   };
+
+  // push photo to location
+  async function getPhotos(id: number) {
+    try {
+      const { data: locationsPhotos, error } = await supabase
+        .from('studio_users')
+        .select('*')
+        .eq('studio_id', id);
+      if (error) {
+        console.error('Supabase Error: ', error);
+      } else {
+        const updatePhotos = favorites.map((item) => {
+          if (item.studio_id === id) {
+            return { ...item, studio_photo: locationsPhotos[0].photo };
+          }
+          return item;
+        });
+        setFavorites(updatePhotos);
+      }
+    } catch (err) {
+      console.error('Unexpected error: ', err);
+    }
+  }
+
+  // push location ID to classListtAgain
+  async function getLocation(id: number) {
+    try {
+      const { data: locations, error } = await supabase
+        .from('locations')
+        .select('*')
+        .eq('location_id', id);
+      if (error) {
+        console.error('Supabase Error: ', error);
+      }
+      if (locations !== null && locations.length > 0 && locations[0].studio_id) {
+        const updatedClassList = favorites.map((item) => {
+          if (item.location_id === id) {
+            return { ...item, studio_id: locations[0].studio_id };
+          }
+
+          return item;
+        });
+        setFavorites(updatedClassList);
+        console.log('item HERE', favorites);
+
+        getPhotos(locations[0].studio_id);
+      }
+    } catch (err) {
+      console.error('Unexpected error: ', err);
+    }
+  }
 
   async function classInfoFavorites(id: number) {
     try {
@@ -73,6 +123,9 @@ export default function MyFavorites() {
         if (!classExists) {
           setFavorites((prevList) => [...prevList, ...allClasses]);
         }
+        favorites.forEach((item) => {
+          getLocation(item.location_id);
+        });
       }
     } catch (err) {
       console.error('Unexpected error: ', err);
@@ -121,7 +174,7 @@ export default function MyFavorites() {
 
         ? (
           <Slider {...carouselSettings}>
-            {favorites.map((favorite: ClassListAgain) => (
+            {favorites.map((favorite: ClassList) => (
               <FavoriteEntry
                 favorite={favorite}
                 key={favorite.class_id}
@@ -130,7 +183,7 @@ export default function MyFavorites() {
             ))}
           </Slider>
         )
-        : favorites.map((favorite: ClassListAgain) => (
+        : favorites.map((favorite: ClassList) => (
           <FavoriteEntry
             favorite={favorite}
             key={favorite.class_id}
