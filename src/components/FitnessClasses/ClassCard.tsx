@@ -1,39 +1,53 @@
 /* eslint-disable @next/next/no-img-element */
-import { UserClass, ReactChildren } from '@/lib/types';
+import { cn } from '@/lib/utils';
+import { Class, ReactChildren } from '@/lib/types';
+import { parseLocalDate } from '@/components/Schedule/DateFunctions';
 
 function TextDiv({ children }: ReactChildren) {
   return <div className="text-seafoam text-[10px] pt-1 font-black uppercase tracking-wide">{children}</div>;
 }
 
-export default function ClassCard({ userClass }: { userClass: UserClass }) {
-  const { classes } = userClass;
-
-  if (!classes) {
+export default function ClassCard(
+  { fitnessClass, gotoDate }: { fitnessClass: Class, gotoDate?: null | ((date: Date) => void) },
+) {
+  if (!fitnessClass) {
     return null;
   }
+
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (event.key === 'Enter' && gotoDate) {
+      gotoDate(parseLocalDate(fitnessClass.date));
+    }
+  };
 
   return (
     <div className="flex items-start mt-4 bg-white w-full h-[104px]">
       <img
         className="h-full w-[116.60px] object-cover"
-        src={classes.locations.photo_url ?? 'https://via.placeholder.com/117x104'}
+        src={fitnessClass.locations.photo_url ?? 'https://via.placeholder.com/117x104'}
         alt="Placeholder"
       />
-      <div className="flex flex-col justify-between ml-4 flex-grow">
-        <TextDiv>{classes.name}</TextDiv>
+      <div
+        className={cn('flex flex-col justify-between ml-4 flex-grow', gotoDate ? 'pointer-cursor' : '')}
+        onClick={() => gotoDate && gotoDate(parseLocalDate(fitnessClass.date))}
+        onKeyDown={handleKeyDown}
+        tabIndex={0}
+        role="button"
+      >
+        <TextDiv>{fitnessClass.name}</TextDiv>
         <TextDiv>
-          {classes.time}
+          {fitnessClass.time}
           {' '}
           (
-          {classes.duration}
+          {fitnessClass.duration}
           {' '}
           min)
         </TextDiv>
-        <TextDiv>{classes.locations.name}</TextDiv>
+        <TextDiv>{fitnessClass.locations.name}</TextDiv>
         <TextDiv>
           Ratings:
           {' '}
-          {classes.total_rating}
+          {fitnessClass.total_rating}
         </TextDiv>
       </div>
       <div className="flex flex-col justify-between items-end ml-4">

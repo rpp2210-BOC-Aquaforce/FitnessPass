@@ -6,7 +6,7 @@ import {
   act,
 } from '@testing-library/react';
 import ScheduleView from './ScheduleView';
-import userClasses from './mockUserClasses';
+import { classes } from './mockUserClasses';
 
 describe('ScheduleView', () => {
   beforeAll(() => {
@@ -18,12 +18,12 @@ describe('ScheduleView', () => {
   });
 
   it('renders without crashing', () => {
-    render(<ScheduleView userClasses={userClasses} />);
+    render(<ScheduleView fitnessClasses={classes} />);
     expect(screen.getByRole('heading', { level: 2 })).toBeInTheDocument();
   });
 
   it('toggles view mode when button is clicked', async () => {
-    render(<ScheduleView userClasses={userClasses} />);
+    render(<ScheduleView fitnessClasses={classes} />);
     const toggleButton = screen.getByText('View All');
 
     act(() => {

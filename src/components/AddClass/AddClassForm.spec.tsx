@@ -11,13 +11,13 @@ jest.mock('next/navigation', () => ({
 
 describe('Add Class Form', () => {
   it('Renders the studio add class form with expected heading', () => {
-    render(<AddClassForm studioLocs={studioLocations} />);
+    render(<AddClassForm studioLocs={studioLocations} studioID={11} />);
     expect(screen.getByRole('heading', { level: 1 })).toBeInTheDocument();
     expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Add Class');
   });
 
   it('Renders all expected form input labels', () => {
-    render(<AddClassForm studioLocs={studioLocations} />);
+    render(<AddClassForm studioLocs={studioLocations} studioID={11} />);
     expect(screen.getByTestId('location_label')).toHaveTextContent('Location:');
     expect(screen.getByLabelText('Class Name:')).toBeInTheDocument();
     expect(screen.getByLabelText('Class Description:')).toBeInTheDocument();
@@ -29,14 +29,14 @@ describe('Add Class Form', () => {
   });
 
   it('Renders submit and cancel buttons', () => {
-    render(<AddClassForm studioLocs={studioLocations} />);
+    render(<AddClassForm studioLocs={studioLocations} studioID={11} />);
     expect(screen.getByTestId('add_class_submit')).toHaveTextContent('Add Class');
     expect(screen.getByTestId('add_class_cancel')).toHaveTextContent('Cancel');
   });
 
   it('Renders studio locations for selector', async () => {
     const user = userEvent.setup();
-    render(<AddClassForm studioLocs={studioLocations} />);
+    render(<AddClassForm studioLocs={studioLocations} studioID={11} />);
     expect((screen.getByRole('option', { name: 'Please Select Location' }) as HTMLOptionElement).selected).toBe(true);
     expect(screen.getAllByRole('option').length).toBe(4);
     await user.selectOptions(
@@ -48,7 +48,7 @@ describe('Add Class Form', () => {
 
   it('Captures user input for text form inputs', async () => {
     const user = userEvent.setup();
-    render(<AddClassForm studioLocs={studioLocations} />);
+    render(<AddClassForm studioLocs={studioLocations} studioID={11} />);
 
     const titleInput = screen.getByTestId('class_name_input');
     expect(titleInput).toBeInTheDocument();
@@ -77,9 +77,9 @@ describe('Add Class Form', () => {
       push: mockedPush,
     });
     (useRouter as jest.Mock).mockReturnValue(useRouterMock());
-    render(<AddClassForm studioLocs={studioLocations} />);
+    render(<AddClassForm studioLocs={studioLocations} studioID={11} />);
     const cancelButton = screen.getByTestId('add_class_cancel');
     await user.click(cancelButton);
-    expect(mockedPush).toHaveBeenCalledWith('/studio/1234'); // Will need to be refactored once auth is merged, this is a hard-coded studioID ***
+    expect(mockedPush).toHaveBeenCalledWith('/studio/11');
   });
 });
