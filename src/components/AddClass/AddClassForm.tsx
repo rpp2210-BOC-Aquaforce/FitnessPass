@@ -12,19 +12,18 @@ import { StudioAddClass } from '@/lib/types';
 // To-Do:
 // Refactor tags section to be more user-friendly
 // Handle UTC timezome consistency for class start time
-// Route based on studio id, not hard-coded studio id
 
 type propsTypes = {
+  studioID: number,
   studioLocs: Array<{
     location_id: string,
     name: string,
   }>
 }
 
-export default function AddClassForm({ studioLocs }:propsTypes) {
+export default function AddClassForm({ studioLocs, studioID }:propsTypes) {
   const router = useRouter();
 
-  // const [studioLocs, setStudioLocs] = useState([{ location_id: '', name: '' }]);
   const [formData, setFormData] = useState<StudioAddClass>({
     loc_id: '',
     location: '',
@@ -60,7 +59,7 @@ export default function AddClassForm({ studioLocs }:propsTypes) {
     e.preventDefault();
     await addClass(formData)
       .then(() => {
-        router.push('/studio/1234');
+        router.push(`/studio/${studioID}`);
       })
       .catch(() => {
         alert('Error adding class, please try again later!');
@@ -202,7 +201,7 @@ export default function AddClassForm({ studioLocs }:propsTypes) {
       <button
         type="submit"
         data-testid="add_class_cancel"
-        onClick={() => router.push('/studio/1234')}
+        onClick={() => router.push(`/studio/${studioID}`)}
         className="inline-block align-baseline font-bold text-sm text-orange-500 hover:text-orange-600"
       >
         Cancel
