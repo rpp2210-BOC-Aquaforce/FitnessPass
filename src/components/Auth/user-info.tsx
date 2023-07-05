@@ -6,12 +6,15 @@
 
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import {
+  useState, useRef, ChangeEvent, LegacyRef,
+} from 'react';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { supabase } from '@/lib';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import classes from './info-form.module.css';
 
@@ -42,7 +45,7 @@ function UserInfo() {
   const zipInputRef = useRef<HTMLInputElement>(null);
   const ecNameInputRef = useRef<HTMLInputElement>(null);
   const ecPhoneInputRef = useRef<HTMLInputElement>(null);
-  const photoInputRef = useRef<HTMLInputElement>(null);
+  let photoInputRef: LegacyRef<HTMLInputElement> | undefined;
   // const entererdEmail = emailInputRef.current.value;
   // const entererdPassword = passwordInputRef.current.value;
 
@@ -106,7 +109,7 @@ function UserInfo() {
     const enteredZip = zipInputRef.current?.value;
     const enteredEcName = ecNameInputRef.current?.value;
     const enteredEcPhone = ecPhoneInputRef.current?.value;
-    const enteredPhoto = photoInputRef.current?.value;
+    const enteredPhoto = photoInputRef;
 
     try {
       const result = await UpdateUserInfo(
@@ -129,6 +132,16 @@ function UserInfo() {
     } catch (error) {
       console.log(error);
     }
+  }
+
+  async function photoUploadHandler(e: ChangeEvent<HTMLInputElement>) {
+    let file;
+    if (e.target.files) {
+      // eslint-disable-next-line prefer-destructuring
+      file = e.target.files[0];
+    }
+    const { data } = await supabase.storage.from('images').upload(`public${file?.name}`, file as File);
+    photoInputRef = `https://javqvsvajexkcxuhgiiw.supabase.co/storage/v1/object/public/images/${data?.path}`;
   }
 
   return (
@@ -177,7 +190,7 @@ function UserInfo() {
         </div>
         <div className={classes.control}>
           <label htmlFor="photo">Photo</label>
-          <input type="text" id="photo" ref={photoInputRef} placeholder="Upload your photo" />
+          <input type="file" accept="image/*" id="photo" ref={photoInputRef} placeholder="Upload your photo" onChange={(e) => photoUploadHandler(e)} />
         </div>
         { spin && <FontAwesomeIcon icon={faSpinner} spin style={{ color: '#2EC4B6' }} /> }
         <div className={classes.actions}>

@@ -2,7 +2,9 @@
 
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import {
+  useState, useRef, useEffect, ChangeEvent, LegacyRef,
+} from 'react';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { useSession, signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
@@ -10,6 +12,7 @@ import Link from 'next/link';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import '@fortawesome/fontawesome-svg-core/styles.css';
+import { supabase } from '@/lib';
 import classes from './auth-form.module.css';
 
 function AuthForm() {
@@ -42,7 +45,7 @@ function AuthForm() {
   const emailInputRef = useRef<HTMLInputElement>(null);
   const passwordInputRef = useRef<HTMLInputElement>(null);
   const studioNameInputRef = useRef<HTMLInputElement>(null);
-  const studioPhotoInputRef = useRef<HTMLInputElement>(null);
+  let studioPhotoInputRef: LegacyRef<HTMLInputElement> | undefined;
 
   // const entererdEmail = emailInputRef.current.value;
   // const entererdPassword = passwordInputRef.current.value;
@@ -94,7 +97,7 @@ function AuthForm() {
     const enteredEmail = emailInputRef.current?.value;
     const enteredPassword = passwordInputRef.current?.value;
     const enteredStudioName = studioNameInputRef.current?.value;
-    const enteredStudioPhoto = studioPhotoInputRef.current?.value;
+    const enteredStudioPhoto = studioPhotoInputRef;
 
     if (isLogin) {
       const result = await signIn('credentials', {
@@ -178,6 +181,16 @@ function AuthForm() {
     }
   }, [loadingMessage, signInMessage]);
 
+  async function photoUploadHandler(e: ChangeEvent<HTMLInputElement>) {
+    let file;
+    if (e.target.files) {
+      // eslint-disable-next-line prefer-destructuring
+      file = e.target.files[0];
+    }
+    const { data } = await supabase.storage.from('images').upload(`public${file?.name}`, file as File);
+    studioPhotoInputRef = `https://javqvsvajexkcxuhgiiw.supabase.co/storage/v1/object/public/images/${data?.path}`;
+  }
+
   return (
     <section className={classes.auth}>
       { !isStudio && <h1>{isLogin ? 'Member Login' : 'Member Sign Up'}</h1>}
@@ -202,7 +215,7 @@ function AuthForm() {
         && (
         <div className={classes.control}>
           <label htmlFor="studioPhoto">Photo</label>
-          <input type="text" id="studioPhoto" required ref={studioPhotoInputRef} placeholder="Enter studio photo" />
+          <input type="file" accept="image/*" id="studioPhoto" ref={studioPhotoInputRef} placeholder="Enter studio photo" onChange={(e) => photoUploadHandler(e)} />
         </div>
         )}
         <div className={classes.actions}>
