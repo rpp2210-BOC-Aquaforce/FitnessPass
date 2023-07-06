@@ -15,13 +15,25 @@ export default async function Page() {
     try {
       const { data, error } = await supabase
         .from('classes')
-        .select('*,locations(*)');
+        .select('*,locations(*,studio_users(photo))');
 
       if (error) {
         throw error;
       }
 
-      return data.sort(
+      const classes = data.map((fitnessClass) => {
+        const { locations: loc } = fitnessClass;
+        const { studio_users: studio } = loc;
+        return {
+          ...fitnessClass,
+          locations: {
+            ...loc,
+            photo_url: studio?.photo,
+          },
+        };
+      });
+
+      return classes.sort(
         (a: Class, b: Class) => a.date.localeCompare(b.date),
       );
     } catch (error) {

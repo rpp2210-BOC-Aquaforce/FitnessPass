@@ -21,7 +21,7 @@ export default function FavoriteEntry({ fitnessClass, onRemove }: FavoriteEntryP
         <div className="flex mb-4">
           <div className="w-1/3 p-2 h-full flex items-start">
             <img
-              src="https://images.pexels.com/photos/1954524/pexels-photo-1954524.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+              src={fitnessClass.locations.photo_url ?? 'https://images.pexels.com/photos/1954524/pexels-photo-1954524.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'}
               alt="gym"
               className="w-full h-full object-cover"
             />
