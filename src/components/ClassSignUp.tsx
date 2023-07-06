@@ -4,6 +4,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+// import { redirect } from 'next/navigation';
 import supabase from '../lib/supabase';
 
 export default function ClassSignUp({ class_id, user_id } : { class_id: number, user_id: any }) {
@@ -75,7 +76,7 @@ export default function ClassSignUp({ class_id, user_id } : { class_id: number, 
   };
 
   return (
-    <div>
+    <div data-testid="class-signup-component">
       {signed
         ? (
           <>

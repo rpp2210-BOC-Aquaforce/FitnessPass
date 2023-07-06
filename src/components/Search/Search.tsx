@@ -12,7 +12,6 @@ import Map from '@/components/Search/MapView';
 import { MapPin } from 'lucide-react';
 import DatePicker from '../Schedule/DatePicker';
 
-  <MapPin />;
 type LatLngLiteral = google.maps.LatLngLiteral;
 
 type CLASS = {
@@ -27,12 +26,12 @@ type CLASS = {
   instructor: string;
   total_rating: number;
   num_ratings: number;
-  created_at: Date;
   locations:
   {name: string, street: string, city: string, state: string, zip: string, photo_url: string},
 }
 
-export default function Search({ user_id }:{user_id: any}) {
+export default function Search({ user_id, onSearch }
+  :{user_id: any, onSearch: ()=>void}) {
   const [searchByClass, setSearchByClass] = useState('');
   const [searchByLocation, setSearchByLocation] = useState('');
   const [activeDay, setActiveDay] = useState<Date>(new Date());
@@ -126,9 +125,11 @@ export default function Search({ user_id }:{user_id: any}) {
     } catch (err) {
       console.error('Unexpected error: ', err);
     }
-
     return null;
   };
+
+  // for testing suite
+  onSearch();
 
   return (
     <div className="text-black mt-10">
@@ -138,7 +139,8 @@ export default function Search({ user_id }:{user_id: any}) {
           gotoClassDate={gotoClassDate}
         />
         <input
-          className="w-[140px] text-centerfont-normal text-xs rounded-s-md"
+          data-testid="search-input"
+          className="w-[140px] text-center font-normal text-xs rounded-s-md"
           placeholder="Yoga, Pilates, Zumba..."
           onChange={(e) => setSearchByClass(e.target.value)}
         />
@@ -149,11 +151,11 @@ export default function Search({ user_id }:{user_id: any}) {
           value={searchByLocation}
           onChange={(e) => setSearchByLocation(e.target.value)}
         />
-        <button type="button" className="w-[30px] text-white justify-center font-normal text-xs bg-seafoam rounded-e-md" onClick={search}>GO</button>
+        <button type="button" className="w-[30px] text-white justify-center font-normal text-xs bg-seafoam rounded-e-md" data-testid="search-button" onClick={search}>GO</button>
       </div>
-      <div>
+      <div data-testid="search-result-item">
         {searched && Classes.length <= 1 ? (
-          <div className="text-orange mt-2 px-2 py-1 font-black">
+          <div className="text-orange mt-2 px-2 py-1 font-black" data-testid="#class">
             {Classes.length}
             {' '}
             class

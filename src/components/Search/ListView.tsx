@@ -19,7 +19,6 @@ type Class = {
   instructor: string;
   total_rating: number;
   num_ratings: number;
-  created_at: Date;
   locations:
   {name: string, street: string, city: string, state: string, zip: string, photo_url:string },
 }
@@ -32,12 +31,12 @@ export default function List(
   { classes, user_id } : {classes: Class[], user_id: any},
 ) {
   return (
-    <div>
+    <div data-testid="list-container">
       <div>
         {classes.map(({
           class_id, name, time, duration, total_rating, locations,
         }) => (
-          <div key={class_id} className="flex items-start mt-4 bg-white w-full">
+          <div key={class_id} className="flex items-start mt-4 bg-white w-full" data-testid="list-item">
             <img
               className="h-full w-[116.60px] object-cover"
               src={locations.photo_url ?? 'https://via.placeholder.com/117x104'}

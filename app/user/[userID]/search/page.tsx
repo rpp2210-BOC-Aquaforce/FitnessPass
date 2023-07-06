@@ -1,19 +1,17 @@
-/* eslint-disable camelcase */
 /* eslint-disable react/destructuring-assignment */
+/* eslint-disable camelcase */
 
 'use client';
 
 import { Search } from '@/components/index';
 
 export default function Page(props: { params: { userID: any; }; }) {
-  // useEffect(() => {
-  //   const { data } = getQueryParams(window.location.search);
-  // }, []);
   const user_id = props.params.userID;
+  const onSearch = () => { console.log(''); };
 
   return (
     <div>
-      <Search user_id={user_id} />
+      <Search user_id={user_id} onSearch={onSearch} />
     </div>
   );
 }
