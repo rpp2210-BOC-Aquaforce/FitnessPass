@@ -6,9 +6,16 @@ export type ReactChildren = {
   children: React.ReactNode;
 }
 
+interface StudioInfo {
+  studio_name: string;
+  studio_email: string;
+  photo: string;
+}
+
 export interface Location {
   name: string | null;
   photo_url?: string | null;
+  studio_users?: StudioInfo;
 }
 
 export interface Class {
