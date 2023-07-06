@@ -14,6 +14,8 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { v4 as uuidv4 } from 'uuid';
 import { supabase } from '@/lib';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import classes from './info-form.module.css';
@@ -22,6 +24,7 @@ function UserInfo() {
   const [signUpMessage, setSignUpMessage] = useState('');
   const [loadingMessage, setLoadingMessage] = useState('');
   const [spin, setSpin] = useState(false);
+  const [photoURL, setPhotoURL] = useState('');
   const { data: session, status } = useSession();
   const userID = (session?.user as any)?.id;
   const router = useRouter();
@@ -46,8 +49,6 @@ function UserInfo() {
   const ecNameInputRef = useRef<HTMLInputElement>(null);
   const ecPhoneInputRef = useRef<HTMLInputElement>(null);
   let photoInputRef: LegacyRef<HTMLInputElement> | undefined;
-  // const entererdEmail = emailInputRef.current.value;
-  // const entererdPassword = passwordInputRef.current.value;
 
   async function UpdateUserInfo(
     firstName: any,
@@ -109,7 +110,6 @@ function UserInfo() {
     const enteredZip = zipInputRef.current?.value;
     const enteredEcName = ecNameInputRef.current?.value;
     const enteredEcPhone = ecPhoneInputRef.current?.value;
-    const enteredPhoto = photoInputRef;
 
     try {
       const result = await UpdateUserInfo(
@@ -123,7 +123,7 @@ function UserInfo() {
         enteredZip,
         enteredEcName,
         enteredEcPhone,
-        enteredPhoto,
+        photoURL,
       );
       setLoadingMessage('');
       if (result.message === 'Your profile has been updated!') {
@@ -135,13 +135,15 @@ function UserInfo() {
   }
 
   async function photoUploadHandler(e: ChangeEvent<HTMLInputElement>) {
+    setLoadingMessage('Uploading photo...');
     let file;
     if (e.target.files) {
       // eslint-disable-next-line prefer-destructuring
       file = e.target.files[0];
     }
-    const { data } = await supabase.storage.from('images').upload(`public${file?.name}`, file as File);
-    photoInputRef = `https://javqvsvajexkcxuhgiiw.supabase.co/storage/v1/object/public/images/${data?.path}`;
+    const { data } = await supabase.storage.from('images').upload(`public${uuidv4()}${file?.name}`, file as File);
+    setPhotoURL(`https://javqvsvajexkcxuhgiiw.supabase.co/storage/v1/object/public/images/${data?.path}`);
+    setLoadingMessage('Photo uploaded!');
   }
 
   return (
@@ -190,7 +192,7 @@ function UserInfo() {
         </div>
         <div className={classes.control}>
           <label htmlFor="photo">Photo</label>
-          <input type="file" accept="image/*" id="photo" ref={photoInputRef} placeholder="Upload your photo" onChange={(e) => photoUploadHandler(e)} />
+          <input type="file" accept="image/*" id="photo" placeholder="Upload your photo" onChange={(e) => photoUploadHandler(e)} />
         </div>
         { spin && <FontAwesomeIcon icon={faSpinner} spin style={{ color: '#2EC4B6' }} /> }
         <div className={classes.actions}>
