@@ -59,7 +59,7 @@ export default function ClassSignUp({ user_id, class_id } : { user_id:any, class
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ id: user_id }), // Pass any required data
+        body: JSON.stringify({ user: user_id, class: class_id }), // Pass any required data
       });
 
       if (response.ok) {
