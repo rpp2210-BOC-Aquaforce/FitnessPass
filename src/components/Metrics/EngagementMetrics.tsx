@@ -45,8 +45,18 @@ export default function EngagementMetrics({
     scales: {
       y: {
         min: 0,
+        ticks: {
+          precision: 0,
+        },
+      },
+      x: {
+        ticks: {
+          maxRotation: 90,
+          minRotation: 60,
+        },
       },
     },
+    maintainAspectRatio: false,
   };
 
   const data = {
@@ -56,14 +66,14 @@ export default function EngagementMetrics({
         fill: true,
         label: 'Class Attendees',
         data: classAttendees,
-        borderColor: 'rgb(53, 162, 235)',
-        backgroundColor: 'rgba(53, 162, 235, 0.5)',
+        borderColor: 'rgba(255, 159, 28, 1)',
+        backgroundColor: 'rgba(255, 159, 28, 0.6)',
       },
     ],
   };
 
   return (
-    <div className="relative h-5/6">
+    <div style={{ position: 'relative', height: '55vh' }}>
       <Line options={options} data={data} />
     </div>
   );

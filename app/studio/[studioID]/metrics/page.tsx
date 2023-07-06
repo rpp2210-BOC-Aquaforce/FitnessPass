@@ -18,28 +18,28 @@ export default function Metrics() {
   const [studioEngMetrics, setStudioEngMetrics] = useState<studioEngMetric[]>([]);
 
   const getMetrics = async () => {
+    console.log('???????');
     const engMetrics = await getEngMetrics(studioID);
     const popMetrics = await getPopMetrics(studioID);
+    // console.log('popMetrics: ', popMetrics);
+    // console.log('engMetrics: ', engMetrics);
     setStudioEngMetrics(engMetrics);
     setStudioPopMetrics(popMetrics);
   };
 
   useEffect(() => {
+    console.log('********');
     getMetrics();
   }, []);
 
   return (
-    <div>
-      <h1>My Metrics</h1>
-      {studioPopMetrics.length > 0
-        ? <MetricsView studioPopMetrics={studioPopMetrics} studioEngMetrics={studioEngMetrics} />
-        : <p>Loading Your Metrics...</p>}
-      <button
-        type="button"
-        onClick={() => router.push(`/studio/${studioID}`)}
-      >
-        My Profile
-      </button>
-    </div>
+    <main className="flex min-h-screen flex-col items-center p-3 sm:p-8">
+      <div className="flex flex-col items-center mt-2 pt-2 pb-2 space-y-4 bg-white shadow-md rounded-lg w-full" style={{ height: '80vh' }}>
+        <h1 className="text-solid-orange text-3xl font-semibold mt-2">My Metrics</h1>
+        {studioPopMetrics.length > 0
+          ? <MetricsView studioPopMetrics={studioPopMetrics} studioEngMetrics={studioEngMetrics} />
+          : <p>Loading Your Metrics...</p>}
+      </div>
+    </main>
   );
 }
