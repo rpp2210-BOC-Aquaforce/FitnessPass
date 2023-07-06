@@ -6,6 +6,8 @@ import { supabase } from '@/lib';
 import { ScheduleView, Favorites, Ratings } from '@/components';
 import { UserClass, Class, CustomSession } from '@/lib/types';
 
+export const revalidate = 60; // revalidate this page every 60 seconds
+
 export default async function Page({ params }: { params: { pages: string[] } }) {
   const session = await getServerSession(authOptions);
   if (!session) {
@@ -21,9 +23,10 @@ export default async function Page({ params }: { params: { pages: string[] } }) 
         .from('user_classes')
         .select(`
           *,
-          classes(*,locations(*))
+          classes(*,locations(*,studio_users(photo)))
         `)
-        .eq('user_id', userId);
+        .eq('user_id', userId)
+        .returns<UserClass[]>();
 
       if (error) {
         throw error;
@@ -31,8 +34,14 @@ export default async function Page({ params }: { params: { pages: string[] } }) 
 
       const classes = data.map((userClass: UserClass) => {
         const { classes: classData } = userClass;
+        const { locations: loc } = classData;
+        const { studio_users: studio } = loc;
         return {
           ...classData,
+          locations: {
+            ...loc,
+            photo_url: studio?.photo,
+          },
           favorite: userClass.favorite,
           classRating: userClass.class_rating,
         };
