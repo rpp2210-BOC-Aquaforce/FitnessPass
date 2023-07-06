@@ -1,30 +1,12 @@
-import sendgrid from '@sendgrid/mail';
+const sgMail = require('@sendgrid/mail');
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-// sgMail.setApiKey('');
+sgMail.setApiKey();
 
-const sendEmail = async () => {
-  // Fetch user name and class name from database first
-  console.log('api key: ', process.env.SENDGRID_API_KEY);
-  async function getUserInfo() {
-    try {
-      const { data: users, error } = await supabase
-        .from('users')
-        .select('*')
-        .limit(1);
-      if (error) {
-        console.error('Supabase Error: ', error);
-      } else {
-        console.log('Supabase Data: ', users);
-        return users;
-      }
-    } catch (err) {
-      console.error('Unexpected error: ', err);
-    }
-    return null;
-  }
-  getUserInfo();
-
+export default async function sendEmail() {
+  const key = process.env.SENDGRID_API_KEY;
+  console.log('key:', key);
+  console.log('api key:', process.env.SENDGRID_API_KEY);
   try {
     const msg = {
       to: 'timdobranski@gmail.com',
@@ -39,6 +21,7 @@ const sendEmail = async () => {
   } catch (error) {
     console.error('Error sending email:', error);
   }
-};
-sendEmail();
+}
+
+// sendEmail();
 // export default sendEmail;
