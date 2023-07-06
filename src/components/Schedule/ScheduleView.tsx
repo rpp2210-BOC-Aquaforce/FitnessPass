@@ -5,7 +5,7 @@ import React, {
   useState, useEffect, useRef,
 } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Virtual, Navigation } from 'swiper';
+import SwiperClass, { Virtual, Navigation } from 'swiper';
 import 'swiper/css';
 import 'swiper/css/free-mode';
 import 'swiper/css/pagination';
@@ -36,12 +36,16 @@ const totalSlides = 52;
 const today = new Date();
 const weeks = [...Array(totalSlides)];
 
+interface SwiperRef {
+  swiper: SwiperClass,
+}
+
 export default function ScheduleView({ fitnessClasses }: ScheduleViewProps) {
   const [activeSlide, setActiveSlide] = useState<number>(initialSlide);
   const [activeDay, setActiveDay] = useState<Date>(today);
   const [viewAll, setViewAll] = useState<boolean>(false);
   const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(false);
-  const swiperRef = useRef<any>(null);
+  const swiperRef = useRef<SwiperRef>(null);
 
   const gotoClassDate = React.useCallback((date: Date) => {
     if (!swiperRef.current) return;
@@ -51,7 +55,8 @@ export default function ScheduleView({ fitnessClasses }: ScheduleViewProps) {
     if (offset > 0 && startOfWeekDate === startOfWeekToday) {
       offset = 0;
     } else if (offset > 0) {
-      offset += 1;
+      // TODO: this may need to change based on the day of the week
+      // offset += 1;
     } else if (offset === 0 && startOfWeekDate !== startOfWeekToday) {
       offset += 1;
     }
