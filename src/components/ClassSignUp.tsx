@@ -53,6 +53,20 @@ export default function ClassSignUp({ user_id, class_id } : { user_id:any, class
       }
       setSigned(true);
       console.log(`signed up user ${user_id} in class ${class_id}`, data);
+      // Send email to user
+      const response = await fetch('/api/send-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id: user_id }), // Pass any required data
+      });
+
+      if (response.ok) {
+        console.log('Email sent successfully');
+      } else {
+        console.error('Failed to send email');
+      }
     } catch (err) {
       console.error('Unexpected error: ', err);
     }
