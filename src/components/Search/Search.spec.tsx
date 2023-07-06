@@ -6,7 +6,6 @@ import {
 } from '@testing-library/react';
 import { useRouter } from 'next/navigation';
 import userEvent from '@testing-library/user-event';
-// import { classes } from '@/components/Schedule/mockUserClasses';
 import Search from './Search';
 import List from './ListView';
 import Map from './MapView';

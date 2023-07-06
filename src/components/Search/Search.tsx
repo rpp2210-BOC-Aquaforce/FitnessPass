@@ -1,5 +1,4 @@
 /* eslint-disable camelcase */
-/* eslint-disable no-nested-ternary */
 
 'use client';
 
@@ -130,6 +129,26 @@ export default function Search({ user_id, onSearch }
 
   // for testing suite
   onSearch();
+  //
+
+  let classLabel: JSX.Element | null = null;
+  if (searched && Classes.length <= 1) {
+    classLabel = (
+      <div>
+        {Classes.length}
+        {' '}
+        class
+      </div>
+    );
+  } else {
+    classLabel = (
+      <div>
+        {Classes.length}
+        {' '}
+        classes
+      </div>
+    );
+  }
 
   return (
     <div className="text-black mt-10">
@@ -154,21 +173,9 @@ export default function Search({ user_id, onSearch }
         <button type="button" className="w-[30px] text-white justify-center font-normal text-xs bg-seafoam rounded-e-md" data-testid="search-button" onClick={search}>GO</button>
       </div>
       <div data-testid="search-result-item">
-        {searched && Classes.length <= 1 ? (
-          <div className="text-orange mt-2 px-2 py-1 font-black" data-testid="#class">
-            {Classes.length}
-            {' '}
-            class
-          </div>
-        )
-          : Classes.length > 1 ? (
-            <div className="text-orange mt-2 px-2 py-1 font-black">
-              {Classes.length}
-              {' '}
-              classes
-            </div>
-          )
-            : ''}
+        <div className="text-orange mt-2 px-2 py-1 font-black">
+          {classLabel}
+        </div>
         {searched && (
           list ? (
             <div>
