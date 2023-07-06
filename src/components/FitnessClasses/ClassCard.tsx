@@ -14,6 +14,13 @@ export default function ClassCard(
     return null;
   }
 
+  const onClick = () => {
+    if (!gotoDate) {
+      return;
+    }
+    gotoDate(parseLocalDate(fitnessClass.date));
+  };
+
   const handleKeyDown = (event: React.KeyboardEvent) => {
     if (event.key === 'Enter' && gotoDate) {
       gotoDate(parseLocalDate(fitnessClass.date));
@@ -29,7 +36,7 @@ export default function ClassCard(
       />
       <div
         className={cn('flex flex-col justify-between ml-4 flex-grow', gotoDate ? 'pointer-cursor' : '')}
-        onClick={() => gotoDate && gotoDate(parseLocalDate(fitnessClass.date))}
+        onClick={onClick}
         onKeyDown={handleKeyDown}
         tabIndex={0}
         role="button"
