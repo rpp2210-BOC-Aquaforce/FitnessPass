@@ -3,7 +3,7 @@
 
 'use client';
 
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Geocode from 'react-geocode';
 import supabase from '@/lib/supabase';
 
@@ -116,7 +116,7 @@ export default function Search({ user_id, onSearch }
         if (classes) {
           classes.forEach((Class) => {
             if (!searchByClass
-              || (searchByClass && Class.name.toLowerCase() === searchByClass.toLowerCase())) {
+            || (searchByClass && Class.name.toLowerCase().includes(searchByClass.toLowerCase()))) {
               setClasses((prevClasses) => [...prevClasses, Class]);
             }
           });
@@ -172,7 +172,7 @@ export default function Search({ user_id, onSearch }
         {searched && (
           list ? (
             <div>
-              <button type="button" className="text-center text-white text-xs font-black uppercase tracking-wide rounded-md bg-seafoam px-2 py-1 mt-2 ml-2" onClick={() => setList(false)}>Map</button>
+              <button type="button" className="text-center text-white text-xs font-black uppercase tracking-wide rounded-md bg-seafoam px-2 py-1 mt-2 mb-2" onClick={() => setList(false)}>Map</button>
               <List user_id={user_id} classes={Classes} />
             </div>
           ) : (

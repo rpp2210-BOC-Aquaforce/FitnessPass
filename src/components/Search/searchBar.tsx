@@ -2,6 +2,7 @@
 import Link from 'next/link';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
+import React from 'react';
 
 export default async function SearchBar() {
   const session = await getServerSession(authOptions);

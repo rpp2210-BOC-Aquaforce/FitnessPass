@@ -3,6 +3,7 @@
 
 'use client';
 
+import React from 'react';
 import { ReactChildren } from '@/lib/types';
 
 import ClassSignUp from '@/components/ClassSignUp';

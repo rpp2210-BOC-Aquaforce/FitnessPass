@@ -6,19 +6,6 @@ export type ReactChildren = {
   children: React.ReactNode;
 }
 
-export type UpdateRatingArgs = {
-  userId: string,
-  rating: number,
-  classId: number,
-}
-
-export type UpdateUserClassArgs = {
-  userId: string,
-  classId: number,
-  key: string,
-  value: boolean | number | string | null,
-}
-
 export interface Location {
   name: string | null;
   photo_url?: string | null;
@@ -76,4 +63,27 @@ export interface StudioAddClass {
   class_duration: number;
   class_tags: string;
   instructor: string;
+}
+
+export interface studioPopMetric {
+  name: string | null;
+  popularity: number | null;
+}
+
+export interface studioEngMetric {
+  week: string | null;
+  attendance: number | null;
+}
+
+export type UpdateRatingArgs = {
+  userId: string,
+  rating: number,
+  classId: number,
+}
+
+export type UpdateUserClassArgs = {
+  userId: string,
+  classId: number,
+  key: string,
+  value: boolean | number | string | null,
 }

@@ -6,5 +6,6 @@ export * from './Schedule';
 export * from './FitnessClasses';
 export * from './Search';
 export * from './AddClass';
+export * from './Metrics';
 export * from './Auth';
 export * from './ui';

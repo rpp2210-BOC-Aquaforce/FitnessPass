@@ -2,14 +2,14 @@
 
 'use client';
 
-import {
+import React, {
   useEffect, useRef, useState,
 } from 'react';
 import {
   useLoadScript, GoogleMap, Marker, InfoWindow,
 } from '@react-google-maps/api';
 import Geocode from 'react-geocode';
-import { ReactChildren } from '@/lib/types';
+import { ReactChildren } from '@/lib/types/index';
 import ClassSignUp from '@/components/ClassSignUp';
 
 function TextDiv({ children }: ReactChildren) {
@@ -128,7 +128,7 @@ export default function Map({ center, classes, user_id }: MapProps) {
           onLoad={(map) => {
             mapInstanceRef.current = map;
           }}
-          mapContainerStyle={{ width: '100vw', height: '70vh' }}
+          mapContainerStyle={{ width: '100vw', height: '65vh' }}
         >
           <div data-testid="myLocation">
             <Marker
@@ -139,7 +139,7 @@ export default function Map({ center, classes, user_id }: MapProps) {
             >
               {activeMarker === 0 ? (
                 <InfoWindow onCloseClick={() => setActiveMarker(null)}>
-                  <div className="text-black">
+                  <div className="text-orange font-black">
                     My Location
                   </div>
                 </InfoWindow>

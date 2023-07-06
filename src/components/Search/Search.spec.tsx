@@ -1,5 +1,4 @@
 /* eslint-disable import/no-extraneous-dependencies */
-// classSearch.test.js
 
 import React from 'react';
 import {
