@@ -140,7 +140,7 @@ export default function Search({ user_id, onSearch }
         class
       </div>
     );
-  } else {
+  } else if (searched && Classes.length > 1) {
     classLabel = (
       <div>
         {Classes.length}
