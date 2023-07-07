@@ -1,4 +1,3 @@
-// const sgMail = require('@sendgrid/mail');
 import sgMail from '@sendgrid/mail';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import supabase from '@/lib/supabase';
@@ -9,8 +8,8 @@ const apiKey = process.env.SENDGRID_API_KEY;
 if (apiKey) {
   sgMail.setApiKey(apiKey);
 } else {
-  console.error('SENDGRID_API_KEY is not defined');
   // Handle the case when the API key is not defined
+  // console.error('SENDGRID_API_KEY is not defined');
 }
 
 export default async function sendEmail(
@@ -55,10 +54,10 @@ export default async function sendEmail(
 
     try {
       await sgMail.send(msg);
-      console.log('Email sent successfully');
+      // console.log('Email sent successfully');
       res.status(200).json({ message: 'Email sent successfully' });
     } catch (sendError) {
-      console.error('Error sending email:', sendError);
+      // console.error('Error sending email:', sendError);
       res.status(500).json({ error: 'Failed to send email' });
     }
   }
