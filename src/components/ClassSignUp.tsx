@@ -20,13 +20,13 @@ export default function ClassSignUp({ class_id, user_id } : { class_id: number, 
         .eq('user_id', user_id)
         .eq('class_id', class_id);
       if (error) {
-        return error;
+        throw error;
       }
       if (user_classes.length) {
         setSigned(true);
       }
     } catch (err) {
-      console.error('Unexpected error: ', err);
+      return err;
     }
     return null;
   };
@@ -36,28 +36,29 @@ export default function ClassSignUp({ class_id, user_id } : { class_id: number, 
   }, []);
 
   const signUp = async () => {
-    if (user_id === 'undefined') {
+    if (user_id === '1') {
       router.push('/login');
-      return;
-    }
-    try {
-      const { data, error } = await supabase
-        .from('user_classes')
-        .insert([{ user_id, class_id },
-        ])
-        .select();
-      if (error) {
-        console.error(error);
+    } else {
+      try {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { data, error } = await supabase
+          .from('user_classes')
+          .insert([{ user_id, class_id },
+          ])
+          .select();
+        if (error) {
+          throw error;
+        }
+        setSigned(true);
+      } catch (err) {
+        console.error('Unexpected error: ', err);
       }
-      setSigned(true);
-      console.log(`signed up user ${user_id} in class ${class_id}`, data);
-    } catch (err) {
-      console.error('Unexpected error: ', err);
     }
   };
 
   const cancelSignUp = async () => {
     try {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { data, error } = await supabase
         .from('user_classes')
         .delete()
@@ -65,12 +66,11 @@ export default function ClassSignUp({ class_id, user_id } : { class_id: number, 
         .eq('class_id', class_id);
 
       if (error) {
-        return error;
+        throw error;
       }
       setSigned(false);
-      console.log(`cancel user ${user_id} in class ${class_id}`, data);
     } catch (err) {
-      console.error('Unexpected error: ', err);
+      return err;
     }
     return null;
   };

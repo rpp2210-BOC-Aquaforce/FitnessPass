@@ -226,9 +226,21 @@ describe('ClassSearch', () => {
       push: mockedPush,
     });
     (useRouter as jest.Mock).mockReturnValue(useRouterMock());
-    render(<ClassSignUp class_id={123} user_id="undefined" />);
+    render(<ClassSignUp class_id={123} user_id="1" />);
     const signUpButton = screen.getByText('Sign Up');
     await user.click(signUpButton);
     expect(mockedPush).toHaveBeenCalledWith('/login');
+  });
+
+  test('clicking Sign Up button triggers signUp function', async () => {
+    const { getByText } = render(<ClassSignUp class_id={123} user_id={107} />);
+    const signUpButton = getByText('Sign Up');
+    fireEvent.click(signUpButton);
+    await waitFor(() => {
+      const SignedUp = getByText('Signed Up');
+      expect(SignedUp).toBeInTheDocument();
+      const cancelButton = getByText('Cancel');
+      expect(cancelButton).toBeInTheDocument();
+    });
   });
 });

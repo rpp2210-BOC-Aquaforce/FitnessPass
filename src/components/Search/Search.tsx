@@ -97,33 +97,30 @@ export default function Search({ user_id, onSearch }
     } else {
       column = 'city';
     }
-    try {
-      const { data: locations, error } = await supabase
-        .from('locations')
-        .select('*')
-        .ilike(column, searchByLocation);
-      if (error) {
-        return error;
-      }
-      locations.forEach(async (location) => {
-        const { data: classes } = await supabase
-          .from('classes')
-          .select('*, locations(*)')
-          .eq('location_id', location.location_id)
-          .eq('date', searchByDate)
-          .order('time', { ascending: false });
-        if (classes) {
-          classes.forEach((Class) => {
-            if (!searchByClass
-            || (searchByClass && Class.name.toLowerCase().includes(searchByClass.toLowerCase()))) {
-              setClasses((prevClasses) => [...prevClasses, Class]);
-            }
-          });
-        }
-      });
-    } catch (err) {
-      console.error('Unexpected error: ', err);
+
+    const { data: locations, error } = await supabase
+      .from('locations')
+      .select('*')
+      .ilike(column, searchByLocation);
+    if (error) {
+      return error;
     }
+    locations.forEach(async (location) => {
+      const { data: classes } = await supabase
+        .from('classes')
+        .select('*, locations(*)')
+        .eq('location_id', location.location_id)
+        .eq('date', searchByDate)
+        .order('time', { ascending: false });
+      if (classes) {
+        classes.forEach((Class) => {
+          if (!searchByClass
+            || (searchByClass && Class.name.toLowerCase().includes(searchByClass.toLowerCase()))) {
+            setClasses((prevClasses) => [...prevClasses, Class]);
+          }
+        });
+      }
+    });
     return null;
   };
 
@@ -179,12 +176,12 @@ export default function Search({ user_id, onSearch }
         {searched && (
           list ? (
             <div>
-              <button type="button" className="text-center text-white text-xs font-black uppercase tracking-wide rounded-md bg-seafoam px-2 py-1 mt-2 mb-2" onClick={() => setList(false)}>Map</button>
+              <button type="button" className="text-center text-white text-xs font-black uppercase tracking-wide rounded-md bg-seafoam px-2 py-1 mt-2 ml-2" onClick={() => setList(false)}>Map</button>
               <List user_id={user_id} classes={Classes} />
             </div>
           ) : (
             <div>
-              <button type="button" className="text-center text-white text-xs font-black uppercase tracking-wide rounded-md bg-seafoam px-2 py-1 mt-2 mb-2" onClick={() => setList(true)}>List</button>
+              <button type="button" className="text-center text-white text-xs font-black uppercase tracking-wide rounded-md bg-seafoam px-2 py-1 mt-2 ml-2 mb-2" onClick={() => setList(true)}>List</button>
               <Map user_id={user_id} center={myLocation} classes={Classes} />
             </div>
           )
