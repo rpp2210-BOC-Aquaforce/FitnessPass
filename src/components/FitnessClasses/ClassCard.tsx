@@ -1,10 +1,15 @@
 /* eslint-disable @next/next/no-img-element */
 import { cn } from '@/lib/utils';
-import { Class, ReactChildren } from '@/lib/types';
+import { Class } from '@/lib/types';
 import { parseLocalDate } from '@/components/Schedule/DateFunctions';
+import Stars from '@/components/Ratings/Stars';
 
-function TextDiv({ children }: ReactChildren) {
-  return <div className="text-seafoam text-[10px] pt-1 font-black uppercase tracking-wide">{children}</div>;
+function TextDiv({ children, className }: { children: React.ReactNode, className?: string }) {
+  return (
+    <div className={cn('text-seafoam text-[10px] pt-1 font-black uppercase tracking-wide', className ?? '')}>
+      {children}
+    </div>
+  );
 }
 
 export default function ClassCard(
@@ -28,9 +33,9 @@ export default function ClassCard(
   };
 
   return (
-    <div className="flex items-start mt-4 bg-white w-full h-[104px]">
+    <div className="flex items-start mt-4 bg-white w-full h-[100px]">
       <img
-        className="h-full w-[116.60px] object-cover"
+        className="h-full w-[100px] min-w-[100px] max-w-[100px] object-cover"
         src={fitnessClass.locations.photo_url ?? 'https://via.placeholder.com/117x104'}
         alt="Placeholder"
       />
@@ -51,19 +56,11 @@ export default function ClassCard(
           min)
         </TextDiv>
         <TextDiv>{fitnessClass.locations.name}</TextDiv>
-        <TextDiv>
-          Ratings:
-          {' '}
-          {fitnessClass.total_rating}
-        </TextDiv>
+        <div className="flex flex-wrap mt-2">
+          <Stars ratingValues={fitnessClass?.classRating || 0} />
+        </div>
       </div>
       <div className="flex flex-col justify-between items-end ml-4">
-        <div className="flex space-x-2">
-          <div className="w-2 h-2 bg-gray-400" />
-          <div className="w-2 h-2 bg-gray-400" />
-          <div className="w-2 h-2 bg-gray-400" />
-          <div className="w-2 h-2 bg-gray-400" />
-        </div>
         <button type="button" className="text-center text-white text-xs font-black uppercase tracking-wide rounded-md bg-mint-orange px-2 py-1 mt-2">Edit</button>
         <button type="button" className="text-center text-white text-xs font-black uppercase tracking-wide rounded-md bg-red-300 px-2 py-1 mt-2">Remove</button>
       </div>
