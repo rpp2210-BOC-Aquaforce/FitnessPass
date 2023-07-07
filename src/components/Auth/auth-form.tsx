@@ -2,14 +2,19 @@
 
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import {
+  useState, useRef, useEffect, ChangeEvent,
+} from 'react';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { useSession, signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { v4 as uuidv4 } from 'uuid';
 import '@fortawesome/fontawesome-svg-core/styles.css';
+import { supabase } from '@/lib';
 import classes from './auth-form.module.css';
 
 function AuthForm() {
@@ -17,6 +22,7 @@ function AuthForm() {
   const [isStudio, setIsStudio] = useState(false);
   const [signInMessage, setSignInMessage] = useState<string>('');
   const [loadingMessage, setLoadingMessage] = useState('');
+  const [photoURL, setPhotoURL] = useState('');
   const [spin, setSpin] = useState(false);
   const { data: session, status } = useSession();
   const userIdentifier = (session?.user as any)?.id;
@@ -42,10 +48,6 @@ function AuthForm() {
   const emailInputRef = useRef<HTMLInputElement>(null);
   const passwordInputRef = useRef<HTMLInputElement>(null);
   const studioNameInputRef = useRef<HTMLInputElement>(null);
-  const studioPhotoInputRef = useRef<HTMLInputElement>(null);
-
-  // const entererdEmail = emailInputRef.current.value;
-  // const entererdPassword = passwordInputRef.current.value;
 
   function switchAuthModeHandler() {
     setIsLogin((prevState) => !prevState);
@@ -94,7 +96,6 @@ function AuthForm() {
     const enteredEmail = emailInputRef.current?.value;
     const enteredPassword = passwordInputRef.current?.value;
     const enteredStudioName = studioNameInputRef.current?.value;
-    const enteredStudioPhoto = studioPhotoInputRef.current?.value;
 
     if (isLogin) {
       const result = await signIn('credentials', {
@@ -122,7 +123,7 @@ function AuthForm() {
         enteredEmail,
         enteredPassword,
         enteredStudioName,
-        enteredStudioPhoto,
+        photoURL,
       );
       setLoadingMessage('');
       console.log('result signup!!', result);
@@ -165,13 +166,30 @@ function AuthForm() {
     }
   }
 
+  function forgotPasswordHandler(event: { preventDefault: () => void; }) {
+    event.preventDefault();
+    router.push('/login/passwordRecover');
+  }
+
   useEffect(() => {
-    if (loadingMessage !== '' || signInMessage === 'New user account created! Please wait while we redirect you ...') {
+    if ((loadingMessage !== '' && loadingMessage !== 'Photo uploaded!') || signInMessage === 'New user account created! Please wait while we redirect you ...') {
       setSpin(true);
     } else {
       setSpin(false);
     }
   }, [loadingMessage, signInMessage]);
+
+  async function photoUploadHandler(e: ChangeEvent<HTMLInputElement>) {
+    setLoadingMessage('Uploading photo...');
+    let file;
+    if (e.target.files) {
+      // eslint-disable-next-line prefer-destructuring
+      file = e.target.files[0];
+    }
+    const { data } = await supabase.storage.from('images').upload(`public${uuidv4()}${file?.name}`, file as File);
+    setPhotoURL(`https://javqvsvajexkcxuhgiiw.supabase.co/storage/v1/object/public/images/${data?.path}`);
+    setLoadingMessage('Photo uploaded!');
+  }
 
   return (
     <section className={classes.auth}>
@@ -197,7 +215,7 @@ function AuthForm() {
         && (
         <div className={classes.control}>
           <label htmlFor="studioPhoto">Photo</label>
-          <input type="text" id="studioPhoto" required ref={studioPhotoInputRef} placeholder="Enter studio photo" />
+          <input type="file" accept="image/*" id="studioPhoto" placeholder="Enter studio photo" onChange={(e) => photoUploadHandler(e)} />
         </div>
         )}
         <div className={classes.actions}>
@@ -208,6 +226,13 @@ function AuthForm() {
             onClick={switchAuthModeHandler}
           >
             {isLogin ? 'Create new account' : 'Login with existing account'}
+          </button>
+          <button
+            type="button"
+            className={classes.toggle}
+            onClick={forgotPasswordHandler}
+          >
+            Forgot Password
           </button>
           <div>
             <button type="button" onClick={googleSignInHandler}>
