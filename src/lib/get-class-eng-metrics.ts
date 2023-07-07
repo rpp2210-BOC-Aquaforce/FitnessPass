@@ -1,4 +1,4 @@
-import { getClassesByDate, getClassPopularity } from '@/lib/api';
+import { getClassesByDate, getClassPopularity } from '@/lib/studio-classes';
 import { format, subWeeks } from 'date-fns';
 
 export default async function getEngMetrics(studioID: string) {
@@ -24,7 +24,7 @@ export default async function getEngMetrics(studioID: string) {
       data.map((item: { class_id: string; date: string }) => getClassPopularity(item.class_id)),
     );
 
-    const totalAttendance = attendance.reduce((acc, curr) => acc + curr, 0);
+    const totalAttendance = attendance.reduce((acc, curr) => (acc || 0) + (curr || 0), 0);
     return { week: week.label, attendance: totalAttendance };
   });
 
