@@ -98,8 +98,7 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   pages: {
-    error: '/api/auth/error',
-    // signOut: '/api/auth/signout',
+    error: '/auth/error',
   },
   callbacks: {
     async signIn({
