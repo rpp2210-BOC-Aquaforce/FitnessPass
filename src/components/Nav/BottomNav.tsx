@@ -6,19 +6,9 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
-import { Session } from 'next-auth';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
-
-interface CustomSession extends Session {
-  user: {
-    id: string;
-    name?: string;
-    email?: string;
-    image?: string;
-    studio_user?: boolean;
-  } & Session['user'];
-}
+import { CustomSession } from '@/lib/types';
 
 function BottomNav() {
   const { data: session } = useSession() as { data: CustomSession | null };

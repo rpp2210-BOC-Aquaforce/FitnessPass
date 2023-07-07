@@ -22,6 +22,7 @@ export interface Class {
   class_id: number;
   classRating?: number | null,
   favorite?: boolean | null,
+  userId?: number | null,
   location_id: number | null;
   name: string | null;
   description: string | null;
@@ -38,7 +39,7 @@ export interface Class {
 
 export interface UserClass {
   id: number;
-  user_id: number | string;
+  user_id: number;
   class_id: number;
   class_rating: number | null;
   favorite: boolean;
@@ -56,6 +57,7 @@ export interface CustomSession extends Session {
     name?: string;
     email?: string;
     image?: string;
+    studio_user?: boolean;
   } & Session['user'];
 }
 
@@ -100,8 +102,10 @@ export type UpdateRatingArgs = {
 }
 
 export type UpdateUserClassArgs = {
-  userId: string,
+  userId: string | undefined,
   classId: number,
   key: string,
   value: boolean | number | string | null,
 }
+
+export type UpdateUserClassFunction = (args: UpdateUserClassArgs) => void;

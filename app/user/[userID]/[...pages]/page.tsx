@@ -59,8 +59,9 @@ export default async function Page({ params }: { params: { pages: string[] } }) 
 
   const fitnessClasses = await getUserClasses();
   const renderPage = () => {
-    const userClasses = fitnessClasses?.filter((fitnessClass) => fitnessClass.userId === userId);
-    const favorites = userClasses?.filter((fitnessClass) => fitnessClass.favorite);
+    const userClasses = fitnessClasses?.filter((c) => c.userId === Number(userId));
+    const availableClasses = fitnessClasses?.filter((c) => c.userId !== Number(userId));
+    const favorites = userClasses?.filter((c) => c.favorite);
     const pageComponents: { [key: string]: JSX.Element } = {
       favorites: (
         <Favorites
@@ -75,9 +76,23 @@ export default async function Page({ params }: { params: { pages: string[] } }) 
           fitnessClasses={userClasses || []}
         />),
       classes: (
-        <FitnessClasses classes={fitnessClasses || []} />
+        <div className="flex flex-col items-start p-2 mt-2 bg-white shadow-md rounded-lg w-full min-h-[250px] h-full">
+          <div className="flex w-full justify-between">
+            <div className="w-full h-full">
+              <FitnessClasses
+                classes={availableClasses || []}
+                updateUserClass={updateUserClass}
+              />
+            </div>
+          </div>
+        </div>
       ),
-      default: <ScheduleView fitnessClasses={userClasses || []} />,
+      default: (
+        <ScheduleView
+          fitnessClasses={userClasses || []}
+          updateUserClass={updateUserClass}
+        />
+      ),
     };
 
     return pageComponents[pages[0]] || pageComponents.default;

@@ -2,7 +2,7 @@
 
 import { supabase } from '@/lib';
 import { revalidatePath } from 'next/cache';
-import { UpdateUserClassArgs } from '@/lib/types';
+import { UpdateUserClassFunction } from '@/lib/types';
 
 export async function updateRating({ userId, classId, rating } :
   { userId: string, classId: number, rating: number }) {
@@ -20,9 +20,9 @@ export async function updateRating({ userId, classId, rating } :
   revalidatePath(`/user/${userId}`);
 }
 
-export async function updateUserClass({
+export const updateUserClass: UpdateUserClassFunction = async ({
   userId, classId, key, value,
-} : UpdateUserClassArgs) {
+}) => {
   console.log(`Updating ${key} in user class #${classId} with ${value}`);
 
   const { error } = await supabase
@@ -35,4 +35,4 @@ export async function updateUserClass({
   }
 
   revalidatePath(`/user/${userId}`);
-}
+};
