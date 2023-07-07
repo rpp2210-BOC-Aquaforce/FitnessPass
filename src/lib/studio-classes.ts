@@ -1,5 +1,17 @@
 import supabase from './supabase';
 
+export const getStudioLocations = async (studioID: string) => {
+  const { data, error } = await supabase
+    .from('locations')
+    .select('location_id, name')
+    .eq('studio_id', studioID);
+  if (error) {
+    throw error;
+  }
+
+  return data;
+};
+
 export const getStudioClasses = async (studioID: string) => {
   const { data, error } = await supabase
     .from('classes')
