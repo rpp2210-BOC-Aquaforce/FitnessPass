@@ -14,6 +14,7 @@ export default function Stars({ ratingValues, handleRatingChange } : StarsProps)
       <FontAwesomeIcon
         key={i}
         icon={faStar}
+        data-testid={`star-${i}`}
         className={`text-m w-4 h-4 ${starClass}`}
         onClick={() => {
           if (handleRatingChange) {

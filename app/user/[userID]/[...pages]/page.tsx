@@ -4,6 +4,7 @@ import { authOptions } from '@/lib/auth';
 import { updateUserClass } from '@/lib/actions';
 import { supabase } from '@/lib';
 import { ScheduleView, Favorites, Ratings } from '@/components';
+import { FitnessClasses } from '@/components/FitnessClasses';
 import { UserClass, Class, CustomSession } from '@/lib/types';
 
 export const revalidate = 60; // revalidate this page every 60 seconds
@@ -25,7 +26,7 @@ export default async function Page({ params }: { params: { pages: string[] } }) 
           *,
           classes(*,locations(*,studio_users(photo)))
         `)
-        .eq('user_id', userId)
+        // .eq('user_id', userId)
         .returns<UserClass[]>();
 
       if (error) {
@@ -38,6 +39,7 @@ export default async function Page({ params }: { params: { pages: string[] } }) 
         const { studio_users: studio } = loc;
         return {
           ...classData,
+          userId: userClass.user_id,
           locations: {
             ...loc,
             photo_url: studio?.photo,
@@ -57,7 +59,8 @@ export default async function Page({ params }: { params: { pages: string[] } }) 
 
   const fitnessClasses = await getUserClasses();
   const renderPage = () => {
-    const favorites = fitnessClasses?.filter((fitnessClass) => fitnessClass.favorite);
+    const userClasses = fitnessClasses?.filter((fitnessClass) => fitnessClass.userId === userId);
+    const favorites = userClasses?.filter((fitnessClass) => fitnessClass.favorite);
     const pageComponents: { [key: string]: JSX.Element } = {
       favorites: (
         <Favorites
@@ -69,9 +72,12 @@ export default async function Page({ params }: { params: { pages: string[] } }) 
         <Ratings
           userId={userId}
           updateUserClass={updateUserClass}
-          fitnessClasses={fitnessClasses || []}
+          fitnessClasses={userClasses || []}
         />),
-      default: <ScheduleView fitnessClasses={fitnessClasses || []} />,
+      classes: (
+        <FitnessClasses classes={fitnessClasses || []} />
+      ),
+      default: <ScheduleView fitnessClasses={userClasses || []} />,
     };
 
     return pageComponents[pages[0]] || pageComponents.default;

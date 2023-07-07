@@ -38,7 +38,7 @@ export interface Class {
 
 export interface UserClass {
   id: number;
-  user_id: number;
+  user_id: number | string;
   class_id: number;
   class_rating: number | null;
   favorite: boolean;
