@@ -10,8 +10,7 @@ const createJestConfig = nextJest({
 const customJestConfig = {
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
   moduleNameMapper: {
-    '^@/src/(.*)$': '<rootDir>/$1',
-    '^@/lib/(.*)$': '<rootDir>/lib/$1',
+    '^@/lib/(.*)$': '<rootDir>/src/lib/$1',
     'swiper/css': 'swiper/swiper.min.css',
     '^next-auth/client$': '<rootDir>/node_modules/next-auth/react/index.js',
   },

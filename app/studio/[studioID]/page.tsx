@@ -19,7 +19,7 @@ interface MyUser extends User {
   id: string;
 }
 
-export default async function StudioPage() {
+export default function StudioPage() {
   const { data: session } = useSession({
     required: true,
     onUnauthenticated() {

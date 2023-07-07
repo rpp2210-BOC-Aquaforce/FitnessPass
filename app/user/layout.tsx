@@ -1,4 +1,4 @@
-import { UserNav } from '@/components';
+import { BottomNav } from '@/components';
 
 export default function RootLayout({
   children,
@@ -7,8 +7,10 @@ export default function RootLayout({
 }) {
   return (
     <>
-      <UserNav />
-      {children}
+      <div className="pb-[76px]">
+        {children}
+      </div>
+      <BottomNav />
     </>
   );
 }
