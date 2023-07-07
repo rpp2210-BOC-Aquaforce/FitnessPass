@@ -17,11 +17,11 @@ export default async function getPopMetrics(studioID: string) {
     });
 
     // eslint-disable-next-line no-shadow
-    const combinedMetrics = Array.from(metricsMap.entries()).map(([name, popularity]) => ({
-      name,
-      popularity,
-    }));
-
+    const combinedMetrics = Array.from(metricsMap.entries())
+      // eslint-disable-next-line no-shadow
+      .map(([name, popularity]) => ({ name, popularity }))
+      // eslint-disable-next-line no-shadow
+      .filter(({ popularity }) => popularity > 0);
     return combinedMetrics;
   } catch (err) {
     return ([{ name: null, popularity: null }]);

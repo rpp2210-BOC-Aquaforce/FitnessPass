@@ -45,8 +45,8 @@ export default function PopularityMetrics({
   };
 
   return (
-    <div className="relative h-5/6">
-      <Doughnut data={data} />
+    <div style={{ position: 'relative', height: '55vh' }}>
+      <Doughnut data={data} options={{ responsive: true, maintainAspectRatio: false }} />
     </div>
   );
 }
