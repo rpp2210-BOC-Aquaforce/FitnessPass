@@ -55,7 +55,7 @@ export default function StudioPage() {
         <p className={styles.info}>{studioInfo.studio_name}</p>
         <h5 className={styles.infoHeader}>Preferred Email:</h5>
         <p className={styles.info}>{studioInfo.studio_email}</p>
-        <br />
+        {/* <br />
         <Link href={`/studio/${studioID}/add-location`} className={styles.links}>Add A Location</Link>
         <br />
         <Link href={`/studio/${studioID}/addclass`} className={styles.links}>Add A Class</Link>
@@ -64,7 +64,7 @@ export default function StudioPage() {
         <br />
         <Link href={`/studio/${studioID}/view-classes`} className={styles.links}>View All Classes</Link>
         <br />
-        <Link href={`/studio/${studioID}/view-locations`} className={styles.links}> View All Locations</Link>
+        <Link href={`/studio/${studioID}/view-locations`} className={styles.links}> View All Locations</Link> */}
       </div>
 
     </main>

@@ -8,6 +8,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { CustomSession } from '@/lib/types';
+import StudioNav from './StudioNav';
 
 function BottomNav() {
   const { data: session } = useSession() as { data: CustomSession | null };
@@ -16,6 +17,12 @@ function BottomNav() {
 
   if (!session) {
     return null;
+  }
+
+  const isStudio = session.user?.studio_user;
+
+  if (isStudio && userId) {
+    return <StudioNav studioId={userId} />;
   }
 
   const linkClass = 'flex flex-col items-center justify-center hover:bg-mint-orange p-auto w-full h-full';
