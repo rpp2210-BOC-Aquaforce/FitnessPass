@@ -1,2 +1,2 @@
+/* eslint-disable import/prefer-default-export */
 export { default as NextAuthProvider } from './AuthProvider';
-export { default as ContextProvider } from './ContextProvider';

@@ -132,12 +132,18 @@ export const getUserClasses = async (userId: number) => {
 export const getNonUserClasses = async (userClassIds: number[]) => {
   try {
     const userClassIdsString = `(${userClassIds.join(', ')})`;
+    const currentDate = new Date();
+    const currentTime = currentDate.toISOString().split('T')[1]; // Get current time
+    currentDate.setHours(0, 0, 0, 0); // Reset hours, minutes, seconds and milliseconds
+
     const { data: classesData, error: classesError } = await supabase
       .from('classes')
       .select(`
         *,
         locations(*,studio_users(photo))
       `)
+      .gte('date', currentDate.toISOString().split('T')[0]) // Compare date
+      .gte('time', currentTime) // Compare time
       .not('class_id', 'in', userClassIdsString)
       .returns<Class[]>();
 

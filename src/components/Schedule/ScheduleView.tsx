@@ -44,7 +44,7 @@ interface SwiperRef {
 export default function ScheduleView({ fitnessClasses, updateUserClass }: ScheduleViewProps) {
   const [activeSlide, setActiveSlide] = useState<number>(initialSlide);
   const [activeDay, setActiveDay] = useState<Date>(today);
-  const [viewAll, setViewAll] = useState<boolean>(false);
+  const [viewAll, setViewAll] = useState<boolean>(true);
   const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(false);
   const swiperRef = useRef<SwiperRef>(null);
 
@@ -60,10 +60,6 @@ export default function ScheduleView({ fitnessClasses, updateUserClass }: Schedu
   }, []);
 
   useEffect(() => {
-    if (viewAll) {
-      return;
-    }
-
     const nextScheduledClass = getNextScheduledClass(fitnessClasses);
     gotoClassDate(nextScheduledClass);
   }, [fitnessClasses, viewAll, gotoClassDate]);

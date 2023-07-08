@@ -9,6 +9,7 @@ export const userClasses: UserClass[] = [
     favorite: true,
     created_at: new Date('2023-06-01T00:00:00Z'),
     classes: {
+      id: 1,
       class_id: 1,
       location_id: 1,
       name: 'Yoga 101',
@@ -35,6 +36,7 @@ export const userClasses: UserClass[] = [
     favorite: false,
     created_at: new Date('2023-06-02T00:00:00Z'),
     classes: {
+      id: 2,
       class_id: 2,
       location_id: 2,
       name: 'Advanced Pilates',
@@ -61,6 +63,7 @@ export const userClasses: UserClass[] = [
     favorite: true,
     created_at: new Date('2023-06-03T00:00:00Z'),
     classes: {
+      id: 3,
       class_id: 3,
       location_id: null,
       name: 'Online Zumba',
@@ -81,6 +84,7 @@ export const userClasses: UserClass[] = [
 ];
 export const classes: Class[] = [
   {
+    id: 1,
     favorite: true,
     classRating: 4.5,
     class_id: 1,
@@ -101,6 +105,7 @@ export const classes: Class[] = [
     },
   },
   {
+    id: 2,
     classRating: 5,
     favorite: false,
     class_id: 2,
@@ -121,6 +126,7 @@ export const classes: Class[] = [
     },
   },
   {
+    id: 3,
     favorite: true,
     classRating: null,
     class_id: 3,
