@@ -40,9 +40,8 @@ export default function Search({ user_id, onSearch }
   const [list, setList] = useState(false);
   const [searched, setSearched] = useState(false);
   const [Classes, setClasses] = useState<CLASS[]>([]);
-
+  console.log('searchByClass', searchByClass);
   const apiKey: string | undefined = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string;
-
   useEffect(() => {
     if ('geolocation' in navigator) {
       navigator.geolocation.getCurrentPosition(({ coords }) => {
@@ -68,7 +67,9 @@ export default function Search({ user_id, onSearch }
               }
             },
           )
-          .catch((error: string) => error);
+          .catch((error: string) => {
+            throw error;
+          });
       });
     }
   }, []);
@@ -155,7 +156,6 @@ export default function Search({ user_id, onSearch }
           gotoClassDate={gotoClassDate}
         />
         <input
-          data-testid="search-input"
           className="w-[140px] text-center font-normal text-xs rounded-s-md"
           placeholder="Yoga, Pilates, Zumba..."
           onChange={(e) => setSearchByClass(e.target.value)}
@@ -163,13 +163,14 @@ export default function Search({ user_id, onSearch }
         <div className="flex items-center text-white font-normal bg-seafoam"><MapPin className="h-5 w-5" /></div>
         <input
           className="w-[100px] text-center font-normal text-xs"
-          placeholder={searchByLocation}
+          placeholder="City, location..."
           value={searchByLocation}
           onChange={(e) => setSearchByLocation(e.target.value)}
+          required
         />
-        <button type="button" className="w-[30px] text-white justify-center font-normal text-xs bg-seafoam rounded-e-md" data-testid="search-button" onClick={search}>GO</button>
+        <button type="button" className="w-[30px] text-white justify-center font-normal text-xs bg-seafoam rounded-e-md" onClick={search}>GO</button>
       </div>
-      <div data-testid="search-result-item">
+      <div>
         <div className="text-orange mt-2 px-2 py-1 font-black">
           {classLabel}
         </div>

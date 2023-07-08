@@ -76,7 +76,7 @@ export default function ClassSignUp({ class_id, user_id } : { class_id: number, 
   };
 
   return (
-    <div data-testid="class-signup-component">
+    <div>
       {signed
         ? (
           <>

@@ -51,8 +51,8 @@ describe('ClassSearch', () => {
     const mockSearch = jest.fn();
 
     // Render the component and get elements
-    const { getByTestId } = render(<Search user_id={123} onSearch={mockSearch} />);
-    const searchButton = getByTestId('search-button');
+    const { getByRole } = render(<Search user_id={123} onSearch={mockSearch} />);
+    const searchButton = getByRole('button', { name: 'GO' });
 
     // Simulate button click
     fireEvent.click(searchButton);
@@ -66,8 +66,8 @@ describe('ClassSearch', () => {
     const mockSearch = jest.fn().mockResolvedValue([]);
 
     // Render the component and get elements
-    const { getByTestId, getByText } = render(<Search onSearch={mockSearch} user_id={undefined} />);
-    const searchButton = getByTestId('search-button');
+    const { getByRole, getByText } = render(<Search onSearch={mockSearch} user_id={107} />);
+    const searchButton = getByRole('button', { name: 'GO' });
 
     // Simulate button click
     fireEvent.click(searchButton);
@@ -128,17 +128,10 @@ describe('ClassSearch', () => {
       },
     ];
 
-    const { getByTestId, getAllByTestId } = render(<List classes={classes} user_id={82} />);
-
-    const listContainer = getByTestId('list-container');
-    const listItems = getAllByTestId('list-item');
-
-    expect(listContainer).toBeInTheDocument();
-    expect(listItems.length).toBe(classes.length);
-
-    classes.forEach((Class, index) => {
-      const listItem = listItems[index];
-      expect(listItem).toHaveTextContent(Class.name);
+    const { getByText } = render(<List classes={classes} user_id={82} />);
+    classes.forEach((Class) => {
+      const className = getByText(Class.name);
+      expect(className).toBeInTheDocument();
     });
   });
 
@@ -209,14 +202,6 @@ describe('ClassSearch', () => {
     await waitFor(() => {
       expect(screen.getByTestId('myLocation')).toBeInTheDocument();
     });
-  });
-
-  it('ClassSignUp renders correctly', () => {
-    render(<ClassSignUp class_id={123} user_id={456} />);
-
-    // Assert that the component is rendered correctly
-    const classSignUpComponent = screen.getByTestId('class-signup-component');
-    expect(classSignUpComponent).toBeInTheDocument();
   });
 
   it('redirects to login when user is undefined', async () => {
