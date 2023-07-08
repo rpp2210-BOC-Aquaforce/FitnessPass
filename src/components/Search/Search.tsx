@@ -40,7 +40,7 @@ export default function Search({ user_id, onSearch }
   const [list, setList] = useState(false);
   const [searched, setSearched] = useState(false);
   const [Classes, setClasses] = useState<CLASS[]>([]);
-  console.log('searchByClass', searchByClass);
+
   const apiKey: string | undefined = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string;
   useEffect(() => {
     if ('geolocation' in navigator) {
@@ -85,7 +85,8 @@ export default function Search({ user_id, onSearch }
     return `${year}-${month}-${day}`;
   };
 
-  const search = async () => {
+  const search = async (e) => {
+    e.preventDefault();
     const searchByDate = formattedDate(activeDay);
     setClasses([]);
     setSearched(true);
@@ -111,8 +112,7 @@ export default function Search({ user_id, onSearch }
         .from('classes')
         .select('*, locations(*)')
         .eq('location_id', location.location_id)
-        .eq('date', searchByDate)
-        .order('time', { ascending: false });
+        .eq('date', searchByDate);
       if (classes) {
         classes.forEach((Class) => {
           if (!searchByClass
@@ -150,7 +150,7 @@ export default function Search({ user_id, onSearch }
 
   return (
     <div className="text-black mt-10">
-      <div className="flex">
+      <form className="flex" onSubmit={search}>
         <DatePicker
           activeDay={activeDay}
           gotoClassDate={gotoClassDate}
@@ -162,14 +162,15 @@ export default function Search({ user_id, onSearch }
         />
         <div className="flex items-center text-white font-normal bg-seafoam"><MapPin className="h-5 w-5" /></div>
         <input
+          type="text"
           className="w-[100px] text-center font-normal text-xs"
           placeholder="City, location..."
           value={searchByLocation}
           onChange={(e) => setSearchByLocation(e.target.value)}
           required
         />
-        <button type="button" className="w-[30px] text-white justify-center font-normal text-xs bg-seafoam rounded-e-md" onClick={search}>GO</button>
-      </div>
+        <button type="submit" className="w-[30px] text-white justify-center font-normal text-xs bg-seafoam rounded-e-md">GO</button>
+      </form>
       <div>
         <div className="text-orange mt-2 px-2 py-1 font-black">
           {classLabel}
