@@ -36,8 +36,8 @@ function AuthForm() {
   //   },
   // });
 
-  console.log('session =>', session);
-  console.log('status =>', status);
+  // console.log('session =>', session);
+  // console.log('status =>', status);
 
   // useEffect(() => {
   //   if (status === 'loading') {
@@ -79,7 +79,7 @@ function AuthForm() {
       });
 
       const result = await response.json();
-      console.log(result);
+      // console.log(result);
       setSignInMessage(result.message);
       return result;
     } catch (error) {
@@ -126,7 +126,7 @@ function AuthForm() {
         photoURL,
       );
       setLoadingMessage('');
-      console.log('result signup!!', result);
+      // console.log('result signup!!', result);
       if (result.message === 'New user account created! Please wait while we redirect you ...') {
         const signInResult = await signIn('credentials', {
           redirect: false,

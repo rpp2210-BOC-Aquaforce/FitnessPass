@@ -5,7 +5,6 @@ export default async function passwordRecovery(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  console.log('here? req.body', req.body);
   const { data: users, error } = await supabase
     .from('users')
     .select('email')
@@ -33,8 +32,7 @@ export default async function passwordRecovery(
   }
 
   if (studioUsers && studioUsers.length !== 0) {
-    const result = await supabase.auth.resetPasswordForEmail(req.body.email);
-    console.log('supabase result studio', result);
+    await supabase.auth.resetPasswordForEmail(req.body.email);
     res.status(200).json({ message: 'Studio user founded! Please check your email for password reset link!!' });
     return;
   }

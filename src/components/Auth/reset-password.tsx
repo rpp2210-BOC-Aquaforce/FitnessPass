@@ -24,7 +24,7 @@ function ResetPassword() {
   const searchParams = useSearchParams();
   const emailParam = searchParams?.get('email');
 
-  console.log('email', emailParam);
+  // console.log('email', emailParam);
 
   const emailInputRef = useRef<HTMLInputElement>(null);
   const passwordInputRef = useRef<HTMLInputElement>(null);
@@ -34,7 +34,7 @@ function ResetPassword() {
     password: any,
   ): Promise<any> {
     try {
-      console.log('email, passs', email, password);
+      // console.log('email, passs', email, password);
       const response = await fetch('/api/passwordReset', {
         method: 'POST',
         body: JSON.stringify(
