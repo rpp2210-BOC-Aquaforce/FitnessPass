@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Class, UpdateUserClassArgs } from '@/lib/types';
-// import { updateRating } from '@/lib/api';
 
 type RatingEntryProps = {
   userId: string,
@@ -17,8 +16,7 @@ export default function RatingEntry({ userId, updateUserClass, fitnessClass }: R
 
   const handleRatingChange = async (ratingValue: number) => {
     setRatingValues(ratingValue);
-    // await updateRating(ratingValue, fitnessClass.class_id);
-    await updateUserClass({
+    updateUserClass({
       userId,
       key: 'class_rating',
       value: ratingValue,
@@ -29,7 +27,7 @@ export default function RatingEntry({ userId, updateUserClass, fitnessClass }: R
   const generateStarIcons = () => {
     const stars = [];
     for (let i = 1; i <= 5; i += 1) {
-      const starClass = i <= ratingValues ? 'text-yellow-500' : 'text-gray-300';
+      const starClass = i <= ratingValues ? 'text-mint-orange' : 'text-gray-300';
       stars.push(
         <FontAwesomeIcon
           key={i}

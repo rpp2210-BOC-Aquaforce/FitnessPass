@@ -19,6 +19,7 @@ export interface Location {
 }
 
 export interface Class {
+  id: number;
   class_id: number;
   classRating?: number | null,
   favorite?: boolean | null,
@@ -108,4 +109,16 @@ export type UpdateUserClassArgs = {
   value: boolean | number | string | null,
 }
 
+export type UserClassArgs = {
+  userId: string | undefined;
+  classId: number;
+  _delete?: boolean;
+  create?: boolean;
+  key?: string;
+  value?: boolean | number | string | null;
+}
+
 export type UpdateUserClassFunction = (args: UpdateUserClassArgs) => void;
+export type UserClassFunction = (args: UserClassArgs) => void;
+export type UpdateUserClassesFunction = (args: UserClassArgs, updatedClasses: Class[]) => void;
+export type UpdateClassesFunction = (args: UserClassArgs, updatedClasses: Class) => void;

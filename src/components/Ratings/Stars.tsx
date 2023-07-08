@@ -9,7 +9,7 @@ type StarsProps = {
 export default function Stars({ ratingValues, handleRatingChange } : StarsProps) {
   const stars = [];
   for (let i = 1; i <= 5; i += 1) {
-    const starClass = i <= ratingValues ? 'text-yellow-500' : 'text-gray-300';
+    const starClass = i <= ratingValues ? 'text-mint-orange' : 'text-gray-300';
     stars.push(
       <FontAwesomeIcon
         key={i}
