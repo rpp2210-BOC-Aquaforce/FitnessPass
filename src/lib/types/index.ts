@@ -82,6 +82,17 @@ export interface studioEngMetric {
   attendance: number | null;
 }
 
+export interface PopularityData {
+  classes: {
+    class_id: number;
+    name: string;
+    locations: {
+      location_id: number;
+      studio_id: number;
+    };
+  };
+}
+
 export type UpdateRatingArgs = {
   userId: string,
   rating: number,

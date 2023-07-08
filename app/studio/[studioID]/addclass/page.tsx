@@ -1,33 +1,25 @@
-'use client';
-
-import React, { useState, useEffect } from 'react';
-import { useSession } from 'next-auth/react';
-import { getLocations } from '@/lib/api';
+import { getServerSession } from 'next-auth';
+import { redirect } from 'next/navigation';
+import { authOptions } from '@/lib/auth';
+import { getStudioLocations } from '@/lib/studio-classes';
 import { AddClassForm } from '@/components/index';
 
-export default function AddClass() {
-  const { data: session } = useSession();
+export const revalidate = 60;
+
+export default async function AddClass() {
+  const session = await getServerSession(authOptions);
+  if (!session) {
+    redirect('/login');
+  }
+
   const studioID = (session?.user as any)?.id;
-  const [studioLocs, setStudioLocs] = useState([{ location_id: '', name: '' }]);
 
   // To be refactored -- if no studio locations, give curtosey message to add studio location
-  const fetchStudioLocations = async () => {
-    await getLocations(studioID)
-      .then((data) => {
-        setStudioLocs(data);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  };
-
-  useEffect(() => {
-    fetchStudioLocations();
-  }, []);
+  const studioLocations = await getStudioLocations(studioID);
 
   return (
     <div>
-      <AddClassForm studioLocs={studioLocs} studioID={studioID} />
+      <AddClassForm studioLocs={studioLocations} studioID={studioID} />
     </div>
   );
 }
