@@ -47,15 +47,17 @@ export default function StudioLocations() {
   };
 
   return (
-    <div className={styles.locationList}>
+    <div className={styles.mainContainer}>
       <h1 className={styles.header}>All Locations</h1>
-      {locations.map((location) => (
-        <Location
-          location={location}
-          key={location.location_id}
-          onDelete={() => handleLocationDelete(location.location_id)}
-        />
-      ))}
+      <div className={styles.locationsContainer}>
+        {locations.map((location) => (
+          <Location
+            location={location}
+            key={location.location_id}
+            onDelete={() => handleLocationDelete(location.location_id)}
+          />
+        ))}
+      </div>
       <AddLocation />
     </div>
   );

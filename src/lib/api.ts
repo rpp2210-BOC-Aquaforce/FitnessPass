@@ -1,5 +1,3 @@
-import { StudioAddClass } from '@/lib/types';
-
 interface FetcherInput {
   url: string;
   method: 'get' | 'post' | 'put' | 'delete';
@@ -29,16 +27,5 @@ export const fetcher = async ({
     return data.data;
   }
 };
-
-// Would like to refactor to a get method, requires more research on Fetch API
-export const getLocations = (studioID: string) => fetcher({ url: '/api/fetch-studio-locs', method: 'post', body: { studioID } });
-
-export const addClass = (classData: StudioAddClass) => fetcher({ url: '/api/add-class', method: 'post', body: classData });
-
-export const getClassPopularity = (classID: string) => fetcher({ url: '/api/fetch-class-popularity', method: 'post', body: { classID } });
-
-export const getStudioClasses = (studioID: string) => fetcher({ url: '/api/fetch-studio-classes', method: 'post', body: { studioID } });
-
-export const getClassesByDate = (studioID: string, startDate: string, endDate: string) => fetcher({ url: '/api/fetch-classes-by-date', method: 'post', body: { studioID, startDate, endDate } });
 
 export const updateRating = (classID: number, rating: number) => fetcher({ url: `/api/classes/${classID}/ratings`, method: 'put', body: { rating } });

@@ -1,16 +1,27 @@
-.locationList {
+.mainContainer {
   text-align: center;
   margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: rgb(203, 243, 240);
+
 }
-.locationContainer{
-  background: white;
-  border-radius: 5px;
+.locationsContainer{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 30px;
+  width:100%
 }
 
 .header {
-  font-size: 24px;
+  font-size: 3rem;
   font-weight: 600;
-  margin-bottom: 30px;
+  margin-bottom: 10px;
+  color:rgb(46, 196, 182)
 }
 
 /* ----------------------------------------------
@@ -22,35 +33,28 @@ Locations
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin-bottom: 30px;
-  width:60%;
+  margin-top:20px;
+  margin-bottom: 20px;
+  width:85%;
   background-color: white;
-  border: solid 2px;
+  border-radius: 10px;
+  color: black;
 }
 
-.container{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 30px;
-  width:60%;
-  background-color: white;
-  border: solid 2px;
-}
 .title {
 font-weight: bold;
-font-size: large;
+font-size: 1.5em;
+color: rgb(46, 196, 182)
 }
 .phone{
   margin-top: 20px;
   margin-bottom: 20px;
 }
 .ratingTitle{
-  font-style: underline;
+  text-decoration: underline;
 }
 .deleteButton{
-  background-color: red;
+  background-color: rgb(255, 159, 28);
   color: white;
   border-radius: 5px;
   border: none;

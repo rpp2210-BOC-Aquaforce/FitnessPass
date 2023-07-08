@@ -1,11 +1,11 @@
+/* eslint-disable react/jsx-indent */
+
 'use client';
 
 import { redirect } from 'next/navigation';
-import Link from 'next/link';
 import { Session, User } from 'next-auth';
 import { useSession } from 'next-auth/react';
 import React, { useEffect, useState } from 'react';
-// import Class from '../../../../src/components/Studios/class';
 import Class from '@/components/Studios/class';
 import fetchClasses from '../../../../pages/api/studioClasses';
 import deleteClass from '../../../../pages/api/deleteClass';
@@ -50,8 +50,9 @@ export default function StudioClasses() {
   };
 
   return (
-    <div className={styles.classesList}>
+    <div className={styles.mainContainer}>
       <h1 className={styles.header}>All Classes</h1>
+      <div className={styles.classesContainer}>
       {classes.map((classObj) => (
         <Class
           classObj={classObj}
@@ -59,9 +60,8 @@ export default function StudioClasses() {
           onDelete={() => handleClassDelete(classObj.class_id)}
         />
       ))}
-      <Link href={`/studio/${studioID}/addclass`} className={styles.links}>
-        Add A Class
-      </Link>
+
+      </div>
     </div>
   );
 }

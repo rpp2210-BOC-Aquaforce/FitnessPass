@@ -7,10 +7,13 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: rgb(203, 243, 240);
+  height: 100vh;
 }
 .info{
   font-size: 20;
   font-weight: 200;
+  color: black;
 }
 .centeredImage {
   display: block;

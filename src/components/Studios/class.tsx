@@ -16,29 +16,34 @@ interface ClassProps {
   onDelete: () => Promise<void>;
 }
 
-export default function Location({ classObj, onDelete }: ClassProps) {
+export default function Class({ classObj, onDelete }: ClassProps) {
   // Format date in a readable way
   const formattedDate = new Date(classObj.date).toLocaleDateString('en-US', {
-    year: 'numeric',
+    // year: 'numeric',
     month: 'long',
     day: 'numeric',
   });
 
   // Format time in a readable way
-  const formattedTime = new Date(`1970-01-01T${classObj.time}`).toLocaleTimeString('en-US', {
+  const time = classObj.time.substring(0, 8);
+
+  // Create a new Date object with the time
+  const date = new Date(`1970-01-01T${time}`);
+
+  // Get the readable time string without seconds
+  const formattedTime = date.toLocaleTimeString('en-US', {
     hour: 'numeric',
     minute: 'numeric',
-    hour12: true,
   });
   return (
     <div className={styles.container}>
       <h5 className={styles.title}>{classObj.name}</h5>
       <p className={styles.instructor}>{`with ${classObj.instructor}`}</p>
       <p className={styles.description}>{classObj.description}</p>
-      <p className={styles.date}>{formattedDate}</p>
-      <p className={styles.time}>{formattedTime}</p>
-      <p className={styles.duration}>{`Duration: ${classObj.duration} mins`}</p>
-      <p className={styles.rating}>{classObj.total_rating}</p>
+      <p className={styles.date}>{`${formattedDate} @ ${formattedTime}`}</p>
+      <p className={styles.duration}>{`(${classObj.duration} mins)`}</p>
+      <p className={styles.ratingTitle}>Total Rating:</p>
+      <p className={styles.rating}>{classObj.total_rating ? `${classObj.total_rating}` : 'No ratings yet!'}</p>
       <button className={styles.deleteButton} onClick={onDelete} type="button">
         Delete Class
       </button>
