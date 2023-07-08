@@ -84,7 +84,7 @@ describe('Studio Add Location Form', () => {
     const { getByText, getByLabelText } = render(
       <StudioLocationForm />,
     );
-    const submitButton = getByText('Submit');
+    const submitButton = getByText('Add New Location');
 
     fireEvent.change(getByLabelText('Studio Name:'), {
       target: { value: 'Test Studio' },
