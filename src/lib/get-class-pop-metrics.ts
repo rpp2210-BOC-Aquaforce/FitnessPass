@@ -1,27 +1,27 @@
-import { getStudioClasses, getClassPopularity } from '@/lib/studio-classes';
+import { getClassPopularity } from '@/lib/studio-classes';
+import { PopularityData } from '@/lib/types';
 
 export default async function getPopMetrics(studioID: string) {
   try {
-    const data = await getStudioClasses(studioID);
-    const metricsMap = new Map();
+    const data = (await getClassPopularity(studioID)) as unknown as PopularityData[];
+    const groupedPopData: { name: string; popularity: number; }[] = [];
 
-    const totalPopularity = await Promise.all(data.map(
-      (item: { class_id: string; name: string; }) => getClassPopularity(item.class_id),
-    ));
+    data.map(({ classes }) => {
+      const { name: itemName } = classes;
+      const existingIndex = groupedPopData.findIndex((entry) => entry.name === itemName);
 
-    data.forEach((item: { name: string }, index: number) => {
-      const popularity = totalPopularity[index];
-      if (metricsMap.has(item.name)) {
-        metricsMap.set(item.name, metricsMap.get(item.name) + popularity);
+      if (existingIndex > -1) {
+        groupedPopData[existingIndex].popularity += 1;
       } else {
-        metricsMap.set(item.name, popularity);
+        const newEntry = { name: itemName, popularity: 1 };
+        groupedPopData.push(newEntry);
       }
+      return { name: itemName, popularity: groupedPopData[existingIndex]?.popularity || 1 };
     });
 
-    const combinedMetrics = Array.from(metricsMap.entries())
-      .map(([name, popularity]) => ({ name, popularity }))
-      .filter(({ popularity }) => popularity > 0);
-    return combinedMetrics;
+    groupedPopData.sort((a, b) => b.popularity - a.popularity);
+
+    return groupedPopData.slice(0, 15);
   } catch (err) {
     return ([{ name: null, popularity: null }]);
   }

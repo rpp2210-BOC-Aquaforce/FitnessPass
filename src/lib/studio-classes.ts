@@ -12,11 +12,11 @@ export const getStudioLocations = async (studioID: string) => {
   return data;
 };
 
-export const getStudioClasses = async (studioID: string) => {
+export const getClassPopularity = async (studioID: string) => {
   const { data, error } = await supabase
-    .from('classes')
-    .select('class_id, name, locations!inner(location_id)')
-    .eq('locations.studio_id', studioID);
+    .from('user_classes')
+    .select('classes!inner(class_id, name, locations!inner(location_id, studio_id))')
+    .eq('classes.locations.studio_id', studioID);
 
   if (error) {
     throw error;
@@ -40,15 +40,15 @@ export const getClassesByDate = async (studioID: string, startDate: string, endD
   return data;
 };
 
-export const getClassPopularity = async (classID: string) => {
-  const { count, error } = await supabase
-    .from('user_classes')
-    .select('*', { count: 'exact', head: true })
-    .eq('class_id', classID);
+// export const getClassPopularity = async (classID: string) => {
+//   const { count, error } = await supabase
+//     .from('user_classes')
+//     .select('*', { count: 'exact', head: true })
+//     .eq('class_id', classID);
 
-  if (error) {
-    throw error;
-  }
+//   if (error) {
+//     throw error;
+//   }
 
-  return count;
-};
+//   return count;
+// };

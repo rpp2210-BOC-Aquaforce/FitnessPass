@@ -21,7 +21,14 @@ export default async function Metrics() {
 
   const studioID = (session?.user as any)?.id;
 
-  const engMetrics = await getEngMetrics(studioID);
+  const engMetrics = [
+    { week: '4 Weeks Ago', attendance: 35 },
+    { week: '3 Weeks Ago', attendance: 2 },
+    { week: '2 Weeks Ago', attendance: 11 },
+    { week: 'Last Week', attendance: 22 },
+    { week: 'This Week', attendance: 28 },
+  ];
+  // const engMetrics = await getEngMetrics(studioID);
   const popMetrics = await getPopMetrics(studioID);
 
   return (
