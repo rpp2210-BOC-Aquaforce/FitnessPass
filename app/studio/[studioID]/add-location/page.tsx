@@ -143,6 +143,7 @@ function StudioLocationForm() {
         </label>
         <button
           type="submit"
+          onClick={() => router.push(`/studio/${studioID}`)}
           className="inline-block align-baseline font-bold text-sm text-orange-500 hover:text-orange-600"
         >
           Add New Location
