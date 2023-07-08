@@ -71,8 +71,8 @@ export const updateUserClass: UserClassFunction = async ({
     return deleteUserClass({ userId, classId });
   }
 
-  if (!key || !value) {
-    console.error('Missing key or value in updateUserClass');
+  if (!key) {
+    console.error('Missing key in updateUserClass');
     return null;
   }
   console.log(`Updating ${key} in user class #${classId} with ${value}`);

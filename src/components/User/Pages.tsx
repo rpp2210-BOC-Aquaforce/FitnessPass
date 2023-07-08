@@ -4,10 +4,6 @@ import { ScheduleView, Favorites, Ratings } from '@/components';
 import { FitnessClasses } from '@/components/FitnessClasses';
 import {
   UserClassFunction,
-  // UpdateUserClassesFunction,
-  // UpdateUserClassFunction,
-  // UpdateClassesFunction,
-  // UserClassArgs,
   Class,
 } from '@/lib/types';
 
@@ -17,7 +13,6 @@ type UserPagesProps = {
   availableClasses: Class[];
   userId: string;
   updateUserClass: UserClassFunction;
-  // updateUserClass: UpdateUserClassFunction;
 };
 
 export default function Pages({
@@ -28,34 +23,6 @@ export default function Pages({
   updateUserClass,
 } : UserPagesProps) {
   const favorites = _userClasses?.filter((c) => c.favorite);
-  // const [userClasses, setUserClasses] = useState(_userClasses);
-  // const [availableClasses, setAvailableClasses] = useState(_availableClasses);
-  // const [favoriteClasses, setFavoriteClasses] = useState(favorites);
-
-  // const onFavoritesUpdate:
-  // UpdateUserClassesFunction = (args: UserClassArgs, updatedClasses: Class[]) => {
-  //   setFavoriteClasses(updatedClasses);
-  //   updateUserClass(args);
-  // };
-
-  // const onUserClassesUpdate:
-  //  UpdateUserClassesFunction = (args: UserClassArgs, updatedClasses: Class[]) => {
-  //    setUserClasses(updatedClasses);
-  //    updateUserClass(args);
-  //  };
-
-  // const onClassesUpdate: UpdateClassesFunction = (args: UserClassArgs, updatedClass: Class) => {
-  //   const { create, _delete } = args;
-  //   if (_delete) {
-  //     setAvailableClasses((prev) => prev.filter((c) => c.class_id !== args.classId));
-  //     setFavoriteClasses((prev) => prev.filter((c) => c.class_id !== args.classId));
-  //   }
-
-  //   if (create) {
-  //     setAvailableClasses((prev) => [...prev, updatedClass]);
-  //   }
-  //   updateUserClass(args);
-  // };
 
   const pageComponents: { [key: string]: JSX.Element } = {
     favorites: (
@@ -77,8 +44,6 @@ export default function Pages({
             <FitnessClasses
               classes={_availableClasses || []}
               updateUserClass={updateUserClass}
-              // onClassesUpdate={onClassesUpdate}
-              // onUserClassesUpdate={onUserClassesUpdate}
             />
           </div>
         </div>
@@ -88,8 +53,6 @@ export default function Pages({
       <ScheduleView
         fitnessClasses={_userClasses || []}
         updateUserClass={updateUserClass}
-        // onClassesUpdate={onClassesUpdate}
-        // onUserClassesUpdate={onUserClassesUpdate}
       />
     ),
   };
