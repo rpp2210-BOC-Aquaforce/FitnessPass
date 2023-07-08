@@ -16,7 +16,7 @@ import {
   differenceInWeeks,
   startOfWeek,
 } from 'date-fns';
-import { Class } from '@/lib/types';
+import { Class, UserClassFunction } from '@/lib/types';
 import {
   parseLocalDate,
   getScheduledDates,
@@ -28,6 +28,7 @@ import DatePicker from './DatePicker';
 
 type ScheduleViewProps = {
   fitnessClasses: Class[];
+  updateUserClass?: UserClassFunction;
   // setfitnessClasses: React.Dispatch<React.SetStateAction<UserClass[]>>;
 }
 
@@ -40,37 +41,25 @@ interface SwiperRef {
   swiper: SwiperClass,
 }
 
-export default function ScheduleView({ fitnessClasses }: ScheduleViewProps) {
+export default function ScheduleView({ fitnessClasses, updateUserClass }: ScheduleViewProps) {
   const [activeSlide, setActiveSlide] = useState<number>(initialSlide);
   const [activeDay, setActiveDay] = useState<Date>(today);
-  const [viewAll, setViewAll] = useState<boolean>(false);
+  const [viewAll, setViewAll] = useState<boolean>(true);
   const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(false);
   const swiperRef = useRef<SwiperRef>(null);
 
   const gotoClassDate = React.useCallback((date: Date) => {
     if (!swiperRef.current) return;
-    let offset = differenceInWeeks(date, today);
-    const startOfWeekDate = startOfWeek(date).toLocaleString();
-    const startOfWeekToday = startOfWeek(today).toLocaleString();
-    if (offset > 0 && startOfWeekDate === startOfWeekToday) {
-      offset = 0;
-    } else if (offset > 0) {
-      // TODO: this may need to change based on the day of the week
-      // offset += 1;
-    } else if (offset === 0 && startOfWeekDate !== startOfWeekToday) {
-      offset += 1;
-    }
+    const startOfWeekDate = startOfWeek(date);
+    const startOfWeekToday = startOfWeek(today);
+    const offset = differenceInWeeks(startOfWeekDate, startOfWeekToday);
     const initialSlideIndex = initialSlide + offset;
     setActiveSlide(initialSlideIndex);
     swiperRef.current.swiper.slideTo(initialSlideIndex, 250);
     setActiveDay(date);
-  }, [swiperRef]);
+  }, []);
 
   useEffect(() => {
-    if (viewAll) {
-      return;
-    }
-
     const nextScheduledClass = getNextScheduledClass(fitnessClasses);
     gotoClassDate(nextScheduledClass);
   }, [fitnessClasses, viewAll, gotoClassDate]);
@@ -91,7 +80,7 @@ export default function ScheduleView({ fitnessClasses }: ScheduleViewProps) {
   };
 
   return (
-    <div className="flex flex-col items-start p-2 mt-2 bg-white shadow-md rounded-lg w-full min-h-[250px] h-full">
+    <div className="flex flex-col items-start p-2 mt-2 bg-white shadow-md rounded-lg w-full min-h-[300px] h-full">
       <div className="flex w-full justify-between">
         <h2 className="text-sm font-bold mb-5 p-2 w-[100px]">{weekTitle}</h2>
         <DatePicker
@@ -141,6 +130,7 @@ export default function ScheduleView({ fitnessClasses }: ScheduleViewProps) {
         <FitnessClasses
           classes={viewAll ? fitnessClasses : classesForActiveDay}
           gotoDate={gotoClassDate}
+          updateUserClass={updateUserClass}
         />
       </Swiper>
     </div>

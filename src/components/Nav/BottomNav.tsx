@@ -5,61 +5,50 @@ import {
   Home, Calendar, Book, Heart, Star,
 } from 'lucide-react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
-import { Session } from 'next-auth';
-import { usePathname } from 'next/navigation';
-import { cn } from '@/lib/utils';
-
-interface CustomSession extends Session {
-  user: {
-    id: string;
-    name?: string;
-    email?: string;
-    image?: string;
-    studio_user?: boolean;
-  } & Session['user'];
-}
+import { CustomSession } from '@/lib/types';
+import StudioNav from './StudioNav';
 
 function BottomNav() {
   const { data: session } = useSession() as { data: CustomSession | null };
   const userId = session?.user?.id;
-  const pathname = usePathname();
+  const router = useRouter();
 
   if (!session) {
     return null;
   }
 
-  const checkActive = (path: string) => {
-    if (pathname?.endsWith(path)) {
-      return 'bg-seafoam';
-    }
-    return '';
-  };
+  const isStudio = session.user?.studio_user;
+
+  if (isStudio && userId) {
+    return <StudioNav studioId={userId} />;
+  }
 
   const linkClass = 'flex flex-col items-center justify-center hover:bg-mint-orange p-auto w-full h-full';
 
   return (
     <div className="fixed bottom-0 h-[76px] w-full bg-solid-orange text-white flex justify-around items-center x-space-4 z-[999]">
-      <Link href={`/user/${userId}/search`} className={cn(linkClass, checkActive('search'))}>
+      <Link href={`/user/${userId}/search`} className={linkClass}>
         <Home size={24} />
         <span className="mt-1 text-xs">Search</span>
       </Link>
-      <Link href={`/user/${userId}/schedule`} className={cn(linkClass, checkActive('schedule'))}>
+      <button className={linkClass} type="button" onClick={() => router.replace(`/user/${userId}/schedule/${Date.now()}`)}>
         <Calendar size={24} />
         <span className="mt-1 text-xs">Schedule</span>
-      </Link>
-      <Link href={`/user/${userId}/classes`} className={cn(linkClass, checkActive('classes'))}>
+      </button>
+      <button className={linkClass} type="button" onClick={() => router.replace(`/user/${userId}/classes/${Date.now()}`)}>
         <Book size={24} />
         <span className="mt-1 text-xs">Classes</span>
-      </Link>
-      <Link href={`/user/${userId}/favorites`} className={cn(linkClass, checkActive('favorites'))}>
+      </button>
+      <button className={linkClass} type="button" onClick={() => router.replace(`/user/${userId}/favorites/${Date.now()}`)}>
         <Heart size={24} />
         <span className="mt-1 text-xs">Favorites</span>
-      </Link>
-      <Link href={`/user/${userId}/ratings`} className={cn(linkClass, checkActive('ratings'))}>
+      </button>
+      <button className={linkClass} type="button" onClick={() => router.replace(`/user/${userId}/ratings/${Date.now()}`)}>
         <Star size={24} />
         <span className="mt-1 text-xs">Ratings</span>
-      </Link>
+      </button>
     </div>
   );
 }

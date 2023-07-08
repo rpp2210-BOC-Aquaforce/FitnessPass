@@ -1,6 +1,6 @@
 import './globals.css';
-import { Nav } from '@/components';
-import NextAuthProvider from './providers/AuthProvider';
+import { Nav, BottomNav } from '@/components';
+import { NextAuthProvider } from './providers';
 
 export default function RootLayout({
   children,
@@ -12,7 +12,10 @@ export default function RootLayout({
       <body>
         <NextAuthProvider>
           <Nav />
-          {children}
+          <div className="pb-[76px]">
+            {children}
+          </div>
+          <BottomNav />
         </NextAuthProvider>
       </body>
     </html>

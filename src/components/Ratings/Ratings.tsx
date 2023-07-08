@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Class, UpdateUserClassArgs } from '@/lib/types';
+import { Class, UserClassFunction } from '@/lib/types';
 import RatingEntry from './RatingEntry';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
@@ -9,7 +9,7 @@ import 'slick-carousel/slick/slick-theme.css';
 export default function Ratings({ userId, updateUserClass, fitnessClasses } :
   {
     userId: string,
-    updateUserClass: (args: UpdateUserClassArgs) => void,
+    updateUserClass: UserClassFunction,
     fitnessClasses: Class[] }) {
   const hasClasses = fitnessClasses.length > 0;
   const ratingEntries = hasClasses && fitnessClasses.map((fitnessClass: Class) => (

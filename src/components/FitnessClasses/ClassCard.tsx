@@ -1,24 +1,88 @@
-/* eslint-disable @next/next/no-img-element */
-import { cn } from '@/lib/utils';
-import { Class, ReactChildren } from '@/lib/types';
-import { parseLocalDate } from '@/components/Schedule/DateFunctions';
+'use client';
 
-function TextDiv({ children }: ReactChildren) {
-  return <div className="text-seafoam text-[10px] pt-1 font-black uppercase tracking-wide">{children}</div>;
+import Image from 'next/image';
+import { useState } from 'react';
+import {
+  Heart, PlusCircle, Check, X, Loader,
+} from 'lucide-react';
+import { useSession } from 'next-auth/react';
+import { cn } from '@/lib/utils';
+import {
+  Class, UserClassFunction, CustomSession,
+} from '@/lib/types';
+import { parseLocalDate } from '@/components/Schedule/DateFunctions';
+import Stars from '@/components/Ratings/Stars';
+
+function TextDiv({ children, className }: { children: React.ReactNode, className?: string }) {
+  return (
+    <div className={cn('text-seafoam text-[10px] pt-1 font-black uppercase tracking-wide', className ?? '')}>
+      {children}
+    </div>
+  );
 }
 
-export default function ClassCard(
-  { fitnessClass, gotoDate }: { fitnessClass: Class, gotoDate?: null | ((date: Date) => void) },
-) {
+export default function ClassCard({ fitnessClass, gotoDate, updateUserClass }: {
+  fitnessClass: Class,
+  gotoDate?: null | ((date: Date) => void),
+  updateUserClass?: UserClassFunction,
+}) {
+  const { data: session } = useSession() as { data: CustomSession | null };
+  const userId = session?.user?.id;
+  const isUserClass = fitnessClass.userId === userId;
+  const [isFavorite, setIsFavorite] = useState(fitnessClass.favorite);
+  const [isAdded, setIsAdded] = useState(false);
+  const [isRemoving, setIsRemoving] = useState(false);
+
   if (!fitnessClass) {
     return null;
   }
 
-  const onClick = () => {
+  const onDetailsClick = () => {
     if (!gotoDate) {
       return;
     }
     gotoDate(parseLocalDate(fitnessClass.date));
+  };
+
+  const onFavorite = () => {
+    if (!updateUserClass) {
+      return;
+    }
+
+    setIsFavorite((prev) => !prev);
+    updateUserClass({
+      classId: fitnessClass.class_id,
+      userId,
+      key: 'favorite',
+      value: !fitnessClass.favorite,
+    });
+  };
+
+  const onAddClass = () => {
+    if (!updateUserClass) {
+      return;
+    }
+
+    setIsAdded(true);
+    updateUserClass({
+      classId: fitnessClass.class_id,
+      userId,
+      create: true,
+    });
+  };
+
+  const onRemoveClass = () => {
+    if (!updateUserClass) {
+      return;
+    }
+
+    setIsRemoving(true);
+
+    updateUserClass({
+      classId: fitnessClass.class_id,
+      userId,
+      _delete: true,
+    });
   };
 
   const handleKeyDown = (event: React.KeyboardEvent) => {
@@ -27,16 +91,20 @@ export default function ClassCard(
     }
   };
 
+  const addClassIcon = () => (isAdded ? <Check className="h-[36px] text-white rounded-full" /> : <PlusCircle className="h-[36px] text-white rounded-full" />);
+
   return (
-    <div className="flex items-start mt-4 bg-white w-full h-[104px]">
-      <img
-        className="h-full w-[116.60px] object-cover"
+    <div className={cn('flex items-start mt-4 w-full h-[125px]', isAdded ? 'bg-gray-100' : 'bg-white')}>
+      <Image
+        className="h-full w-[100px] min-w-[100px] max-w-[100px] object-cover"
+        width={100}
+        height={100}
         src={fitnessClass.locations.photo_url ?? 'https://via.placeholder.com/117x104'}
         alt="Placeholder"
       />
       <div
         className={cn('flex flex-col justify-between ml-4 flex-grow', gotoDate ? 'pointer-cursor' : '')}
-        onClick={onClick}
+        onClick={onDetailsClick}
         onKeyDown={handleKeyDown}
         tabIndex={0}
         role="button"
@@ -51,21 +119,41 @@ export default function ClassCard(
           min)
         </TextDiv>
         <TextDiv>{fitnessClass.locations.name}</TextDiv>
-        <TextDiv>
-          Ratings:
-          {' '}
-          {fitnessClass.total_rating}
-        </TextDiv>
+        <div className="flex flex-wrap mt-2">
+          <Stars ratingValues={fitnessClass?.classRating || 0} />
+        </div>
       </div>
       <div className="flex flex-col justify-between items-end ml-4">
-        <div className="flex space-x-2">
-          <div className="w-2 h-2 bg-gray-400" />
-          <div className="w-2 h-2 bg-gray-400" />
-          <div className="w-2 h-2 bg-gray-400" />
-          <div className="w-2 h-2 bg-gray-400" />
-        </div>
-        <button type="button" className="text-center text-white text-xs font-black uppercase tracking-wide rounded-md bg-mint-orange px-2 py-1 mt-2">Edit</button>
-        <button type="button" className="text-center text-white text-xs font-black uppercase tracking-wide rounded-md bg-red-300 px-2 py-1 mt-2">Remove</button>
+        <button
+          type="button"
+          onClick={isUserClass ? onFavorite : onAddClass}
+          className={
+          cn(
+            'flex flex-wrap text-center text-white text-xs font-black uppercase tracking-wide rounded-md bg-mint-seafoam px-2 py-1 mt-2',
+            isUserClass ? 'bg-mint-seafoam' : 'bg-mint-orange',
+          )
+        }
+        >
+          { isUserClass ? (
+            <Heart
+              className={cn(
+                'inline-block h-[25px]',
+                isFavorite ?? fitnessClass?.favorite ? 'text-red-300 fill-current' : 'text-white',
+              )}
+            />
+          ) : (
+            addClassIcon()
+          )}
+        </button>
+        { isUserClass && (
+        <button
+          type="button"
+          onClick={onRemoveClass}
+          className="text-center text-white text-xs font-black uppercase tracking-wide rounded-md bg-red-300 px-2 py-1 mt-2"
+        >
+          { isRemoving ? <Loader className="inline-block h-[25px] animate-spin" /> : <X className="inline-block h-[25px]" /> }
+        </button>
+        )}
       </div>
     </div>
   );
