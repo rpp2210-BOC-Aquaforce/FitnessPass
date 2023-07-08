@@ -18,8 +18,12 @@ export default async function AddClass() {
   const studioLocations = await getStudioLocations(studioID);
 
   return (
-    <div>
-      <AddClassForm studioLocs={studioLocations} studioID={studioID} />
-    </div>
+    <main className="flex min-h-screen flex-col items-center p-3 sm:p-8">
+      <div
+        className="flex flex-col items-center mt-2 pt-2 pb-2 space-y-4 bg-white shadow-md rounded-lg w-full"
+      >
+        <AddClassForm studioLocs={studioLocations} studioID={studioID} />
+      </div>
+    </main>
   );
 }

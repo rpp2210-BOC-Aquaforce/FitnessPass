@@ -1,0 +1,26 @@
+.metrics h2 {
+  text-align: center;
+  color: rgb(255, 191, 105);
+}
+
+.metrics button {
+  background: #FF9F1C;
+  color: white;
+  font-weight: bold;
+  margin-top: 1.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  border-radius: 0.25rem;
+}
+
+.metrics button:hover {
+  background: #ea580c;
+}
+
+.metrics button:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+}
