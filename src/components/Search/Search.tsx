@@ -1,16 +1,16 @@
+/* eslint-disable camelcase */
+
 'use client';
 
-import { useEffect, useState } from 'react';
-
-import Calendar from 'react-calendar';
-import 'react-calendar/dist/Calendar.css';
+import React, { useEffect, useState } from 'react';
 import Geocode from 'react-geocode';
 import supabase from '@/lib/supabase';
 
 import List from '@/components/Search/ListView';
 import Map from '@/components/Search/MapView';
+import { MapPin } from 'lucide-react';
+import DatePicker from '../Schedule/DatePicker';
 
-type ValuePiece = Date | null;
 type LatLngLiteral = google.maps.LatLngLiteral;
 
 type CLASS = {
@@ -25,17 +25,16 @@ type CLASS = {
   instructor: string;
   total_rating: number;
   num_ratings: number;
-  created_at: Date;
   locations:
   {name: string, street: string, city: string, state: string, zip: string, photo_url: string},
 }
 
-export default function Search() {
+export default function Search({ user_id, onSearch }
+  :{user_id: any, onSearch: ()=>void}) {
   const [searchByClass, setSearchByClass] = useState('');
   const [searchByLocation, setSearchByLocation] = useState('');
-  const [selectedDate, setSelectedDate] = useState<ValuePiece|[ValuePiece, ValuePiece]>(new Date());
+  const [activeDay, setActiveDay] = useState<Date>(new Date());
 
-  const [showCalendar, setShowCalendar] = useState<boolean>(false);
   const [myLocation, setMyLocation] = useState<LatLngLiteral>();
 
   const [list, setList] = useState(false);
@@ -43,7 +42,6 @@ export default function Search() {
   const [Classes, setClasses] = useState<CLASS[]>([]);
 
   const apiKey: string | undefined = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string;
-
   useEffect(() => {
     if ('geolocation' in navigator) {
       navigator.geolocation.getCurrentPosition(({ coords }) => {
@@ -69,14 +67,15 @@ export default function Search() {
               }
             },
           )
-          .catch((error: string) => error);
+          .catch((error: string) => {
+            throw error;
+          });
       });
     }
   }, []);
 
-  const handleDateChange = (date: ValuePiece|[ValuePiece, ValuePiece]) => {
-    setSelectedDate(date);
-    setShowCalendar(false);
+  const gotoClassDate = (date: Date) => {
+    setActiveDay(date);
   };
 
   const formattedDate = (date:any) => {
@@ -86,8 +85,9 @@ export default function Search() {
     return `${year}-${month}-${day}`;
   };
 
-  const search = async () => {
-    const searchByDate = formattedDate(selectedDate);
+  const search = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const searchByDate = formattedDate(activeDay);
     setClasses([]);
     setSearched(true);
     setList(true);
@@ -99,80 +99,94 @@ export default function Search() {
     } else {
       column = 'city';
     }
-    try {
-      const { data: locations, error } = await supabase
-        .from('locations')
-        .select('*')
-        .ilike(column, searchByLocation);
-      if (error) {
-        return error;
-      }
-      locations.forEach(async (location) => {
-        const { data: classes } = await supabase
-          .from('classes')
-          .select('*, locations(*)')
-          .eq('location_id', location.location_id)
-          .eq('date', searchByDate);
-        if (classes) {
-          classes.forEach((Class) => {
-            if (!searchByClass || (searchByClass && Class.name === searchByClass)) {
-              setClasses((prevClasses) => [...prevClasses, Class]);
-            }
-          });
-        }
-      });
-    } catch (err) {
-      console.error('Unexpected error: ', err);
-    }
 
+    const { data: locations, error } = await supabase
+      .from('locations')
+      .select('*')
+      .ilike(column, searchByLocation);
+    if (error) {
+      return error;
+    }
+    locations.forEach(async (location) => {
+      const { data: classes } = await supabase
+        .from('classes')
+        .select('*, locations(*)')
+        .eq('location_id', location.location_id)
+        .eq('date', searchByDate);
+      if (classes) {
+        classes.forEach((Class) => {
+          if (!searchByClass
+            || (searchByClass && Class.name.toLowerCase().includes(searchByClass.toLowerCase()))) {
+            setClasses((prevClasses) => [...prevClasses, Class]);
+          }
+        });
+      }
+    });
     return null;
   };
 
+  // for testing suite
+  onSearch();
+  //
+
+  let classLabel: JSX.Element | null = null;
+  if (searched && Classes.length <= 1) {
+    classLabel = (
+      <div>
+        {Classes.length}
+        {' '}
+        class
+      </div>
+    );
+  } else if (searched && Classes.length > 1) {
+    classLabel = (
+      <div>
+        {Classes.length}
+        {' '}
+        classes
+      </div>
+    );
+  }
+
   return (
     <div className="text-black mt-10">
-      <div className="flex">
+      <form className="flex" onSubmit={search}>
+        <DatePicker
+          activeDay={activeDay}
+          gotoClassDate={gotoClassDate}
+        />
         <input
+          className="w-[140px] text-center font-normal text-xs rounded-s-md"
           placeholder="Yoga, Pilates, Zumba..."
           onChange={(e) => setSearchByClass(e.target.value)}
-          onFocus={() => setShowCalendar(false)}
         />
+        <div className="flex items-center text-white font-normal bg-seafoam"><MapPin className="h-5 w-5" /></div>
         <input
-          placeholder={searchByLocation}
+          type="text"
+          className="w-[100px] text-center font-normal text-xs"
+          placeholder="City, location..."
           value={searchByLocation}
           onChange={(e) => setSearchByLocation(e.target.value)}
-          onFocus={() => setShowCalendar(false)}
+          required
+          data-testid="search-input"
         />
-      </div>
-      <div className="flex">
-        <input
-          className="text-black text-center"
-          value={selectedDate instanceof Date
-            ? selectedDate.toISOString().split('T')[0]
-            : ''}
-          onFocus={() => setShowCalendar(true)}
-          onChange={() => setShowCalendar(false)}
-        />
-        <button type="button" className="bg-blue-500 text-white" onClick={search}>GO</button>
-      </div>
+        <button type="submit" className="w-[30px] text-white justify-center font-normal text-xs bg-seafoam rounded-e-md">GO</button>
+      </form>
       <div>
-        {showCalendar ? (
-          <div>
-            <Calendar
-              className="fixed"
-              calendarType="US"
-              minDate={new Date()}
-              value={selectedDate}
-              onChange={handleDateChange}
-            />
-          </div>
-        ) : ''}
-      </div>
-      <div>
+        <div className="text-orange mt-2 px-2 py-1 font-black">
+          {classLabel}
+        </div>
         {searched && (
           list ? (
-            <List classes={Classes} setList={setList} />
+            <div>
+              <button type="button" className="text-center text-white text-xs font-black uppercase tracking-wide rounded-md bg-seafoam px-2 py-1 mt-2 ml-2" onClick={() => setList(false)}>Map</button>
+              <List user_id={user_id} classes={Classes} />
+            </div>
           ) : (
-            <Map center={myLocation} classes={Classes} setList={setList} />
+            <div>
+              <button type="button" className="text-center text-white text-xs font-black uppercase tracking-wide rounded-md bg-seafoam px-2 py-1 mt-2 ml-2 mb-2" onClick={() => setList(true)}>List</button>
+              <Map user_id={user_id} center={myLocation} classes={Classes} />
+            </div>
           )
         )}
       </div>
