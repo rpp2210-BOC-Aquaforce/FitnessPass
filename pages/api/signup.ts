@@ -27,10 +27,6 @@ async function handler(
     return;
   }
 
-  // const userTable = isStudio ? 'studio_users' : 'users';
-  // const userEmail = isStudio ? 'studio_email' : 'email';
-  // console.log('userTable', userTable);
-  // change the sign up logic here -> scen both studio_user and users table;
   const { data: users, error } = await supabase
     .from('users')
     .select('email')
@@ -82,6 +78,10 @@ async function handler(
     await supabase
       .from('users')
       .insert([{ email, password: hashedPassword }]);
+    await supabase.auth.signUp({
+      email,
+      password,
+    });
   } else {
     await supabase
       .from('studio_users')
@@ -91,6 +91,10 @@ async function handler(
         studio_name: studioName,
         photo: studioPhoto,
       }]);
+    await supabase.auth.signUp({
+      email,
+      password,
+    });
   }
   res.status(201).json({ message: 'New user account created! Please wait while we redirect you ...' });
 }
