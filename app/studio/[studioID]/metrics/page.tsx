@@ -2,8 +2,7 @@ import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
 import dynamic from 'next/dynamic';
 import { authOptions } from '@/lib/auth';
-import { MetricsLoading } from '@/components/index'; // If Dynamic import stays
-// import { MetricsView, MetricsLoading } from '@/components/index'; // If Dynamic import goes
+import { MetricsLoading } from '@/components/index';
 import getEngMetrics from '@/lib/get-class-eng-metrics';
 import getPopMetrics from '@/lib/get-class-pop-metrics';
 
@@ -32,9 +31,6 @@ export default async function Metrics() {
       >
         <h1 className="text-solid-orange text-3xl font-semibold mt-2">My Metrics</h1>
         <DynamicMetricsView studioPopMetrics={popMetrics} studioEngMetrics={engMetrics} />
-        {/* {!popMetrics
-          ? <MetricsLoading />
-          : <MetricsView studioPopMetrics={popMetrics} studioEngMetrics={engMetrics} />} */}
       </div>
     </main>
   );

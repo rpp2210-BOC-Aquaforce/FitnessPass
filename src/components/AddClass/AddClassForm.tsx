@@ -6,7 +6,7 @@ import React, {
   ChangeEvent,
   FormEvent,
 } from 'react';
-import { addClass } from '@/lib/api';
+import { addClass } from '@/lib/studio-classes';
 import { StudioAddClass } from '@/lib/types';
 
 // To-Do:
@@ -58,11 +58,12 @@ export default function AddClassForm({ studioLocs, studioID }:propsTypes) {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     await addClass(formData)
+    // If time, would like to add curtosey alert message here
       .then(() => {
         router.push(`/studio/${studioID}`);
       })
-      .catch(() => {
-        alert('Error adding class, please try again later!');
+      .catch((error) => {
+        throw error;
       });
   };
 

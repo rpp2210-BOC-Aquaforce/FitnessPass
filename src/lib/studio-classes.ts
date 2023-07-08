@@ -1,3 +1,4 @@
+import { StudioAddClass } from '@/lib/types';
 import supabase from './supabase';
 
 export const getStudioLocations = async (studioID: string) => {
@@ -40,15 +41,23 @@ export const getClassesByDate = async (studioID: string, startDate: string, endD
   return data;
 };
 
-// export const getClassPopularity = async (classID: string) => {
-//   const { count, error } = await supabase
-//     .from('user_classes')
-//     .select('*', { count: 'exact', head: true })
-//     .eq('class_id', classID);
+export const addClass = async (classData: StudioAddClass) => {
+  const { error } = await supabase
+    .from('classes')
+    .insert([{
+      location_id: Number(classData.loc_id),
+      name: classData.class_name,
+      description: classData.class_description,
+      date: classData.class_date,
+      time: classData.class_start,
+      duration: classData.class_duration,
+      tags: JSON.stringify(classData.class_tags),
+      instructor: classData.instructor,
+      total_rating: 0,
+      num_ratings: 0,
+    }]);
 
-//   if (error) {
-//     throw error;
-//   }
-
-//   return count;
-// };
+  if (error) {
+    throw error;
+  }
+};

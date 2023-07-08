@@ -1,7 +1,7 @@
 import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
 import { authOptions } from '@/lib/auth';
-import { getStudioLocations } from '@/lib/studio-classes'; // Change
+import { getStudioLocations } from '@/lib/studio-classes';
 import { AddClassForm } from '@/components/index';
 
 export const revalidate = 60;

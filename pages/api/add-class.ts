@@ -5,6 +5,7 @@ export default async function addClass(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
+  console.log('Req.Body: ', req.body);
   const { error } = await supabase
     .from('classes')
     .insert([{
@@ -14,14 +15,16 @@ export default async function addClass(
       date: req.body.class_date,
       time: req.body.class_start,
       duration: req.body.class_duration,
-      tags: JSON.stringify(req.body.class_tags),
+      tags: req.body.class_tags,
       instructor: req.body.instructor,
       total_rating: 0,
       num_ratings: 0,
     }]);
   if (error) {
+    console.log('***** ', error);
     res.status(400).send(error);
   } else {
+    console.log('&&&&&&&&&&');
     res.status(201).json({});
   }
 }
