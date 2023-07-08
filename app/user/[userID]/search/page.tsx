@@ -8,7 +8,7 @@ import React from 'react';
 
 export default function Page(props: { params: { userID: any; }; }) {
   const user_id = props.params.userID;
-  const onSearch = () => { console.log(''); };
+  const onSearch = () => null;
 
   return (
     <div>
