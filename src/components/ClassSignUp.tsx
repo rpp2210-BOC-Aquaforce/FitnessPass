@@ -38,34 +38,36 @@ export default function ClassSignUp({ class_id, user_id } : { class_id: number, 
   const signUp = async () => {
     if (user_id === '1') {
       router.push('/login');
-    }
-    try {
-      const { data, error } = await supabase
-        .from('user_classes')
-        .insert([
-          { user_id, class_id },
-        ]);
-      if (error) {
-        return error;
-      }
-      setSigned(true);
-      console.log(`signed up user ${user_id} in class ${class_id}`, data);
-      // Send email to user
-      const response = await fetch('/api/send-email', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ user: user_id, class: class_id }), // Pass any required data
-      });
+    } else {
+      try {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { data, error } = await supabase
+          .from('user_classes')
+          .insert([{ user_id, class_id },
+          ])
+          .select();
+        if (error) {
+          throw error;
+        }
+        setSigned(true);
+        console.log(`signed up user ${user_id} in class ${class_id}`, data);
+        // Send email to user
+        const response = await fetch('/api/sendgrid', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ user: user_id, class: class_id }), // Pass any required data
+        });
 
-      if (response.ok) {
-        console.log('Email sent successfully');
-      } else {
-        console.error('Failed to send email');
+        if (response.ok) {
+          console.log('Email sent successfully');
+        } else {
+          console.error('Failed to send email');
+        }
+      } catch (err) {
+        console.error('Unexpected error: ', err);
       }
-    } catch (err) {
-      console.error('Unexpected error: ', err);
     }
     return null;
   };
