@@ -85,8 +85,8 @@ export default function Search({ user_id, onSearch }
     return `${year}-${month}-${day}`;
   };
 
-  const search = async (e) => {
-    e.preventDefault();
+  const search = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     const searchByDate = formattedDate(activeDay);
     setClasses([]);
     setSearched(true);
