@@ -1,2 +1,2 @@
-// eslint-disable-next-line import/prefer-default-export
 export { default as MetricsView } from './MetricsView';
+export { default as MetricsLoading } from './MetricsLoading';

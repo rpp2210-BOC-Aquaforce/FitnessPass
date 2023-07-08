@@ -1,4 +1,3 @@
-// import { UserNav, BottomNav } from '@/components';
 import { BottomNav } from '@/components';
 
 export default function RootLayout({
