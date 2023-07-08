@@ -51,7 +51,7 @@ export default function ClassSignUp({ class_id, user_id } : { class_id: number, 
       setSigned(true);
       console.log(`signed up user ${user_id} in class ${class_id}`, data);
       // Send email to user
-      const response = await fetch('/api/send-email', {
+      const response = await fetch('/api/sendgrid', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
