@@ -58,7 +58,7 @@ export default function AddClassForm({ studioLocs, studioID }:propsTypes) {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     await addClass(formData)
-    // If time, would like to add curtosey alert message here
+    // If time, would like to add curtosey alert message here ***
       .then(() => {
         router.push(`/studio/${studioID}`);
       })

@@ -1,5 +1,3 @@
-import { StudioAddClass } from '@/lib/types';
-
 interface FetcherInput {
   url: string;
   method: 'get' | 'post' | 'put' | 'delete';
@@ -29,7 +27,5 @@ export const fetcher = async ({
     return data.data;
   }
 };
-
-export const addClass = (classData: StudioAddClass) => fetcher({ url: '/api/add-class', method: 'post', body: classData });
 
 export const updateRating = (classID: number, rating: number) => fetcher({ url: `/api/classes/${classID}/ratings`, method: 'put', body: { rating } });
