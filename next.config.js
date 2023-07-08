@@ -5,7 +5,7 @@ const nextConfig = {
     serverActions: true,
   },
   images: {
-    domains: ['via.placeholder.com', 'images.unsplash.com'],
+    domains: ['via.placeholder.com', 'images.unsplash.com', 'javqvsvajexkcxuhgiiw.supabase.co'],
   },
 };
 

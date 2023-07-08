@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import { useState } from 'react';
 import {
-  Heart, PlusCircle, Check, X,
+  Heart, PlusCircle, Check, X, Loader,
 } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import { cn } from '@/lib/utils';
@@ -31,6 +31,7 @@ export default function ClassCard({ fitnessClass, gotoDate, updateUserClass }: {
   const isUserClass = fitnessClass.userId === userId;
   const [isFavorite, setIsFavorite] = useState(fitnessClass.favorite);
   const [isAdded, setIsAdded] = useState(false);
+  const [isRemoving, setIsRemoving] = useState(false);
 
   if (!fitnessClass) {
     return null;
@@ -74,6 +75,8 @@ export default function ClassCard({ fitnessClass, gotoDate, updateUserClass }: {
     if (!updateUserClass) {
       return;
     }
+
+    setIsRemoving(true);
 
     updateUserClass({
       classId: fitnessClass.class_id,
@@ -134,7 +137,7 @@ export default function ClassCard({ fitnessClass, gotoDate, updateUserClass }: {
           { isUserClass ? (
             <Heart
               className={cn(
-                'inline-block h-[36px]',
+                'inline-block h-[25px]',
                 isFavorite ?? fitnessClass?.favorite ? 'text-red-300 fill-current' : 'text-white',
               )}
             />
@@ -148,7 +151,7 @@ export default function ClassCard({ fitnessClass, gotoDate, updateUserClass }: {
           onClick={onRemoveClass}
           className="text-center text-white text-xs font-black uppercase tracking-wide rounded-md bg-red-300 px-2 py-1 mt-2"
         >
-          <X className="inline-block h-[36px]" />
+          { isRemoving ? <Loader className="inline-block h-[25px] animate-spin" /> : <X className="inline-block h-[25px]" /> }
         </button>
         )}
       </div>
