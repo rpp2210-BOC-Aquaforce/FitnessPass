@@ -2,10 +2,12 @@
 
 import Image from 'next/image';
 import { useState } from 'react';
-import { Heart } from 'lucide-react';
+import { Heart, PlusCircle } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import { cn } from '@/lib/utils';
-import { Class, UpdateUserClassFunction, CustomSession } from '@/lib/types';
+import {
+  Class, UserClassFunction, CustomSession,
+} from '@/lib/types';
 import { parseLocalDate } from '@/components/Schedule/DateFunctions';
 import Stars from '@/components/Ratings/Stars';
 
@@ -20,7 +22,7 @@ function TextDiv({ children, className }: { children: React.ReactNode, className
 export default function ClassCard({ fitnessClass, gotoDate, updateUserClass }: {
   fitnessClass: Class,
   gotoDate?: null | ((date: Date) => void),
-  updateUserClass?: UpdateUserClassFunction,
+  updateUserClass?: UserClassFunction,
 }) {
   const { data: session } = useSession() as { data: CustomSession | null };
   const userId = session?.user?.id;
@@ -38,7 +40,7 @@ export default function ClassCard({ fitnessClass, gotoDate, updateUserClass }: {
     gotoDate(parseLocalDate(fitnessClass.date));
   };
 
-  const onFavoriteClick = () => {
+  const onFavorite = () => {
     if (!updateUserClass) {
       return;
     }
@@ -49,6 +51,30 @@ export default function ClassCard({ fitnessClass, gotoDate, updateUserClass }: {
       userId,
       key: 'favorite',
       value: !fitnessClass.favorite,
+    });
+  };
+
+  const onAddClass = () => {
+    if (!updateUserClass) {
+      return;
+    }
+
+    updateUserClass({
+      classId: fitnessClass.class_id,
+      userId,
+      create: true,
+    });
+  };
+
+  const onRemoveClass = () => {
+    if (!updateUserClass) {
+      return;
+    }
+
+    updateUserClass({
+      classId: fitnessClass.class_id,
+      userId,
+      _delete: true,
     });
   };
 
@@ -91,26 +117,33 @@ export default function ClassCard({ fitnessClass, gotoDate, updateUserClass }: {
       <div className="flex flex-col justify-between items-end ml-4">
         <button
           type="button"
-          onClick={isUserClass ? onFavoriteClick : undefined}
-          className="flex flex-wrap text-center text-white text-xs font-black uppercase tracking-wide rounded-md bg-mint-seafoam px-2 py-1 mt-2"
+          onClick={isUserClass ? onFavorite : onAddClass}
+          className={
+          cn(
+            'flex flex-wrap text-center text-white text-xs font-black uppercase tracking-wide rounded-md bg-mint-seafoam px-2 py-1 mt-2',
+            isUserClass ? 'bg-mint-seafoam' : 'bg-mint-orange',
+          )
+        }
         >
-          { isUserClass && (
-          <Heart
-            className={cn(
-              'inline-block mr-1 h-[36px]',
-              isFavorite ?? fitnessClass?.favorite ? 'text-red-300 fill-current' : 'text-white',
-            )}
-          />
-          ) }
-          { isUserClass ? '' : 'Add' }
+          { isUserClass ? (
+            <Heart
+              className={cn(
+                'inline-block h-[36px]',
+                isFavorite ?? fitnessClass?.favorite ? 'text-red-300 fill-current' : 'text-white',
+              )}
+            />
+          ) : (
+            <PlusCircle className="h-[36px] text-white rounded-full" />
+          )}
         </button>
         { isUserClass && (
-          <button
-            type="button"
-            className="text-center text-white text-xs font-black uppercase tracking-wide rounded-md bg-red-300 px-2 py-1 mt-2"
-          >
-            Remove
-          </button>
+        <button
+          type="button"
+          onClick={onRemoveClass}
+          className="text-center text-white text-xs font-black uppercase tracking-wide rounded-md bg-red-300 px-2 py-1 mt-2"
+        >
+          Remove
+        </button>
         )}
       </div>
     </div>

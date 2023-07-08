@@ -1,13 +1,13 @@
 'use client';
 
-import { Class, UpdateUserClassFunction } from '@/lib/types';
+import { Class, UserClassFunction } from '@/lib/types';
 import ClassCard from './ClassCard';
 
 export default function FitnessClasses(
   { classes, gotoDate = null, updateUserClass }: {
     classes: Class[],
     gotoDate?: null | ((date: Date) => void),
-    updateUserClass?: UpdateUserClassFunction,
+    updateUserClass?: UserClassFunction,
   },
 ) {
   return (

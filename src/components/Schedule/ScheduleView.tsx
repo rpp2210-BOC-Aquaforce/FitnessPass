@@ -16,7 +16,7 @@ import {
   differenceInWeeks,
   startOfWeek,
 } from 'date-fns';
-import { Class, UpdateUserClassFunction } from '@/lib/types';
+import { Class, UserClassFunction } from '@/lib/types';
 import {
   parseLocalDate,
   getScheduledDates,
@@ -28,7 +28,7 @@ import DatePicker from './DatePicker';
 
 type ScheduleViewProps = {
   fitnessClasses: Class[];
-  updateUserClass?: UpdateUserClassFunction;
+  updateUserClass?: UserClassFunction;
   // setfitnessClasses: React.Dispatch<React.SetStateAction<UserClass[]>>;
 }
 
