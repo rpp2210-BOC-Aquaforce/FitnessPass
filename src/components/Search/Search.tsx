@@ -168,6 +168,7 @@ export default function Search({ user_id, onSearch }
           value={searchByLocation}
           onChange={(e) => setSearchByLocation(e.target.value)}
           required
+          data-testid="search-input"
         />
         <button type="submit" className="w-[30px] text-white justify-center font-normal text-xs bg-seafoam rounded-e-md">GO</button>
       </form>
