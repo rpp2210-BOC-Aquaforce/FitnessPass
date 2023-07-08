@@ -66,8 +66,9 @@ describe('ClassSearch', () => {
     const mockSearch = jest.fn().mockResolvedValue([]);
 
     // Render the component and get elements
-    const {
-      getByRole, getByText, getByTestId } = render(<Search onSearch={mockSearch} user_id={107} />);
+    const { getByRole, getByText, getByTestId } = render(
+      <Search onSearch={mockSearch} user_id={107} />,
+    );
     const inputElement = getByTestId('search-input');
 
     fireEvent.change(inputElement, { target: { value: 'queens' } });
