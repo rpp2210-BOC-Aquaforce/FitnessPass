@@ -29,8 +29,8 @@ function UserInfo() {
   const userID = (session?.user as any)?.id;
   const router = useRouter();
 
-  console.log('session =>', session);
-  console.log('status =>', status);
+  // console.log('session =>', session);
+  // console.log('status =>', status);
 
   // useEffect(() => {
   //   if (status === 'loading') {
