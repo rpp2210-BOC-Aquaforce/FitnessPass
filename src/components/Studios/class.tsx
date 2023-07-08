@@ -16,7 +16,7 @@ interface ClassProps {
   onDelete: () => Promise<void>;
 }
 
-export default function Location({ classObj, onDelete }: ClassProps) {
+export default function Class({ classObj, onDelete }: ClassProps) {
   // Format date in a readable way
   const formattedDate = new Date(classObj.date).toLocaleDateString('en-US', {
     // year: 'numeric',
@@ -40,10 +40,10 @@ export default function Location({ classObj, onDelete }: ClassProps) {
       <h5 className={styles.title}>{classObj.name}</h5>
       <p className={styles.instructor}>{`with ${classObj.instructor}`}</p>
       <p className={styles.description}>{classObj.description}</p>
-      <p className={styles.date}>{formattedDate}</p>
-      <p className={styles.time}>{formattedTime}</p>
+      <p className={styles.date}>{`${formattedDate} @ ${formattedTime}`}</p>
       <p className={styles.duration}>{`(${classObj.duration} mins)`}</p>
-      <p className={styles.rating}>{classObj.total_rating ? `Class Rating: ${classObj.total_rating}` : 'No ratings yet!'}</p>
+      <p className={styles.ratingTitle}>Total Rating:</p>
+      <p className={styles.rating}>{classObj.total_rating ? `${classObj.total_rating}` : 'No ratings yet!'}</p>
       <button className={styles.deleteButton} onClick={onDelete} type="button">
         Delete Class
       </button>

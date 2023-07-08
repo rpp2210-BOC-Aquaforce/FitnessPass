@@ -3,7 +3,6 @@
 'use client';
 
 import { redirect } from 'next/navigation';
-import Link from 'next/link';
 import { Session, User } from 'next-auth';
 import { useSession } from 'next-auth/react';
 import React, { useEffect, useState } from 'react';
