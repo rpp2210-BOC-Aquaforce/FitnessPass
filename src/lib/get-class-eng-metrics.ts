@@ -1,4 +1,4 @@
-import { getClassesByDate, getClassPopularity } from '@/lib/studio-classes';
+import { getClassesByDate } from '@/lib/studio-classes';
 import { format, subWeeks } from 'date-fns';
 
 export default async function getEngMetrics(studioID: string) {
@@ -17,20 +17,21 @@ export default async function getEngMetrics(studioID: string) {
     { label: 'This week', start: lastWeek, end: today },
   ];
 
-  const attendancePromises = weeks.map(async (week) => {
+  const promises = weeks.map(async (week) => {
     const data = await getClassesByDate(studioID, week.start, week.end);
 
-    const attendance = await Promise.all(
-      data.map((item: { class_id: string; date: string }) => getClassPopularity(item.class_id)),
-    );
+    const weekData = data.reduce((acc) => ({
+      week: week.label,
+      attendance: acc.attendance + 1,
+    }), { week: week.label, attendance: 0 });
 
-    const totalAttendance = attendance.reduce((acc, curr) => (acc || 0) + (curr || 0), 0);
-    return { week: week.label, attendance: totalAttendance };
+    return weekData;
   });
 
+  const groupedEngData = await Promise.all(promises);
+
   try {
-    const attendanceData = await Promise.all(attendancePromises);
-    return attendanceData;
+    return groupedEngData;
   } catch (err) {
     return ([{ week: null, attendance: null }]);
   }

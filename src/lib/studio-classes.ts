@@ -27,11 +27,11 @@ export const getClassPopularity = async (studioID: string) => {
 
 export const getClassesByDate = async (studioID: string, startDate: string, endDate: string) => {
   const { data, error } = await supabase
-    .from('classes')
-    .select('class_id, date, locations!inner(location_id)')
-    .eq('locations.studio_id', studioID)
-    .gt('date', startDate)
-    .lte('date', endDate);
+    .from('user_classes')
+    .select('classes!inner(class_id, date, locations!inner(location_id, studio_id))')
+    .eq('classes.locations.studio_id', studioID)
+    .gt('classes.date', startDate)
+    .lte('classes.date', endDate);
 
   if (error) {
     throw error;
