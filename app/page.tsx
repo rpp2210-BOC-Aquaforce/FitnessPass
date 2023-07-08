@@ -1,4 +1,4 @@
-import { SearchBar, Authform } from '@/components/index';
+// import { SearchBar, Authform } from '@/components/index';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { redirect } from 'next/navigation';
@@ -11,17 +11,18 @@ export default async function Home() {
 
   if (isStudio) {
     redirect(`/studio/${userId}`);
-  } else if (!isStudio) {
+  } else if (isStudio === false) {
     redirect(`/user/${userId}/profile`);
   } else {
-    return (
-      <main className="flex min-h-screen flex-col items-center justify-between p-24">
-        <SearchBar />
-        <Authform />
-        <h1>
-          Welcome To FitnessPass!
-        </h1>
-      </main>
-    );
+    redirect('/login');
+    // return (
+    //   <main className="flex flex-col items-center justify-between p-24">
+    //     {/* <SearchBar /> */}
+    //     <Authform />
+    //     <h1>
+    //       Welcome To FitnessPass!
+    //     </h1>
+    //   </main>
+    // );
   }
 }
