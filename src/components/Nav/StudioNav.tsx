@@ -2,7 +2,7 @@
 
 import React from 'react';
 import {
-  Plus, MapPin, Book, BarChart, Grid,
+  Plus, MapPin, Book, BarChart,
 } from 'lucide-react';
 import Link from 'next/link';
 

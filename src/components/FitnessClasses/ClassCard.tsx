@@ -2,7 +2,9 @@
 
 import Image from 'next/image';
 import { useState } from 'react';
-import { Heart, PlusCircle } from 'lucide-react';
+import {
+  Heart, PlusCircle, Check, X,
+} from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import { cn } from '@/lib/utils';
 import {
@@ -28,6 +30,7 @@ export default function ClassCard({ fitnessClass, gotoDate, updateUserClass }: {
   const userId = session?.user?.id;
   const isUserClass = fitnessClass.userId === userId;
   const [isFavorite, setIsFavorite] = useState(fitnessClass.favorite);
+  const [isAdded, setIsAdded] = useState(false);
 
   if (!fitnessClass) {
     return null;
@@ -59,6 +62,7 @@ export default function ClassCard({ fitnessClass, gotoDate, updateUserClass }: {
       return;
     }
 
+    setIsAdded(true);
     updateUserClass({
       classId: fitnessClass.class_id,
       userId,
@@ -84,8 +88,10 @@ export default function ClassCard({ fitnessClass, gotoDate, updateUserClass }: {
     }
   };
 
+  const addClassIcon = () => (isAdded ? <Check className="h-[36px] text-white rounded-full" /> : <PlusCircle className="h-[36px] text-white rounded-full" />);
+
   return (
-    <div className="flex items-start mt-4 bg-white w-full h-[125px]">
+    <div className={cn('flex items-start mt-4 w-full h-[125px]', isAdded ? 'bg-gray-100' : 'bg-white')}>
       <Image
         className="h-full w-[100px] min-w-[100px] max-w-[100px] object-cover"
         width={100}
@@ -133,7 +139,7 @@ export default function ClassCard({ fitnessClass, gotoDate, updateUserClass }: {
               )}
             />
           ) : (
-            <PlusCircle className="h-[36px] text-white rounded-full" />
+            addClassIcon()
           )}
         </button>
         { isUserClass && (
@@ -142,7 +148,7 @@ export default function ClassCard({ fitnessClass, gotoDate, updateUserClass }: {
           onClick={onRemoveClass}
           className="text-center text-white text-xs font-black uppercase tracking-wide rounded-md bg-red-300 px-2 py-1 mt-2"
         >
-          Remove
+          <X className="inline-block h-[36px]" />
         </button>
         )}
       </div>
