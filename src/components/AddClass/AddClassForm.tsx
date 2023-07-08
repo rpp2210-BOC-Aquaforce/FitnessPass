@@ -8,6 +8,7 @@ import React, {
 } from 'react';
 import { addClass } from '@/lib/studio-classes';
 import { StudioAddClass } from '@/lib/types';
+import styles from './addClassStyles.module.css';
 
 // To-Do:
 // Refactor tags section to be more user-friendly
@@ -68,9 +69,9 @@ export default function AddClassForm({ studioLocs, studioID }:propsTypes) {
   };
 
   return (
-    <div className="flex flex-col content-start justify-center items-center py-4 gap-y-4">
-      <h1 className="mt-4 text-3xl text-orange-500 font-semibold tracking-wider" data-testid="add_class_title">Add Class</h1>
-      <form data-testid="add_class_form" onSubmit={handleSubmit} className="flex flex-col gap-y-2">
+    <div className={styles.addClass}>
+      <h1 data-testid="add_class_title">Add Class</h1>
+      <form data-testid="add_class_form" onSubmit={handleSubmit} className={styles.formContainer}>
         <label htmlFor="location" data-testid="location_label">
           Location:
           <div className="relative">
@@ -194,7 +195,6 @@ export default function AddClassForm({ studioLocs, studioID }:propsTypes) {
         <button
           type="submit"
           data-testid="add_class_submit"
-          className="mt-6 bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
         >
           Add Class
         </button>
@@ -204,6 +204,7 @@ export default function AddClassForm({ studioLocs, studioID }:propsTypes) {
         data-testid="add_class_cancel"
         onClick={() => router.push(`/studio/${studioID}`)}
         className="inline-block align-baseline font-bold text-sm text-orange-500 hover:text-orange-600"
+        style={{ color: '#FF6600' }}
       >
         Cancel
       </button>
