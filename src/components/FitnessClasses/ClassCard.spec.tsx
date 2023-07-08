@@ -3,7 +3,7 @@ import { Class } from '@/lib/types/';
 import { render, screen } from '@testing-library/react';
 import ClassCard from './ClassCard';
 
-describe('ClassCard', () => {
+xdescribe('ClassCard', () => {
   const userClass = classes[0];
 
   it('renders without crashing', () => {

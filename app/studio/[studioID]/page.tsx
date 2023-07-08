@@ -5,7 +5,6 @@ import React, { useState, useEffect } from 'react';
 import { Session, User } from 'next-auth';
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
-import Link from 'next/link';
 import fetchStudioData from '../../../pages/api/studioProfile';
 import styles from './page.module.css';
 
@@ -55,16 +54,6 @@ export default function StudioPage() {
         <p className={styles.info}>{studioInfo.studio_name}</p>
         <h5 className={styles.infoHeader}>Preferred Email:</h5>
         <p className={styles.info}>{studioInfo.studio_email}</p>
-        {/* <br />
-        <Link href={`/studio/${studioID}/add-location`} className={styles.links}>Add A Location</Link>
-        <br />
-        <Link href={`/studio/${studioID}/addclass`} className={styles.links}>Add A Class</Link>
-        <br />
-        <Link href={`/studio/${studioID}/metrics`} className={styles.links}>View Metrics</Link>
-        <br />
-        <Link href={`/studio/${studioID}/view-classes`} className={styles.links}>View All Classes</Link>
-        <br />
-        <Link href={`/studio/${studioID}/view-locations`} className={styles.links}> View All Locations</Link> */}
       </div>
 
     </main>

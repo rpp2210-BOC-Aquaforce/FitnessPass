@@ -4,52 +4,55 @@
 
 import { useEffect, useState } from 'react';
 import supabase from '@/lib/supabase';
+import { CustomSession } from '@/lib/types';
+import { useSession } from 'next-auth/react';
 
-export default function Profile() {
-  interface User {
-   age: number,
-   city: string,
-   created_at: string,
-   ec_name: string,
-   ec_phone: string,
-   email: string,
-   first_name: string,
-   last_name: string,
-   password: string,
-   phone: string,
-   photo: string,
-   state: string,
-   street: string,
-   user_id: number,
-   zip: string
+interface User {
+  age: number,
+  city: string,
+  created_at: string,
+  ec_name: string,
+  ec_phone: string,
+  email: string,
+  first_name: string,
+  last_name: string,
+  password: string,
+  phone: string,
+  photo: string,
+  state: string,
+  street: string,
+  user_id: number,
+  zip: string
 }
 
-  const defaultUser = {
-    user_id: 0,
-    first_name: 'Loading...',
-    last_name: 'Loading...',
-    email: 'Loading...',
-    phone: 'Loading...',
-    age: 0,
-    street: 'Loading...',
-    city: 'Loading...',
-    state: 'Loading...',
-    zip: 'Loading...',
-    password: 'Loading...',
-    ec_name: 'Loading...',
-    ec_phone: 'Loading...',
-    photo: 'Loading...',
-    created_at: 'Loading...',
-  };
+const defaultUser = {
+  user_id: 0,
+  first_name: 'Loading...',
+  last_name: 'Loading...',
+  email: 'Loading...',
+  phone: 'Loading...',
+  age: 0,
+  street: 'Loading...',
+  city: 'Loading...',
+  state: 'Loading...',
+  zip: 'Loading...',
+  password: 'Loading...',
+  ec_name: 'Loading...',
+  ec_phone: 'Loading...',
+  photo: 'Loading...',
+  created_at: 'Loading...',
+};
 
+export default function Profile() {
   const [user, setUser] = useState<User>(defaultUser);
-
+  const { data: session } = useSession() as { data: CustomSession | null };
+  const userId = session?.user?.id;
   async function getUserInfo() {
     try {
       const { data: users, error } = await supabase
         .from('users')
         .select('*')
-        .eq('user_id', 5);
+        .eq('user_id', userId);
       if (error) {
         console.error('Supabase Error: ', error);
       } else {
@@ -65,6 +68,10 @@ export default function Profile() {
   useEffect(() => {
     getUserInfo();
   }, []);
+
+  if (!session) {
+    return null;
+  }
 
   return (
     <div className="text-m mt-4 md:mt-8">
