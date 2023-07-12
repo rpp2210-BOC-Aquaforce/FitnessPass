@@ -4,7 +4,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-// import { redirect } from 'next/navigation';
+import axios from 'axios';
 import supabase from '../lib/supabase';
 
 export default function ClassSignUp({ class_id, user_id } : { class_id: number, user_id: any }) {
@@ -39,34 +39,30 @@ export default function ClassSignUp({ class_id, user_id } : { class_id: number, 
     if (user_id === '1') {
       router.push('/login');
     } else {
-      try {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const { data, error } = await supabase
-          .from('user_classes')
-          .insert([{ user_id, class_id },
-          ])
-          .select();
-        if (error) {
-          throw error;
-        }
-        setSigned(true);
-        console.log(`signed up user ${user_id} in class ${class_id}`, data);
-        // Send email to user
-        const response = await fetch('/api/sendgrid', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ user: user_id, class: class_id }), // Pass any required data
-        });
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { data, error } = await supabase
+        .from('user_classes')
+        .insert([{ user_id, class_id },
+        ])
+        .select();
+      if (error) {
+        throw error;
+      }
+      setSigned(true);
+      // Send email to user
+      const response = await axios.post('/api/sendgrid', {
+        user: user_id,
+        class: class_id,
+      }, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
 
-        if (response.ok) {
-          console.log('Email sent successfully');
-        } else {
-          console.error('Failed to send email');
-        }
-      } catch (err) {
-        console.error('Unexpected error: ', err);
+      if (response) {
+        console.log('Email sent successfully');
+      } else {
+        console.error('Failed to send email');
       }
     }
     return null;

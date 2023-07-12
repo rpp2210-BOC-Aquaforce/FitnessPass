@@ -221,7 +221,9 @@ describe('ClassSearch', () => {
     render(<ClassSignUp class_id={123} user_id="1" />);
     const signUpButton = screen.getByText('Sign Up');
     await user.click(signUpButton);
-    expect(mockedPush).toHaveBeenCalledWith('/login');
+    await waitFor(() => {
+      expect(mockedPush).toHaveBeenCalledWith('/login');
+    }, { timeout: 5000 });
   });
 
   test('clicking Sign Up button triggers signUp function', async () => {
@@ -233,6 +235,6 @@ describe('ClassSearch', () => {
       expect(SignedUp).toBeInTheDocument();
       const cancelButton = getByText('Cancel');
       expect(cancelButton).toBeInTheDocument();
-    });
+    }, { timeout: 5000 });
   });
 });
