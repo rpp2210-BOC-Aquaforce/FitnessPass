@@ -13,8 +13,6 @@ PostgreSQL
 Jest (Optional) OR Code Coverage (Pull from Jest)
 React Testing Library (Optional)
 
-~~~~Link to Deployed App~~~~~
-
 ![ReactJS](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
 ![Javascript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=323330)
 ![Node](https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white)
