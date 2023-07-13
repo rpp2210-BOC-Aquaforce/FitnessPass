@@ -3,7 +3,7 @@
 ## Overview:
 FitnessPass is a mobile-first app which connects fitness studios with users interested in attending fitness classes in their area.
 
-![Check out the deployed app!](https://fitness-pass.vercel.app/login)
+[Check out the deployed app!:fire:](https://fitness-pass.vercel.app/login)
 
 ## Tech Stack:
 Next.js
