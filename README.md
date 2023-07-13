@@ -3,7 +3,7 @@
 ## Overview:
 FitnessPass is a mobile-first app which connects fitness studios with users interested in attending fitness classes in their area.
 
-[:arrow_right:Check out the deployed app!:fire:](https://fitness-pass.vercel.app/login)
+[:arrow_right: Check out the deployed app! :fire:](https://fitness-pass.vercel.app/login)
 
 ## Tech Stack:
 Next.js
@@ -60,19 +60,28 @@ Backed by authentication, this app has three usage paths:
 3. Install the additional dependencies requied to run the project:
 
 `npm install`
+
 4. Create a .env file and add the following keys (please contact for valid keys if interested)
 
 `vim .env`
 
->"NEXT_PUBLIC_DB_URL=[your_key_here]"
->"NEXT_PUBLIC_DB_API_KEY=[your_key_here]"
->"NEXT_PUBLIC_URL=[your_key_here]"
->"NEXTAUTH_SECRET=secret"
->"NEXTAUTH_URL=[your_key_here]"
->"GOOGLE_CLIENT_ID=[your_key_here]"
->"GOOGLE_CLIENT_SECRET=[your_key_here]"
->"NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=[your_key_here]"
->"SENDGRID_API_KEY=[your_key_here]"
+`"NEXT_PUBLIC_DB_URL=[your_key_here]"`
+
+`"NEXT_PUBLIC_DB_API_KEY=[your_key_here]"`
+
+`"NEXT_PUBLIC_URL=[your_key_here]"`
+
+`"NEXTAUTH_SECRET=secret"`
+
+`"NEXTAUTH_URL=[your_key_here]"`
+
+`"GOOGLE_CLIENT_ID=[your_key_here]"`
+
+`"GOOGLE_CLIENT_SECRET=[your_key_here]"`
+
+`"NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=[your_key_here]"`
+
+`"SENDGRID_API_KEY=[your_key_here]"`
 
 5. Initialize Next.js build with the following script, then launch your local server:
 `npm run dev`
