@@ -28,7 +28,7 @@ FitnessPass is a mobile-first app which connects fitness studios with users inte
 
 **Authentication:** Allows users and studio users of FitnessPass to sign in and sign up, with support for Google OAuth login. Failed login attempts are notified on the login page, and users can request a reset password link through the forgot password function. The app also provides a guest view, allowing non-signed-in users to access certain content. However, when attempting to access areas reserved for signed-in users, a sign-in form pops up, prompting guests to sign in first. *Developed by [George Liu](https://github.com/georgeliu8110)*
 
-<img src="https://drive.google.com/uc?id=1LgOlaDPH2tO6r4K6yU9yVGcOFW-ShoEb" width="250">
+<img src="https://drive.google.com/uc?id=1LgOlaDPH2tO6r4K6yU9yVGcOFW-ShoEb" height="250">
 
 **User Profile:** After signing in, users can view their photo and account information in the profile page. *Developed by [Midori Li](http://github.com/midorili)*
 
