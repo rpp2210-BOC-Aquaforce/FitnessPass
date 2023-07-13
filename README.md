@@ -26,6 +26,10 @@ FitnessPass is a mobile-first app which connects fitness studios with users inte
 
 **Top features of this product include:**
 
+**Authentication:** Allows users and studio users of FitnessPass to sign in and sign up, with support for Google OAuth login. Failed login attempts are notified on the login page, and users can request a reset password link through the forgot password function. The app also provides a guest view, allowing non-signed-in users to access certain content. However, when attempting to access areas reserved for signed-in users, a sign-in form pops up, prompting guests to sign in first. *Developed by [George Liu](https://github.com/georgeliu8110)*
+
+<img src="https://drive.google.com/uc?id=1LgOlaDPH2tO6r4K6yU9yVGcOFW-ShoEb" width="250">
+
 **User Profile:** After signing in, users can view their photo and account information in the profile page. *Developed by [Midori Li](http://github.com/midorili)*
 
 <img src="https://raw.githubusercontent.com/rpp2210-BOC-Aquaforce/FitnessPass/MLBugFixes/UserProfile.png" width="250">
@@ -103,7 +107,7 @@ Backed by authentication, this app has three usage paths:
 - [Daniel Avila](http://github.com/danny-avila) - User Schedule Page
 - [Tim Dobranski](http://github.com/timdobranski) - Studio Profile Page, Studio Class View, Studio Location View, User Class Sign-up Email Confirmation
 - [Dylan Kahlstorf](http://github.com/kahlstorf1) - Studio Add Location, Architecture Owner
-- [Midori Li](http://github.com/midorili) - User Profile Page, User Ratings, User Favorites
+- [Midori Li](http://github.com/midorili) - User Profile Page, User Ratings, User Favorites, User Interface Owner
 - [Mallow Lin](http://github.com/Mallow-Lin) - User Class Search, User Class Sign-up
 - [George Liu](https://github.com/georgeliu8110) - Authentication, Login, New User Sign-up, Guest View
 - [Rachel Quirbach](https://github.com/rquirbach) - Studio Metrics, Studio Add Class, Product Manager
