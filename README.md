@@ -27,10 +27,11 @@ FitnessPass is a mobile-first app which connects fitness studios with users inte
 **Top features of this product include:**
 
 **User Profile:** After signing in, users can view their photo and account information in the profile page.
-<img src="https://raw.githubusercontent.com/rpp2210-BOC-Aquaforce/FitnessPass/MLBugFixes/UserProfile.png" width="150">
+
+<img src="https://raw.githubusercontent.com/rpp2210-BOC-Aquaforce/FitnessPass/MLBugFixes/UserProfile.png" width="250">
 
 **User Ratings:** Users will see classes they've signed up for and can either update or submit a rating by clicking on the stars.
-![](https://raw.githubusercontent.com/rpp2210-BOC-Aquaforce/FitnessPass/MLBugFixes/Ratings.png)
+<img src="https://raw.githubusercontent.com/rpp2210-BOC-Aquaforce/FitnessPass/MLBugFixes/Ratings.png" width="250">
 
 **User Favorites:** Users can click the heart icon in the Schedule page to add classes to their favorites. They can remove the classes by clicking "remove" in the Favorites page.
 ![](https://raw.githubusercontent.com/rpp2210-BOC-Aquaforce/FitnessPass/MLBugFixes/Favorites.png)
