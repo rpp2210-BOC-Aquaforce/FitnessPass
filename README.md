@@ -66,14 +66,13 @@ Backed by authentication, this app has three usage paths:
 - `npm run dev`
 
 ## Contributors:
-- [Daniel Avila]() - User Schedule Page
-- [Tim Dobranski]() - Studio Profile Page, Studio Class View, Studio Location View, User Class Sign-up Email Confirmation
-- [Dylan Kahlstorf]() - Studio Add Location, Architecture Owner
-- [Midori Li]() - User Profile Page, User Ratings, User Favorites
-- [Mallow Lin]() - User Class Search, User Class Sign-up
+- [Daniel Avila](http://github.com/danny-avila) - User Schedule Page
+- [Tim Dobranski](http://github.com/timdobranski) - Studio Profile Page, Studio Class View, Studio Location View, User Class Sign-up Email Confirmation
+- [Dylan Kahlstorf](http://github.com/kahlstorf1) - Studio Add Location, Architecture Owner
+- [Midori Li](http://github.com/midorili) - User Profile Page, User Ratings, User Favorites
+- [Mallow Lin](http://github.com/Mallow-Lin) - User Class Search, User Class Sign-up
 - [George Liu](https://github.com/georgeliu8110) - Authentication, Login, New User Sign-up, Guest View
 - [Rachel Quirbach](https://github.com/rquirbach) - Studio Metrics, Studio Add Class, Product Manager
-- [Christian Wilsea](https://github.com/cwillsea) - Ratings & Reviews
 
 ## License:
 None
