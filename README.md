@@ -27,7 +27,7 @@ FitnessPass is a mobile-first app which connects fitness studios with users inte
 **Top features of this product include:**
 
 Upon logging in, studio users can view their saved contact info and photo, as well as a list of their current locations and classes. Studio users can then delete locations or classes
-![](https://user-images.githubusercontent.com/86995510/253134324-e094aa36-fab7-4361-9dc7-6a383d2dbfad.png =20%x) ![](https://user-images.githubusercontent.com/86995510/253134326-0afc1af8-34e7-4d1d-b9bb-a2871fc5791f.png =20%x) ![](https://user-images.githubusercontent.com/86995510/253134325-39cf64be-8e01-4ba6-a865-40aa1012b326.png =20%x)
+| ![](https://user-images.githubusercontent.com/86995510/253134324-e094aa36-fab7-4361-9dc7-6a383d2dbfad.png) | ![](https://user-images.githubusercontent.com/86995510/253134326-0afc1af8-34e7-4d1d-b9bb-a2871fc5791f.png) | ![](https://user-images.githubusercontent.com/86995510/253134325-39cf64be-8e01-4ba6-a865-40aa1012b326.png)
 
 A dynamic metrics page where studio users can view real-time data regarding class popularity, attendance, and retention across all of their locations
 ![](https://user-images.githubusercontent.com/113475539/253140004-5a2129c3-19c9-4b98-bef1-fbe297f6e208.png =20%x) ![](https://user-images.githubusercontent.com/113475539/253139978-df835365-a5d0-499e-a09c-732a0e8a6e7e.png =20%x)
