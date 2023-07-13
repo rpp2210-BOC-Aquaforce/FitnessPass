@@ -27,7 +27,7 @@ FitnessPass is a mobile-first app which connects fitness studios with users inte
 **Top features of this product include:**
 
 **User Profile:** After signing in, users can view their photo and account information in the profile page.
-![](https://raw.githubusercontent.com/rpp2210-BOC-Aquaforce/FitnessPass/MLBugFixes/UserProfile.png)
+<img src="https://raw.githubusercontent.com/rpp2210-BOC-Aquaforce/FitnessPass/MLBugFixes/UserProfile.png" max-width="50">
 
 **User Ratings:** Users will see classes they've signed up for and can either update or submit a rating by clicking on the stars.
 ![](https://raw.githubusercontent.com/rpp2210-BOC-Aquaforce/FitnessPass/MLBugFixes/Ratings.png)
