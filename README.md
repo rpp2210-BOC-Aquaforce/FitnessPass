@@ -26,39 +26,40 @@ FitnessPass is a mobile-first app which connects fitness studios with users inte
 
 **Top features of this product include:**
 
-**User Profile:** After signing in, users can view their photo and account information in the profile page.
+**User Profile:** After signing in, users can view their photo and account information in the profile page. *Developed by [Midori Li](http://github.com/midorili)*
 
 <img src="https://raw.githubusercontent.com/rpp2210-BOC-Aquaforce/FitnessPass/MLBugFixes/UserProfile.png" width="250">
 
-**User Ratings:** Users will see classes they've signed up for and can either update or submit a rating by clicking on the stars.
+**User Ratings:** Users will see classes they've signed up for and can either update or submit a rating by clicking on the stars. *Developed by [Midori Li](http://github.com/midorili)*
 
 <img src="https://raw.githubusercontent.com/rpp2210-BOC-Aquaforce/FitnessPass/MLBugFixes/Ratings.png" width="250">
 
-**User Favorites:** Users can click the heart icon in the Schedule page to add classes to their favorites. They can remove the classes by clicking "remove" in the Favorites page.
+**User Favorites:** Users can click the heart icon in the Schedule page to add classes to their favorites. They can remove the classes by clicking "remove" in the Favorites page. *Developed by [Midori Li](http://github.com/midorili)*
 
 <img src="https://raw.githubusercontent.com/rpp2210-BOC-Aquaforce/FitnessPass/MLBugFixes/Favorites.png" width="250">
 
-**User Class Search & Sign-Up:** Class search feature for users and guest users. Users can search for classes via date, class name and location, date only, and/or location only. Users have the option to view classes with a List view or Map view. Users can sign up for class with “Sign Up” button on the class card, and can cancel a class with “Cancel” button on the class card.
+**User Class Search & Sign-Up:** Class search feature for users and guest users. Users can search for classes via date, class name and location, date only, and/or location only. Users have the option to view classes with a List view or Map view. Users can sign up for class with “Sign Up” button on the class card, and can cancel a class with “Cancel” button on the class card. *Developed by [Mallow Lin](http://github.com/Mallow-Lin)*
 
 <img src="http://g.recordit.co/geLU893cq0.gif" width="250">
 
-**User Class Sign-Up Email Confirmation:** Upon signing up for a class, a user is notified of the successful signup via email with all of the relevant information for that class.
+**User Class Sign-Up Email Confirmation:** Upon signing up for a class, a user is notified of the successful signup via email with all of the relevant information for that class. *Developed by [Tim Dobranski](http://github.com/timdobranski)*
 
 <img src="https://user-images.githubusercontent.com/86995510/253134317-9023b02a-15ee-4dbb-8df8-49af56e83c0c.png" width="250">
 
-**Studio Profile:** Upon logging in, studio users can view their saved contact info and photo, as well as a list of their current locations and classes. Studio users can then delete locations or classes.
+**Studio Profile:** Upon logging in, studio users can view their saved contact info and photo, as well as a list of their current locations and classes. Studio users can then delete locations or classes. *Developed by [Tim Dobranski](http://github.com/timdobranski)*
 
 <img src="https://user-images.githubusercontent.com/86995510/253134324-e094aa36-fab7-4361-9dc7-6a383d2dbfad.png" alt="Image 1" width="250"> <img src="https://user-images.githubusercontent.com/86995510/253134326-0afc1af8-34e7-4d1d-b9bb-a2871fc5791f.png" alt="Image 2" width="250"> <img src="https://user-images.githubusercontent.com/86995510/253134325-39cf64be-8e01-4ba6-a865-40aa1012b326.png" alt="Image 3" width="250">
 
-**Studio Metrics:** A dynamic metrics page where studio users can view real-time data regarding class popularity, attendance, and retention across all of their locations.
+**Studio Metrics:** A dynamic metrics page where studio users can view real-time data regarding class popularity, attendance, and retention across all of their locations. *Developed by [Rachel Quirbach](https://github.com/rquirbach)*
 
 <img src="https://user-images.githubusercontent.com/113475539/253140004-5a2129c3-19c9-4b98-bef1-fbe297f6e208.png" width="250"> <img src="https://user-images.githubusercontent.com/113475539/253139978-df835365-a5d0-499e-a09c-732a0e8a6e7e.png" width="250">
 
-**Studio Add Location:** Ability for registered studio users to add new geographical locations. Once a location is added, studios can add classes for members to sign up for.
+**Studio Add Location:** Ability for registered studio users to add new geographical locations. Once a location is added, studios can add classes for members to sign up for. *Developed by [Dylan Kahlstorf](http://github.com/kahlstorf1)*
 
 <img src="https://imgur.com/a/dyyveRu" width="250">
 
-**Studio Add Class:** Ability for registered studio users to add new fitness classes, with options for existing studio locations dynamically rendered.
+**Studio Add Class:** Ability for registered studio users to add new fitness classes, with options for existing studio locations dynamically rendered. *Developed by [Rachel Quirbach](https://github.com/rquirbach)*
+
 <img src="https://user-images.githubusercontent.com/113475539/253139990-dd7cad26-bff8-4586-b177-cf79b1fa07f3.png" width="250">
 
 ## Usage:
