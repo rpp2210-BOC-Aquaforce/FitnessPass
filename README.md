@@ -60,7 +60,7 @@ FitnessPass is a mobile-first app which connects fitness studios with users inte
 
 **Studio Add Location:** Ability for registered studio users to add new geographical locations. Once a location is added, studios can add classes for members to sign up for. *Developed by [Dylan Kahlstorf](http://github.com/kahlstorf1)*
 
-<img src="https://imgur.com/a/dyyveRu" width="250">
+<img src="https://github-production-user-asset-6210df.s3.amazonaws.com/106470519/253322089-6518a1a3-6c81-4b95-bed7-fd04406fda16.png" width="250">
 
 **Studio Add Class:** Ability for registered studio users to add new fitness classes, with options for existing studio locations dynamically rendered. *Developed by [Rachel Quirbach](https://github.com/rquirbach)*
 
