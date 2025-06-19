@@ -44,7 +44,7 @@ FitnessPass is a mobile-first app which connects fitness studios with users inte
 
 **User Class Search & Sign-Up:** Class search feature for users and guest users. Users can search for classes via date, class name and location, date only, and/or location only. Users have the option to view classes with a List view or Map view. Users can sign up for class with “Sign Up” button on the class card, and can cancel a class with “Cancel” button on the class card. *Developed by [Mallow Lin](http://github.com/Mallow-Lin)*
 
-<img src="http://g.recordit.co/geLU893cq0.gif" width="250">
+<img src="https://drive.google.com/file/d/1hf8Uw-DnfeIYi0AI4Qjws3mi61bPNdeh/view?usp=sharing&t=15" width="250">
 
 **User Class Sign-Up Email Confirmation:** Upon signing up for a class, a user is notified of the successful signup via email with all of the relevant information for that class. *Developed by [Tim Dobranski](http://github.com/timdobranski)*
 
